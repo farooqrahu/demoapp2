@@ -1,0 +1,32 @@
+<div>
+
+    <h1 class="text-center padd">Your productList</h1>
+
+        <table class="table" >
+            <thead class="thead-default">
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Duration</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr data-ng-repeat="product in products">
+
+                <td><a data-ui-sref="details" data-ng-click="productsDetails(product)">{{product.name}}</a></td>
+                <td>{{product.author.name}}</td>
+                <td>{{product.duration}}</td>
+                <td>
+                    <button data-ng-click="" class="btn btn-secondary btn-sm">play</button>
+                </td>
+                <td><button data-ng-click="deleteProductFromProductlist(product)" class="btn btn-secondary btn-sm">delete from productList</button></td>
+
+            </tr>
+            </tbody>
+
+        </table>
+
+</div>

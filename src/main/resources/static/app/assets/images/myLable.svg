@@ -1,0 +1,21 @@
+<svg width="96" height="25" xmlns="http://www.w3.org/2000/svg">
+ <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+
+ <title>Logo</title>
+ <desc>Created with Sketch.</desc>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g font-weight="500" font-size="32" font-family="Montserrat-SemiBold, Montserrat SemiBold" fill-rule="evenodd" fill="none" id="Logo">
+   <text id="Label.">
+    <tspan id="svg_1" fill="#575DFA" y="24" x="-3">Label</tspan>
+    <tspan id="svg_2" fill="#DB504A" font-weight="700" font-family="Montserrat-Black, Montserrat Black" y="24" x="86.696">.</tspan>
+   </text>
+  </g>
+  <rect stroke="#000" id="svg_4" height="50.999997" width="130.999998" y="-18.649997" x="-2.499999" stroke-width="1.5" fill="#fff"/>
+  <text stroke="#000" transform="matrix(1.2262983322143555,0,0,1,0.11314916610717773,0) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_5" y="23.35" x="-0.5" fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#000000">Jamil.K Shop</text>
+ </g>
+</svg>
