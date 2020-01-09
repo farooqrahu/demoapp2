@@ -9,8 +9,17 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 				controller : 'NavController'
 			}
 		}
+	}).state('sidebar', {
+		abstract : true,
+		url : '',
+		views : {
+			'sidebar@' : {
+				templateUrl : 'app/views/sidebar.html',
+				controller : 'NavController'
+			}
+		}
 	}).state('login', {
-		parent : 'nav',
+
 		url : '/login',
 		views : {
 			'content@' : {
@@ -28,6 +37,18 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 			'content@' : {
 				templateUrl : 'app/views/users.html',
 				controller : 'UsersController'
+			}
+		}
+	}).state('products', {
+		parent : 'nav',
+		url : '/products',
+		data : {
+			role : 'ADMIN'
+		},
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/products.html',
+				controller : 'ProductController'
 			}
 		}
 	}).state('home', {

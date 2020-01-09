@@ -32,4 +32,6 @@ public class HomeRestController {
 	public Principal user(Principal principal) {
 		return principal;
 	}
+
+
 }

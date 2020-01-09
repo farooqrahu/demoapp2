@@ -1,7 +1,7 @@
 angular.module('myApp')
 
 .controller('LoginController', function($cookieStore,$http, $scope, $state, AuthService, $rootScope) {
-	$scope.firstName="faaaa";
+	$scope.firstName="";
 
 	$scope.login = function() {
 
