@@ -114,5 +114,14 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
                 controller : 'ProductlistController'
             }
         }
-    });
+    }).state('icon', {
+		parent : 'nav',
+		url : '/icon',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/pages/icons/material-icons.html',
+				controller : 'EditProductController'
+			}
+		}
+	});
 });

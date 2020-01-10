@@ -15,6 +15,22 @@ angular.module('myApp', [ 'ui.router' ,'ngCookies'])
         }
 
 	});
+
+    $rootScope.sweetAlertTest= function(msg) {
+        Swal.fire(
+            'Good job!',
+            msg,
+            'success'
+        )
+    };
+    $rootScope.runSweetAlertMsg= function(label,msg,type) {
+        Swal.fire(label,msg,type)
+        //  success
+        //    error
+        //  warning
+        //     info
+        //  question
+    };
 });
 
 

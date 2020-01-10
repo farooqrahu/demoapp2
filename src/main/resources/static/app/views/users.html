@@ -2,7 +2,7 @@
 <!-- partial:../../partials/_header.html -->
 
 <!-- partial -->
-<div class="page-body">
+<div ng-controller="UsersController as userControllerVm"  ng-init="findAllUsers()" class="page-body">
 	<!-- partial:../../partials/_sidebar.html -->
 	<div ng-include="'app/views/sidebar.html'"> </div>
 	<!-- partial -->
@@ -23,7 +23,7 @@
 			</div>
 			<div class="content-viewport">
 				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
 					Add New User
 				</button>
 				<div class="row">
@@ -31,58 +31,32 @@
 
 					<div class="col-lg-12">
 						<div class="grid">
-							<p class="grid-header">Table With Badge</p>
+							<p class="grid-header">All Users</p>
+
+
 							<div class="item-wrapper">
 								<div class="table-responsive">
 									<table class="table">
 										<thead>
 										<tr>
-											<th>Profile</th>
-											<th>VatNo.</th>
-											<th>Created</th>
+											<th>Name</th>
+											<th>UserName</th>
+											<th>Role</th>
 											<th>Status</th>
+                                            <th>Action</th>
 										</tr>
 										</thead>
 										<tbody>
-										<tr>
-											<td>Jacob</td>
-											<td>53275531</td>
-											<td>12 May 2017</td>
+										<tr ng-repeat="user in users">
+											<td ng-bind="user.name"></td>
+											<td ng-bind="user.username"></td>
+											<td ng-bind="user.role"></td>
 											<td>
-												<label class="badge badge-danger">Pending</label>
+												<label class="badge badge-success">Active</label>
 											</td>
-										</tr>
-										<tr>
-											<td>Messsy</td>
-											<td>53275532</td>
-											<td>15 May 2017</td>
-											<td>
-												<label class="badge badge-warning">In progress</label>
-											</td>
-										</tr>
-										<tr>
-											<td>John</td>
-											<td>53275533</td>
-											<td>14 May 2017</td>
-											<td>
-												<label class="badge badge-info">Fixed</label>
-											</td>
-										</tr>
-										<tr>
-											<td>Peter</td>
-											<td>53275534</td>
-											<td>16 May 2017</td>
-											<td>
-												<label class="badge badge-success">Completed</label>
-											</td>
-										</tr>
-										<tr>
-											<td>Dave</td>
-											<td>53275535</td>
-											<td>20 May 2017</td>
-											<td>
-												<label class="badge badge-warning">In progress</label>
-											</td>
+                                            <td>
+												<a href="#"><i class="mdi mdi-grease-pencil mdi-2x green"></i></a> | <a href="#"><i class="mdi mdi mdi-delete-forever mdi-2x green"></i></a>
+                                            </td>
 										</tr>
 										</tbody>
 									</table>
@@ -117,101 +91,73 @@
 		<!-- partial -->
 	</div>
 	<!-- page content ends -->
+
+    <!-- Modal -->
+    <div    class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form data-ng-submit="registerUser()" name="register" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">User Registration</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="grid">
+                                <p class="grid-header">Fill form to register new user</p>
+                                <div class="grid-body">
+                                    <div class="item-wrapper">
+                                        <div class="row mb-3">
+                                            <div class="col-md-8 mx-auto">
+
+                                                <div class="form-group "
+                                                     data-ng-class="{ 'has-error': register.name.$invalid && register.name.$dirty }">
+                                                    <label for="name">Name:</label> <input type="text" required
+                                                                                           class="form-control" data-ng-model="user.name" id="name" name="name">
+                                                </div>
+
+                                                <div class="form-group "
+                                                     data-ng-class="{ 'has-error': register.username.$invalid && register.username.$dirty }">
+                                                    <label for="username">User Name:</label> <input type="text" required
+                                                                                                class="form-control" data-ng-model="user.username" id="username" name="username">
+                                                </div>
+
+                                                <div class="form-group "
+                                                     data-ng-class="{ 'has-error': register.password.$invalid && register.password.$dirty }">
+                                                    <label for="pwd">Password:</label> <input type="password" required
+                                                                                              class="form-control" id="pwd" data-ng-model="user.password" name="password">
+                                                </div>
+
+                                                <div class="form-group "
+                                                     data-ng-class="{ 'has-error': register.confirmPassword.$invalid && register.confirmPassword.$dirty }">
+                                                    <label for="cpwd">Confirm Password:</label> <input type="password"
+                                                                                                       name="confirmPassword" required class="form-control" id="cpwd" data-ng-model="confirmPassword">
+                                                </div>
+												<small data-ng-show="confirmPassword != user.password " id="passwordHelp" class="text-danger">
+													Password Not Matching
+												</small>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<!--                        <button type="submit" data-ng-disabled="register.$invalid || (confirmPassword != user.password)" class="btn btn-primary">Save changes</button>-->
+                        <button type="submit" class="col-4 center btn btn-primary"
+                                data-ng-disabled="register.$invalid || (confirmPassword != user.password)">Register</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">User Registration</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="col-lg-12">
-					<div class="grid">
-						<p class="grid-header">Fill form to register new user</p>
-						<div class="grid-body">
-							<div class="item-wrapper">
-								<div class="row mb-3">
-									<div class="col-md-8 mx-auto">
-										<div class="form-group row showcase_row_area">
-											<div class="col-md-3 showcase_text_area">
-												<label for="inputType1">Name</label>
-											</div>
-											<div class="col-md-9 showcase_content_area">
-												<input type="text" class="form-control" id="inputType1" value="Sara Watson">
-											</div>
-										</div>
-										<div class="form-group row showcase_row_area">
-											<div class="col-md-3 showcase_text_area">
-												<label for="inputType12">Email</label>
-											</div>
-											<div class="col-md-9 showcase_content_area">
-												<input type="email" class="form-control" id="inputType2" value="asfabiv@rud.eu">
-											</div>
-										</div>
-										<div class="form-group row showcase_row_area">
-											<div class="col-md-3 showcase_text_area">
-												<label for="inputType13">Password</label>
-											</div>
-											<div class="col-md-9 showcase_content_area">
-												<input type="password" class="form-control" id="inputType3" value="00000000"> </div>
-										</div>
-										<div class="form-group row showcase_row_area">
-											<div class="col-md-3 showcase_text_area">
-												<label for="inputType1">Number</label>
-											</div>
-											<div class="col-md-9 showcase_content_area">
-												<input type="number" class="form-control" id="inputType4" value="83393922">
-											</div>
-										</div>
-										<div class="form-group row showcase_row_area">
-											<div class="col-md-3 showcase_text_area">
-												<label for="inputType5">Disabled</label>
-											</div>
-											<div class="col-md-9 showcase_content_area">
-												<input type="text" class="form-control" id="inputType5" value="Hulda Stevenson" disabled>
-											</div>
-										</div>
-										<div class="form-group row showcase_row_area">
-											<div class="col-md-3 showcase_text_area">
-												<label for="inputType7">Placeholder</label>
-											</div>
-											<div class="col-md-9 showcase_content_area">
-												<input type="text" class="form-control" id="inputType7" placeholder="Placeholder Text">
-											</div>
-										</div>
-										<div class="form-group row showcase_row_area">
-											<div class="col-md-3 showcase_text_area">
-												<label for="inputType8">Read-only</label>
-											</div>
-											<div class="col-md-9 showcase_content_area">
-												<input type="text" class="form-control" id="inputType8" readonly="readonly" value="Hulda Stevenson">
-											</div>
-										</div>
-										<div class="form-group row showcase_row_area">
-											<div class="col-md-3 showcase_text_area">
-												<label for="inputType9">Textarea</label>
-											</div>
-											<div class="col-md-9 showcase_content_area">
-												<textarea class="form-control" id="inputType9" cols="12" rows="5"></textarea>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
-			</div>
-		</div>
-	</div>
-</div>
