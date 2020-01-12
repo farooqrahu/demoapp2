@@ -8,10 +8,10 @@
 						</a>
 					</div>
 
-					<div class="row">
+					<div ng-controller="UsersController as userControllerVm" class="row">
 						<div class="col-lg-7 col-md-8 col-sm-9 col-12 mx-auto form-wrapper">
 							<div class="alert alert-info margin-top-5" data-ng-show="message">{{message}}</div>
-							<form data-ng-submit="submit()" name="register" novalidate>
+							<form data-ng-submit="registerUser()" name="register" novalidate>
 								<div class="form-group input-rounded"
 									 data-ng-class="{ 'has-error': register.name.$invalid && register.name.$dirty }">
 									<label for="name">Name:</label> <input type="text" required

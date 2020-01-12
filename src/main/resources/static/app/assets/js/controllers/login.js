@@ -1,13 +1,12 @@
 angular.module('myApp')
 
-.controller('LoginController', function($cookieStore,$http, $scope, $state, AuthService, $rootScope) {
-	$scope.firstName="";
+.controller('LoginController', function($http, $scope, $state, AuthService, $rootScope) {
 
 	$scope.login = function() {
 
 		var base64Credential = btoa($scope.username + ':' + $scope.password);
 
-		$http.get('user', {
+		$http.get('api/user', {
 			headers : {
 
 				'Authorization' : 'Basic ' + base64Credential
@@ -16,11 +15,8 @@ angular.module('myApp')
 			$scope.password = null;
 			if (res.authenticated) {
 				$scope.message = '';
-
 				$http.defaults.headers.common['Authorization'] = 'Basic ' + base64Credential;
 				AuthService.user = res;
-				$cookieStore.put('displayname',res);
-				$cookieStore.put('isLogged',true);
 				$rootScope.$broadcast('LoginSuccessful');
 				$state.go('home');
 			} else {
@@ -32,15 +28,12 @@ angular.module('myApp')
 	};
 
 	$scope.logout = function() {
-
 		$http.defaults.headers.common['Authorization'] = null;
 		$scope.user = null;
 		$scope.message = 'Successfully logged out';
 		$scope.resource = null;
 	};
 
-	$scope.getUserDetail= function() {
-		$scope.userDetail= $cookieStore.get('displayname');
-	}
+
 
 	});

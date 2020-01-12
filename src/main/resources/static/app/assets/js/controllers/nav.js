@@ -4,7 +4,8 @@ angular.module('myApp')
 
 })
 
-.controller('NavController', function($http, $scope, AuthService, $state, $rootScope,$cookieStore) {
+.controller('NavController', function($http, $scope, AuthService, $state, $rootScope) {
+    $scope.user=null;
 	$scope.$on('LoginSuccessful', function() {
 		$scope.user = AuthService.user;
 	});
@@ -12,8 +13,6 @@ angular.module('myApp')
 		$scope.user = null;
 	});
 	$scope.logout = function() {
-		AuthService.user = null;
-        $cookieStore.put('isLogged',false);
 		$rootScope.$broadcast('LogoutSuccessful');
 		$state.go('login');
 	};

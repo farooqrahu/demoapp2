@@ -2,11 +2,11 @@
 <!-- partial:../../partials/_header.html -->
 
 <!-- partial -->
-<div ng-controller="UsersController as userControllerVm"  ng-init="findAllUsers()" class="page-body">
+<div  ng-controller="UsersController as userControllerVm"  ng-init="findAllUsers();getUserDetail()" class="page-body">
 	<!-- partial:../../partials/_sidebar.html -->
 	<div ng-include="'app/views/sidebar.html'"> </div>
 	<!-- partial -->
-	<div class="page-content-wrapper">
+	<div  class="page-content-wrapper">
 		<div class="page-content-wrapper-inner">
 			<div class="viewport-header">
 				<nav aria-label="breadcrumb">
@@ -23,7 +23,7 @@
 			</div>
 			<div class="content-viewport">
 				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
+				<button type="button" class="btn btn-primary" data-toggle="modal" ng-click="clearData()" data-target="#userModal">
 					Add New User
 				</button>
 				<div class="row">
@@ -36,30 +36,14 @@
 
 							<div class="item-wrapper">
 								<div class="table-responsive">
-									<table class="table">
-										<thead>
-										<tr>
-											<th>Name</th>
-											<th>UserName</th>
-											<th>Role</th>
-											<th>Status</th>
-                                            <th>Action</th>
-										</tr>
-										</thead>
-										<tbody>
-										<tr ng-repeat="user in users">
-											<td ng-bind="user.name"></td>
-											<td ng-bind="user.username"></td>
-											<td ng-bind="user.role"></td>
-											<td>
-												<label class="badge badge-success">Active</label>
-											</td>
-                                            <td>
-												<a href="#"><i class="mdi mdi-grease-pencil mdi-2x green"></i></a> | <a href="#"><i class="mdi mdi mdi-delete-forever mdi-2x green"></i></a>
-                                            </td>
-										</tr>
-										</tbody>
-									</table>
+									<button type="button" class="btn btn-danger" ng-click="deleteSelected()">Delete Selected</button>
+									<div class="col-lg-12">
+
+											<div  ui-grid="allUsersDataUIGrid" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid"></div>
+
+
+									</div>
+
 								</div>
 							</div>
 						</div>
@@ -96,7 +80,7 @@
     <div    class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form data-ng-submit="registerUser()" name="register" novalidate>
+                <form data-ng-submit="registerUser()" name="registerUserForm" novalidate>
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">User Registration</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -106,36 +90,41 @@
                     <div class="modal-body">
                         <div class="col-lg-12">
                             <div class="grid">
-                                <p class="grid-header">Fill form to register new user</p>
+								<p class="grid-header">Fill form to register new user <span style="color: red">(All Fields are mandatory)</span> </p>
                                 <div class="grid-body">
                                     <div class="item-wrapper">
                                         <div class="row mb-3">
-                                            <div class="col-md-8 mx-auto">
 
-                                                <div class="form-group "
-                                                     data-ng-class="{ 'has-error': register.name.$invalid && register.name.$dirty }">
-                                                    <label for="name">Name:</label> <input type="text" required
+											<div class="col-md-8 mx-auto">
+
+                                                <div class="form-group input-rounded"
+                                                     data-ng-class="{ 'has-error': registerUserForm.name.$invalid && registerUserForm.name.$dirty }">
+                                                    <label for="name">Name:</label> <input  tabindex="1" type="text" required
                                                                                            class="form-control" data-ng-model="user.name" id="name" name="name">
                                                 </div>
 
-                                                <div class="form-group "
-                                                     data-ng-class="{ 'has-error': register.username.$invalid && register.username.$dirty }">
-                                                    <label for="username">User Name:</label> <input type="text" required
+                                                <div ng-show="!editUserBol" class="form-group input-rounded"
+                                                     data-ng-class="{ 'has-error': registerUserForm.username.$invalid && registerUserForm.username.$dirty }">
+                                                    <label for="username">User Name:</label> <input tabindex="2" type="text" required
                                                                                                 class="form-control" data-ng-model="user.username" id="username" name="username">
                                                 </div>
-
-                                                <div class="form-group "
-                                                     data-ng-class="{ 'has-error': register.password.$invalid && register.password.$dirty }">
-                                                    <label for="pwd">Password:</label> <input type="password" required
+												<div  class="form-group input-rounded has-error">
+														<p >Select User Role:</p>
+													<select name="role" class="custom-select" ng-model="roles.value" ng-options="v for v in roles.values">
+													</select>
+												</div>
+                                                <div ng-show="!editUserBol" class="form-group input-rounded"
+                                                     data-ng-class="{ 'has-error': registerUserForm.password.$invalid && registerUserForm.password.$dirty }">
+                                                    <label for="pwd">Password:</label> <input tabindex="3" type="password" required
                                                                                               class="form-control" id="pwd" data-ng-model="user.password" name="password">
                                                 </div>
 
-                                                <div class="form-group "
-                                                     data-ng-class="{ 'has-error': register.confirmPassword.$invalid && register.confirmPassword.$dirty }">
-                                                    <label for="cpwd">Confirm Password:</label> <input type="password"
+                                                <div ng-show="!editUserBol" class="form-group input-rounded"
+                                                     data-ng-class="{ 'has-error': registerUserForm.confirmPassword.$invalid && registerUserForm.confirmPassword.$dirty }">
+                                                    <label for="cpwd">Confirm Password:</label> <input tabindex="4" type="password"
                                                                                                        name="confirmPassword" required class="form-control" id="cpwd" data-ng-model="confirmPassword">
                                                 </div>
-												<small data-ng-show="confirmPassword != user.password " id="passwordHelp" class="text-danger">
+												<small data-ng-show="!editUserBol && (confirmPassword != user.password )" id="passwordHelp" class="text-danger">
 													Password Not Matching
 												</small>
 
@@ -148,9 +137,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<!--                        <button type="submit" data-ng-disabled="register.$invalid || (confirmPassword != user.password)" class="btn btn-primary">Save changes</button>-->
-                        <button type="submit" class="col-4 center btn btn-primary"
-                                data-ng-disabled="register.$invalid || (confirmPassword != user.password)">Register</button>
+<!--                        <button type="submit" data-ng-disabled="user.$invalid || (confirmPassword != user.password)" class="btn btn-primary">Save changes</button>-->
+                        <button ng-show="!editUserBol" type="submit" class="col-4 center btn btn-primary"
+                                data-ng-disabled="registerUserForm.$invalid || (confirmPassword != user.password)">Submit</button>
+
+						<button ng-show="editUserBol" type="submit" class="col-4 center btn btn-primary"
+								>Submit</button>
 
                     </div>
                 </form>
