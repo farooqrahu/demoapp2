@@ -17,10 +17,10 @@
                   <div class="alert alert-info margin-top-5" data-ng-show="message">{{message}}</div>
                   <form data-ng-submit="login()">
                     <div class="form-group input-rounded">
-                      <input type="text" class="form-control" data-ng-model="username" id="username" placeholder="Username" />
+                      <input type="text" class="form-control" data-ng-model="credentials.username" id="username" placeholder="Username" />
                     </div>
                     <div class="form-group input-rounded">
-                      <input type="password" id="pwd" data-ng-model="password"class="form-control" placeholder="Password" />
+                      <input type="password" id="pwd" data-ng-model="credentials.password"class="form-control" placeholder="Password" />
                     </div>
                     <div class="form-inline">
                       <div class="checkbox">

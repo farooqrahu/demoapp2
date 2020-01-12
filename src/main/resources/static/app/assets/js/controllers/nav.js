@@ -12,10 +12,7 @@ angular.module('myApp')
 	$scope.$on('LogoutSuccessful', function() {
 		$scope.user = null;
 	});
-	$scope.logout = function() {
-		$rootScope.$broadcast('LogoutSuccessful');
-		$state.go('login');
-	};
+
 
     $scope.loadData = function () {
         $http.get('http://localhost:8080/products').then(function (response) {
@@ -33,6 +30,13 @@ angular.module('myApp')
     };
     $scope.toogleThis= function () {
         $(".page-body").toggleClass("sidebar-collpased");
+    };
+    $scope.logout = function() {
+        $http.post('logout', {}).success(function() {
+            $rootScope.authenticated = false;
+            $state.go("login");
+        }).error(function(data) {
+            $rootScope.authenticated = false;
+        });
     }
-
 });

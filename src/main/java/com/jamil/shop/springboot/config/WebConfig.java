@@ -1,8 +1,11 @@
 package com.jamil.shop.springboot.config;
 
+import com.jamil.shop.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,14 +17,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.client.RestTemplate;
 
 @Configurable
 @EnableWebSecurity
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-    private UserDetailsService userDetailsService;
+	private UserService userService;
 
 
 	@Bean
@@ -31,7 +38,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
 	}
 
 	@Override
@@ -41,11 +48,12 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				.antMatchers("/media","/", "/index", "/app/**", "/favicon.ico", "/upload", "/downloadProduct").permitAll()
+		http.formLogin().and()
+				.logout().and()
+				.authorizeRequests()
+				.antMatchers("/", "/index", "/app/**", "/favicon.ico").permitAll()
 				.anyRequest().authenticated().and()
-				.httpBasic().and()
-				.csrf().disable();
+				.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class).csrf().csrfTokenRepository(csrfTokenRepository());
 	}
 	@Bean
 	public RestTemplate restTemplate() {
@@ -58,4 +66,11 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 		factory.setConnectTimeout(2000);
 		return factory;
 	}
+
+	private CsrfTokenRepository csrfTokenRepository() {
+		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+		repository.setHeaderName("X-XSRF-TOKEN");
+		return repository;
+	}
+
 }
