@@ -8,20 +8,28 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
-public class User implements UserDetails {
+public class User extends BaseEntityAudit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private String username;
+	private String email;
+	private String phoneNo;
+	@Column(name = "employeeId", nullable = false ,unique=true)
+	private String employeeId;
+	private String designation;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	private String role;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+	@JsonIgnore
+	private Set<Role> roles = new HashSet<>();
 
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -62,14 +70,6 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
 	public List<Product> getProductList(List<Product> products) {
 		return productList;
 	}
@@ -78,35 +78,47 @@ public class User implements UserDetails {
 		this.productList = productList;
 	}
 
-	@JsonIgnore
-	@Override
-	public boolean isEnabled() {
-		return true;
+
+
+	public String getEmail() {
+		return email;
 	}
 
-	@JsonIgnore
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
+	public String getPhoneNo() {
+		return phoneNo;
 	}
 
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 
-	@JsonIgnore
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(role));
-		return authorities;
+	public String getEmployeeId() {
+		return employeeId;
 	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+
 }

@@ -4,8 +4,8 @@
             <img class="profile-img img-lg rounded-circle" src="app/assets/images/profile/male/image_1.png" alt="profile image">
         </div>
         <div class="info-wrapper">
-            <p class="user-name"><span ng-bind="userDetail.principal.username"></span></p>
-            <h6 class="display-income"><span ng-bind="userDetail.principal.role"></span></h6>
+            <p class="user-name"><span ng-bind="user.principal.username"></span></p>
+            <h6 class="display-income"><span ng-bind="user.principal.authorities[0].authority"></span></h6>
         </div>
     </div>
     <ul class="navigation-menu">

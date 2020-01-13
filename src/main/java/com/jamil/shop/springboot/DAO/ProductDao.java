@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProductDao extends JpaRepository<Product, Integer> {
 
-    @Query("SELECT s FROM Product s WHERE s.author.name LIKE CONCAT('%',:name,'%') OR s.name LIKE CONCAT('%',:name,'%')")
+    @Query("SELECT s FROM Product s WHERE   s.name LIKE CONCAT('%',:name,'%')")
     List<Product> findProductsByName(@Param("name") String name);
 
 

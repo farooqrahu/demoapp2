@@ -44,7 +44,6 @@ public class ProductController {
         Content content = new Content(bytes);
         contentService.saveContent(content);
 
-        product.setContent(content);
 
         productService.addProducts(product);
 
@@ -81,14 +80,15 @@ public class ProductController {
     @RequestMapping(value = "/downloadProduct")  //from html
     public HttpEntity<byte[]> downloadProduct() throws IOException {
 
-        byte[] fileByte = downloadProduct.getContent().getBytes();
+      /*  byte[] fileByte = downloadProduct.getContent().getBytes();
 
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("audio", "mpeg3"));
         header.set("Content-Disposition", "attachment; filename=" + downloadProduct.getAuthor().getName() + " - " + downloadProduct.getName() + ".mp3");
         header.setContentLength(fileByte.length);
-
-        return new HttpEntity<byte[]>(fileByte, header);
+*/
+//        return new HttpEntity<byte[]>(fileByte, header);
+return null;
     }
 
     @PostMapping("/upload")   //from html

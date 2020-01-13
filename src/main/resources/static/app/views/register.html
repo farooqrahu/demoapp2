@@ -23,6 +23,11 @@
 									<label for="name">User Name:</label> <input type="text" required
 																		   class="form-control" data-ng-model="user.username" id="username" name="username">
 								</div>
+								<div  class="form-group input-rounded has-error">
+									<p >Select User Role:</p>
+									<select name="role" class="custom-select" ng-model="roles.value" ng-options="v for v in roles.values">
+									</select>
+								</div>
 
 								<div class="form-group input-rounded"
 									 data-ng-class="{ 'has-error': register.password.$invalid && register.password.$dirty }">

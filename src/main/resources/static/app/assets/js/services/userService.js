@@ -7,7 +7,8 @@ angular.module('myApp').factory('UserService', ['$http', '$q','$window', functio
         findAllUsers:findAllUsers,
         registerUser:registerUser,
         deleteUser:deleteUser,
-        editUser:editUser
+        editUser:editUser,
+        findAllRoles:findAllRoles
 
     };
     return factory;
@@ -22,6 +23,16 @@ angular.module('myApp').factory('UserService', ['$http', '$q','$window', functio
                 return e;
             });
     }
+    function findAllRoles(value) {
+        return $http.get("api/findallroles",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+
 
     function registerUser(value) {
         return $http.post("api/register",value)

@@ -5,17 +5,15 @@ angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination'
     }])
 
     .run(function ($http, AuthService, $rootScope, $state) {
-        $rootScope.userDetail = null;
-
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             $http.get('api/user').success(function (data) {
-                if (data.name==undefined) {
+                if (data.name == undefined) {
                     if (toState.name != 'login') {
                         event.preventDefault();
                         $state.go('login');
                     }
-                }else{
-                    $rootScope.userDetail=data;
+                } else {
+                    AuthService.user = data;
                 }
 
             }).error(function () {
@@ -39,7 +37,6 @@ angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination'
             //     info
             //  question
         };
-
 
 
         $rootScope.regex = {

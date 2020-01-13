@@ -61,10 +61,7 @@ public class ProductService {
 
         logger.info("Delete Product service method");
 
-        if (Product.getContent() != null) {
-            contentDao.delete(Product.getContent().getId());
-            logger.info("Delete Product content");
-        }
+
 
 
     }

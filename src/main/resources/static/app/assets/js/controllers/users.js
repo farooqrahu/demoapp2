@@ -1,16 +1,31 @@
 'use strict';
 
-angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$scope', '$rootScope', 'UserService', function ($window, $timeout, $scope, $rootScope, UserService) {
+angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$scope', '$rootScope', 'UserService','AuthService', function ($window, $timeout, $scope, $rootScope, UserService,AuthService) {
     var edit = false;
     this.userControllerVm = null;
     $scope.allUsers = null;
     $scope.user = null;
     $scope.error="";
     $scope.editUserBol = false;
+    $scope.user = AuthService.user;
+    $scope.roles = {
+        "type": "select",
+        "name": "role",
+        "value": "Please Select",
+        "values": ["Please Select"]
+    };
     $scope.findAllUsers = function () {
+
         UserService.findAllUsers().then(function (result) {
             if (result.status == "200") { // check if we get the data back
                 $scope.allUsersDataUIGrid.data = result.data;
+                UserService.findAllRoles().then(function (result) {
+                    if (result.status == "200") { // check if we get the data back
+                        angular.forEach(result.data, function (value, key) {
+                            $scope.roles.values.push(value.name);
+                        });
+                    }
+                });
             }
         });
     };
@@ -42,18 +57,15 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
     $scope.clearData= function () {
     $scope.user=null;
     $scope.editUserBol = false;
+
+
     };
 
     $scope.deleteSelected = function() {
         console.log($scope.allUsersDataUIGrid);
         $rootScope.runSweetAlertMsg('Delete All', 'Coming Soon!', 'info');
     };
-    $scope.roles = {
-        "type": "select",
-        "name": "role",
-        "value": "Please Select",
-        "values": ["Please Select", "Admin", "Shope Keeper", "Entry Operator"]
-    };
+
 
     $scope.allUsersDataUIGrid = {
         rowHeight: 40,
