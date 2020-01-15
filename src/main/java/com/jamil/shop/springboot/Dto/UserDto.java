@@ -1,41 +1,34 @@
-package com.jamil.shop.springboot.model;
+package com.jamil.shop.springboot.Dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.jamil.shop.springboot.model.Role;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import javax.persistence.Column;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
-public class User extends BaseEntityAudit {
-    private static final long serialVersionUID = 1L;
+/**
+ * Created by bnv on 2/10/2017.
+ */
+public class UserDto {
 
+    private Long id;
     private String name;
     private String username;
     private String email;
     private String phoneNo;
-    @Column(name = "employeeId", nullable = false, unique = true)
     private String employeeId;
     private String designation;
-    @JsonProperty(access = Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    private Boolean isActive;
-    private Boolean closed;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
-    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
-
-
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<UserBranch> userBranch;
-
-
+    private String role;
+    private Boolean resetPassword;
+    private List<BranchDto> branchDto;
+    private Boolean isActive;
+    private String changPwd;
+    private Boolean closed;
 
     public Long getId() {
         return id;
@@ -59,14 +52,6 @@ public class User extends BaseEntityAudit {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -101,12 +86,45 @@ public class User extends BaseEntityAudit {
         this.designation = designation;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Boolean getResetPassword() {
+        return resetPassword;
+    }
+
+    public void setResetPassword(Boolean resetPassword) {
+        this.resetPassword = resetPassword;
+    }
+
+    public List<BranchDto> getBranchDto() {
+        return branchDto;
+    }
+
+    public void setBranchDto(List<BranchDto> branchDto) {
+        this.branchDto = branchDto;
+    }
+
+
+    public String getChangPwd() {
+        return changPwd;
+    }
+
+    public void setChangPwd(String changPwd) {
+        this.changPwd = changPwd;
     }
 
     public Boolean getIsActive() {
@@ -117,12 +135,12 @@ public class User extends BaseEntityAudit {
         this.isActive = isActive;
     }
 
-    public Set<UserBranch> getUserBranch() {
-        return userBranch;
+    public String getRole() {
+        return role;
     }
 
-    public void setUserBranch(Set<UserBranch> userBranch) {
-        this.userBranch = userBranch;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Boolean getClosed() {

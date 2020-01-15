@@ -39,7 +39,7 @@
 									<button type="button" class="btn btn-danger" ng-click="deleteSelected()">Delete Selected</button>
 									<div class="col-lg-12">
 
-											<div  ui-grid="allUsersDataUIGrid" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid"></div>
+											<div  ui-grid="allUsersDataUIGrid"  ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid"></div>
 
 
 									</div>
@@ -80,7 +80,7 @@
     <div    class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form data-ng-submit="registerUser()" name="registerUserForm" novalidate>
+                <form  data-ng-submit="registerUser()" name="registerUserForm" novalidate>
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">User Registration</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -97,17 +97,18 @@
 
 											<div class="col-md-8 mx-auto">
 
-                                                <div class="form-group input-rounded"
+												<div class="form-group input-rounded"
                                                      data-ng-class="{ 'has-error': registerUserForm.name.$invalid && registerUserForm.name.$dirty }">
-                                                    <label for="name"> Name:</label> <input  tabindex="1" type="text" required
-                                                                                           class="form-control" data-ng-model="user.name" id="name" name="name">
+                                                    <label for="name"> Name:</label>
+													<input  tabindex="1" type="text" required class="form-control" data-ng-model="user.name" id="name" name="name">
+
                                                 </div>
 												<div class="form-group input-rounded"
 													 data-ng-class="{ 'has-error': registerUserForm.designation.$invalid && registerUserForm.designation.$dirty }">
 													<label for="name">Designation:</label> <input  tabindex="1" type="text" required
 																							class="form-control" data-ng-model="user.designation" id="Designation" name="designation">
 												</div>
-												<div class="form-group input-rounded"
+												<div ng-show="!editUserBol" class="form-group input-rounded"
 													 data-ng-class="{ 'has-error': registerUserForm.employeeId.$invalid && registerUserForm.employeeId.$dirty }">
 													<label for="name">Employee ID:</label> <input  tabindex="1" type="text" required
 																							class="form-control" data-ng-model="user.employeeId" id="employeeID" name="employeeId">
@@ -122,14 +123,30 @@
 													<label for="name">Email:</label> <input  tabindex="1" type="text" required ng-pattern="email"
 																							class="form-control" data-ng-model="user.email" id="email" name="email">
 												</div>
+												<div ng-show="editUserBol" class="form-group ">
+<!--												<div class="btn-group mb-0" >-->
+
+
+														<label class="btn btn-primary">
+															<input type="radio" id="active" name="status" ng-click="setStatus('true')" >Active
+															<i class="mdi mdi-account-check"></i>
+														</label>
+														<label class="btn btn-danger">
+															<input type="radio" id="inactive" name="status" ng-click="setStatus('false')" >InActive
+															<i class="mdi mdi mdi-account-off"></i>
+														</label>
+
+
+<!--												</div>-->
+												</div>
                                                 <div ng-show="!editUserBol" class="form-group input-rounded"
                                                      data-ng-class="{ 'has-error': registerUserForm.username.$invalid && registerUserForm.username.$dirty }">
                                                     <label for="username">User Name:</label> <input tabindex="2" type="text" required
                                                                                                 class="form-control" data-ng-model="user.username" id="username" name="username">
                                                 </div>
-												<div  class="form-group input-rounded has-error">
-														<p >Select User Role:</p>
-													<select name="role" class="custom-select" ng-model="roles.value" ng-options="v for v in roles.values">
+												<div  class="form-group input-rounded">
+														<label for="role" >Select User Role:</label>
+													<select style="border-radius:25px" id="role" name="role" class="custom-select " ng-model="roles.value" ng-options="v for v in roles.values">
 													</select>
 												</div>
                                                 <div ng-show="!editUserBol" class="form-group input-rounded"

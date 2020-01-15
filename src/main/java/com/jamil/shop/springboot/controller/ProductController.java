@@ -1,12 +1,16 @@
 package com.jamil.shop.springboot.controller;
 
-import com.jamil.shop.springboot.service.ProductService;
+import com.jamil.shop.springboot.DAO.ProductCategoryRepository;
 import com.jamil.shop.springboot.model.Content;
 import com.jamil.shop.springboot.model.Product;
+import com.jamil.shop.springboot.model.ProductCategory;
 import com.jamil.shop.springboot.service.ContentService;
+import com.jamil.shop.springboot.service.ProductService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +31,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductCategoryRepository productCategoryRepository;
 
     @RequestMapping("/products")
     public List<Product> getAllProduct() {
@@ -131,6 +138,10 @@ return null;
         return productService.findProductByName(name);
     }
 
+    @RequestMapping("api/productcategories")
+    public List<ProductCategory> findAllProductCategory() {
+        return productCategoryRepository.findAll();
+    }
 
 
 //    @RequestMapping("/play")

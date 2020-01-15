@@ -6,6 +6,7 @@ angular.module('myApp')
 		$http.get('api/user').success(function(data) {
 			if (data.name) {
 				$rootScope.authenticated = true;
+				$rootScope.loginUserData  = data;
 			} else {
 				$rootScope.authenticated = false;
 			}
@@ -26,17 +27,21 @@ angular.module('myApp')
 		}).success(function(data) {
 			authenticate(function() {
 				if ($rootScope.authenticated) {
+					$rootScope.loginUserData = data;
 					$state.go("home");
 					$scope.error = false;
 				} else {
-					$state.go("login");
 					$scope.error = true;
+					$scope.message = 'Authentication Failed !';
+					$state.go("login");
 				}
 			});
 		}).error(function(data) {
 			$state.go("login");
 			$scope.error = true;
+			$scope.message = 'Authentication Failed !';
 			$rootScope.authenticated = false;
+			$rootScope.loginUserData  = null;
 		})
 	};
 

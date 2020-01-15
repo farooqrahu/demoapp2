@@ -1,61 +1,55 @@
 package com.jamil.shop.springboot.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 
 @Entity
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Product extends BaseEntity {
     private String name;
     private String releaseDate;
     private String display;
     private String dimension;
     private String weight;
     private String os;
-    private String chipset;
-    private String cpu;
     private String memory;
     private String cameras;
     private String battery;
     private String colors;
-    private String versions;
+    private String osVersion;
     private String price;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_CAT_ID", nullable = false)
+    private ProductCategory productCategory;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_COMPANY_ID", nullable = false)
+    private ProductCompany productCompany;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "productList")
-    private List<User> userList;
 
     public Product() {
     }
 
-    public Product(String name, String releaseDate, String display, String dimension, String weight, String os, String chipset, String cpu, String memory, String cameras, String battery, String colors, String versions, String price) {
+    public Product(String name, String releaseDate, String display, String dimension, String weight, String os, String memory, String cameras, String battery, String colors, String osVersion, String price, ProductCategory productCategory, ProductCompany productCompany) {
         this.name = name;
         this.releaseDate = releaseDate;
         this.display = display;
         this.dimension = dimension;
         this.weight = weight;
         this.os = os;
-        this.chipset = chipset;
-        this.cpu = cpu;
         this.memory = memory;
         this.cameras = cameras;
         this.battery = battery;
         this.colors = colors;
-        this.versions = versions;
+        this.osVersion = osVersion;
         this.price = price;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.productCategory = productCategory;
+        this.productCompany = productCompany;
     }
 
     public String getName() {
@@ -106,21 +100,6 @@ public class Product {
         this.os = os;
     }
 
-    public String getChipset() {
-        return chipset;
-    }
-
-    public void setChipset(String chipset) {
-        this.chipset = chipset;
-    }
-
-    public String getCpu() {
-        return cpu;
-    }
-
-    public void setCpu(String cpu) {
-        this.cpu = cpu;
-    }
 
     public String getMemory() {
         return memory;
@@ -154,27 +133,35 @@ public class Product {
         this.colors = colors;
     }
 
-    public String getVersions() {
-        return versions;
-    }
-
-    public void setVersions(String versions) {
-        this.versions = versions;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
-
-    public String getPrice() {
+   public String getPrice() {
         return price;
     }
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public ProductCategory getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public ProductCompany getProductCompany() {
+        return productCompany;
+    }
+
+    public void setProductCompany(ProductCompany productCompany) {
+        this.productCompany = productCompany;
+    }
+
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
     }
 }

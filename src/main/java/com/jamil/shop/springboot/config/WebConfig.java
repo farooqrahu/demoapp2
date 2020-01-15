@@ -1,6 +1,7 @@
 package com.jamil.shop.springboot.config;
 
 import com.jamil.shop.springboot.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -73,4 +74,8 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 		return repository;
 	}
 
+	@Bean
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
+	}
 }

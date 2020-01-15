@@ -1,4 +1,4 @@
-angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination', 'ui.grid.autoResize', 'ui.grid.selection'])
+angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination', 'ui.grid.autoResize', 'ui.grid.selection','ui.grid.resizeColumns', 'ui.grid.moveColumns'])
 
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -9,11 +9,12 @@ angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination'
             $http.get('api/user').success(function (data) {
                 if (data.name == undefined) {
                     if (toState.name != 'login') {
+                        $rootScope.loginUserData=null;
                         event.preventDefault();
                         $state.go('login');
                     }
                 } else {
-                    AuthService.user = data;
+                    $rootScope.loginUserData = data;
                 }
 
             }).error(function () {

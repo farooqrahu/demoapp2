@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$scope', '$rootScope', 'UserService','AuthService', function ($window, $timeout, $scope, $rootScope, UserService,AuthService) {
+angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$scope', '$rootScope', 'UserService', 'AuthService', function ($window, $timeout, $scope, $rootScope, UserService, AuthService) {
     var edit = false;
     this.userControllerVm = null;
     $scope.allUsers = null;
-    $scope.user = null;
-    $scope.error="";
+    $scope.user = {roles: []};
+    $scope.error = "";
     $scope.editUserBol = false;
-    $scope.user = AuthService.user;
     $scope.roles = {
         "type": "select",
         "name": "role",
@@ -15,7 +14,6 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         "values": ["Please Select"]
     };
     $scope.findAllUsers = function () {
-
         UserService.findAllUsers().then(function (result) {
             if (result.status == "200") { // check if we get the data back
                 $scope.allUsersDataUIGrid.data = result.data;
@@ -30,22 +28,25 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         });
     };
 
+    $scope.setStatus = function (status) {
+        $scope.user.isActive = status;
+    };
     $scope.registerUser = function () {
-        if($scope.roles.value=='Please Select'){
-            $scope.error="Please Select Role";
-        }else{
-            $scope.user.role= $scope.roles.value;
+        if ($scope.roles.value == 'Please Select') {
+            $scope.error = "Please Select Role";
+        } else {
+            $scope.user.role = $scope.roles.value;
             if ($scope.editUserBol) {
                 $scope.editUser($scope.user);
             } else {
                 UserService.registerUser($scope.user).then(function (result) {
-                    if (result.status== "201") { // check if we get the data back
+                    if (result.status == "201") { // check if we get the data back
                         $scope.confirmPassword = null;
                         $scope.registerUserForm.$setPristine();
                         $('#userModal').modal('hide');
-                        $scope.allUsersDataUIGrid.data.push($scope.user);
+                        $scope.allUsersDataUIGrid.data.push(result.data);
                         $rootScope.runSweetAlertMsg('Add New User', 'User Registration successful !', 'success');
-                    }else{
+                    } else {
                         $rootScope.runSweetAlertMsg('Add New User', result.data.message, 'error');
                     }
                 });
@@ -54,14 +55,14 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         }
     };
 
-    $scope.clearData= function () {
-    $scope.user=null;
-    $scope.editUserBol = false;
+    $scope.clearData = function () {
+        $scope.user = null;
+        $scope.editUserBol = false;
 
 
     };
 
-    $scope.deleteSelected = function() {
+    $scope.deleteSelected = function () {
         console.log($scope.allUsersDataUIGrid);
         $rootScope.runSweetAlertMsg('Delete All', 'Coming Soon!', 'info');
     };
@@ -86,7 +87,11 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         columnDefs: [
             {name: 'name'},
             {name: 'username'},
-            {name: 'role'},
+            {name: 'roles[0].name', displayName: "Role"},
+            {
+                name: 'isActive,', displayName: 'Status',
+                cellTemplate: '<div ng-if="row.entity.isActive == 1"><div class="badge badge-success">Active</div></div><div ng-if="row.entity.isActive== 0"><div class="badge badge-danger">InActive</div></div>'
+            },
             {
                 name: 'edit',
                 displayName: 'Edit',
@@ -105,12 +110,12 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         $scope.allUsersDataUIGrid = gridApi;
         //set gridApi on scope
         $scope.gridApi = gridApi;
-        gridApi.selection.on.rowSelectionChanged($scope,function(row){
+        gridApi.selection.on.rowSelectionChanged($scope, function (row) {
             var msg = 'row selected ' + row.isSelected;
 
         });
 
-        gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
+        gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
             var msg = 'rows changed ' + rows.length;
 
         });
@@ -119,7 +124,13 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
     $scope.edit = function (entity) {
         console.log(entity);
         $scope.user = entity;
-        $scope.roles.value=$scope.user.role;
+        $scope.roles.value = $scope.user.roles[0].name;
+        if ($scope.user.isActive) {
+            $("#active").prop("checked", true);
+        } else {
+            $("#inactive").prop("checked", true);
+        }
+
         $scope.editUserBol = true;
         $('#userModal').modal('show');
     };
@@ -142,11 +153,11 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
 
     $scope.editUser = function (entity) {
         UserService.editUser(entity).then(function (result) {
-            if (result.status== "201") { // check if we get the data back
+            if (result.status == "201") { // check if we get the data back
                 $('#userModal').modal('hide');
                 $scope.editUserBol = false;
                 $rootScope.runSweetAlertMsg('Edit User', 'User Edited Successfully!', 'success');
-            }else{
+            } else {
                 $rootScope.runSweetAlertMsg('Edit User', 'Edit User failed!', 'error');
             }
         });
@@ -154,12 +165,12 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
 
     $scope.deleteUser = function (entity) {
         UserService.deleteUser(entity).then(function (result) {
-            if (result.status== "201") { // check if we get the data back
+            if (result.status == "201") { // check if we get the data back
 
                 var index = $scope.allUsersDataUIGrid.data.indexOf(entity);
                 $scope.allUsersDataUIGrid.data.splice(index, 1);
                 $rootScope.runSweetAlertMsg('Delete User', 'User Deleted Successfully!', 'success');
-            }else{
+            } else {
                 $rootScope.runSweetAlertMsg('Delete User', 'Delete User failed!', 'error');
             }
         });

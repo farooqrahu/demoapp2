@@ -107,3 +107,96 @@ a.show_hand{ cursor: pointer; }
 .t-header .t-header-brand-wrapper{
     padding-left:0PX;
 }
+
+
+
+/***************************************/
+
+.has-error .form-control:focus, .has-error .form-control:hover, .has-warning .form-control:focus, .has-warning .form-control:hover, .has-success .form-control:focus, .has-success .form-control:hover {
+    box-shadow: none;
+}
+
+.has-error .control-label {
+    color: #8e8e93 !important;
+}
+
+.has-error .error {
+    color: #a94442;
+}
+
+.has-error .form-control {
+    color: #5b5b60;
+    border-color: #F8F8F8;
+    border-bottom-color: #a94442 !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: dotted;
+    border-color: #a94442 !important;
+    border-width: 1px !important;
+    /*border-style: dotted;*/
+    border-style: solid;
+}
+
+.has-error .form-control:focus, .has-error .form-control:hover {
+    border-color: #F8F8F8;
+    border-bottom-color: #a94442 !important;
+}
+
+.has-error label {
+    color: #a94442 !important;
+}
+
+.has-warning {
+    color: #eea236;
+}
+
+.has-warning .control-label {
+    color: #8e8e93 !important;
+}
+
+.has-warning .form-control {
+    color: #5b5b60;
+    border-color: #F8F8F8;
+    border-bottom-color: #8a6d3b !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: dotted;
+    border-color: #8a6d3b !important;
+    border-width: 1px !important;
+    border-style: dotted;
+}
+
+.has-warning .form-control:focus, .has-warning .form-control:hover {
+    border-color: #F8F8F8;
+    border-bottom-color: #8a6d3b !important;
+}
+
+.has-warning label {
+    color: #8a6d3b;
+}
+
+.has-success {
+    color: #5cb85c;
+}
+
+.has-success .control-label {
+    color: #8e8e93 !important;
+}
+
+.has-success .form-control {
+    color: #5b5b60;
+    border-color: #F8F8F8;
+    border-bottom-color: #3c763d !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: dotted;
+    border-color: #3c763d !important;
+    border-width: 1px !important;
+    border-style: dotted;
+}
+
+.has-success .form-control:focus, .has-success .form-control:hover {
+    border-color: #F8F8F8;
+    border-bottom-color: #3c763d !important;
+}
+
+.has-success label {
+    color: #3c763d;
+}

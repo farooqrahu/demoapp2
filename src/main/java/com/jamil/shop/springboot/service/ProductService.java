@@ -2,7 +2,6 @@ package com.jamil.shop.springboot.service;
 
 import com.jamil.shop.springboot.DAO.ContentDao;
 import com.jamil.shop.springboot.DAO.ProductDao;
-import com.jamil.shop.springboot.DAO.ProductlistDao;
 import com.jamil.shop.springboot.DAO.UserDao;
 import com.jamil.shop.springboot.model.User;
 import com.jamil.shop.springboot.model.Product;
@@ -28,8 +27,6 @@ public class ProductService {
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private ProductlistDao productlistDao;
 
     private List<Product> products;
     private User user;
@@ -49,12 +46,7 @@ public class ProductService {
     }
 
     public void deleteProducts(int id) {
-        if (productlistDao.findOne(id) != null) {
 
-            productlistDao.delete(id);
-
-            logger.info("Delete Product from productlist service method");
-        }
         Product Product = productDao.findOne(id);
 
         productDao.delete(id);
@@ -70,7 +62,7 @@ public class ProductService {
 
         User user = userDao.findOne(userId);
 
-        return user.getProductList(products);
+        return null;//user.getProductList(products);
 
     }
 
@@ -109,13 +101,13 @@ public class ProductService {
         String loggedUsername = auth.getName();
         user = userDao.findOneByUsername(loggedUsername);
         products = new ArrayList<>();
-        products.addAll(user.getProductList(products));
+//        products.addAll(user.getProductList(products));
 
         logger.info("Get current " + user.getName() +" productlist");
     }
 
     private void saveUser() {
-        user.getProductList(products);
+  //      user.getProductList(products);
         userDao.save(user);
         logger.info("Save new " + user.getName() +" productlist");
     }
