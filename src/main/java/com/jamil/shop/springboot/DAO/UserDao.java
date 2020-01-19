@@ -11,6 +11,8 @@ import java.util.List;
 
 @Repository
 public interface UserDao extends JpaRepository<User, Long> {
+
+	@Query("select u from User u where u.name=?1 and  u.isActive=true and u.closed=false")
 	User findOneByUsername(String username);
 	@Query("select u from User u where u.closed=false")
 	List<User> findAllUsers();

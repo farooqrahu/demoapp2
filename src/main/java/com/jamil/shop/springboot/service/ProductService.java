@@ -37,15 +37,15 @@ public class ProductService {
         return productDao.findAll();
     }
 
-    public Product getProducts(int id) {
+    public Product getProducts(Long id) {
         return productDao.findOne(id);
     }
 
-    public void addProducts(Product Product) {
-        productDao.save(Product);
+    public Product addProducts(Product Product) {
+        return productDao.save(Product);
     }
 
-    public void deleteProducts(int id) {
+    public void deleteProducts(Long id) {
 
         Product Product = productDao.findOne(id);
 
@@ -66,11 +66,11 @@ public class ProductService {
 
     }
 
-    public void addProductsPlaylist(int id) throws Exception {
+    public void addProductsPlaylist(Long id) throws Exception {
         authentication();
 
         for (Product Product: products) {
-            if (Product.getId() == id) {
+            if (Product.getId().longValue()==id) {
 
                 throw new RuntimeException("This Product already in a productlist");
             }
@@ -112,4 +112,7 @@ public class ProductService {
         logger.info("Save new " + user.getName() +" productlist");
     }
 
+    public List<Product> findAllByClosedNot() {
+    return productDao.findAllByNotClosed();
+    }
 }

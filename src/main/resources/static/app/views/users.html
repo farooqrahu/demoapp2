@@ -36,10 +36,9 @@
 
 							<div class="item-wrapper">
 								<div class="table-responsive">
-									<button type="button" class="btn btn-danger" ng-click="deleteSelected()">Delete Selected</button>
 									<div class="col-lg-12">
 
-											<div  ui-grid="allUsersDataUIGrid"  ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid"></div>
+											<div  ui-grid="allUsersDataUIGrid"  ui-grid-auto-resize ui-grid-pagination class="grid"></div>
 
 
 									</div>
@@ -149,10 +148,15 @@
 													<select style="border-radius:25px" id="role" name="role" class="custom-select " ng-model="roles.value" ng-options="v for v in roles.values">
 													</select>
 												</div>
+												<div  class="form-group input-rounded">
+													<label for="role" >Select User Branch:</label>
+													<select style="border-radius:25px" id="branch" name="branch" class="custom-select " ng-model="branches.value" ng-options="v for v in branches.values">
+													</select>
+												</div>
                                                 <div ng-show="!editUserBol" class="form-group input-rounded"
-                                                     data-ng-class="{ 'has-error': registerUserForm.password.$invalid && registerUserForm.password.$dirty }">
+                                                     data-ng-class="{ 'has-error': registerUserForm.passKey.$invalid && registerUserForm.passKey.$dirty }">
                                                     <label for="pwd">Password:</label> <input tabindex="3" type="password" required
-                                                                                              class="form-control" id="pwd" data-ng-model="user.password" name="password">
+                                                                                              class="form-control" id="pwd" data-ng-model="user.passKey" name="passKey">
                                                 </div>
 
                                                 <div ng-show="!editUserBol" class="form-group input-rounded"
@@ -160,7 +164,7 @@
                                                     <label for="cpwd">Confirm Password:</label> <input tabindex="4" type="password"
                                                                                                        name="confirmPassword" required class="form-control" id="cpwd" data-ng-model="confirmPassword">
                                                 </div>
-												<small data-ng-show="!editUserBol && (confirmPassword != user.password )" id="passwordHelp" class="text-danger">
+												<small data-ng-show="!editUserBol && (confirmPassword != user.passKey )" id="passwordHelp" class="text-danger">
 													Password Not Matching
 												</small>
 
@@ -173,9 +177,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<!--                        <button type="submit" data-ng-disabled="user.$invalid || (confirmPassword != user.password)" class="btn btn-primary">Save changes</button>-->
+<!--                        <button type="submit" data-ng-disabled="user.$invalid || (confirmPassword != user.passKey)" class="btn btn-primary">Save changes</button>-->
                         <button ng-show="!editUserBol" type="submit" class="col-4 center btn btn-primary"
-                                data-ng-disabled="registerUserForm.$invalid || (confirmPassword != user.password)">Submit</button>
+                                data-ng-disabled="registerUserForm.$invalid || (confirmPassword != user.passKey)">Submit</button>
 
 						<button ng-show="editUserBol" type="submit" class="col-4 center btn btn-primary"
 								>Submit</button>

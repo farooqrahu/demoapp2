@@ -1,6 +1,7 @@
 package com.jamil.shop.springboot.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -32,8 +33,10 @@ public class User extends BaseEntityAudit {
     private Set<Role> roles = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<UserBranch> userBranch;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_branches", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "branches_id", referencedColumnName = "id"))
+    @JsonIgnore
+    private Set<Branch> branches;
 
 
 
@@ -117,12 +120,12 @@ public class User extends BaseEntityAudit {
         this.isActive = isActive;
     }
 
-    public Set<UserBranch> getUserBranch() {
-        return userBranch;
+    public Set<Branch> getBranches() {
+        return branches;
     }
 
-    public void setUserBranch(Set<UserBranch> userBranch) {
-        this.userBranch = userBranch;
+    public void setBranches(Set<Branch> branches) {
+        this.branches = branches;
     }
 
     public Boolean getClosed() {

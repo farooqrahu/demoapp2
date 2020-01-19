@@ -6,10 +6,12 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
     var factory = {
         findAllProducts:findAllProducts,
         addProduct:addProduct,
-        deleteUser:deleteUser,
-        editUser:editUser,
-        findAllProductCategory:findAllProductCategory
-
+        deleteProduct:deleteProduct,
+        editProduct:editProduct,
+        findAllProductCategories:findAllProductCategories,
+        findAllProductCompanies:findAllProductCompanies,
+        getStockBranchWise:getStockBranchWise,
+        addProductStock:addProductStock
     };
     return factory;
 
@@ -23,8 +25,8 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
                 return e;
             });
     }
-    function findAllProductCategory(value) {
-        return $http.get("api/productcategories",value)
+    function addProductStock(value) {
+        return $http.post("product/addstock",value)
             .then(function (data) {
                 return data;
             })
@@ -33,6 +35,24 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
             });
     }
 
+    function findAllProductCategories(value) {
+        return $http.get("api/productcategories",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+    function findAllProductCompanies(value) {
+        return $http.get("api/productcompanies",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
 
     function addProduct(value) {
         return $http.post("/product/add",value)
@@ -45,8 +65,8 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
     }
 
 
-    function deleteUser(value) {
-        return $http.post("api/deleteUser",value)
+    function deleteProduct(value) {
+        return $http.post("/product/deleteProduct",value)
             .then(function (data) {
                 return data;
             })
@@ -54,8 +74,8 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
                 return e;
             });
     }
-    function editUser(value) {
-        return $http.post("api/editUser",value)
+    function editProduct(value) {
+        return $http.post("product/update",value)
             .then(function (data) {
                 return data;
             })
@@ -64,6 +84,14 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
             });
     }
 
-
+    function getStockBranchWise(value) {
+        return $http.post("product/findstock",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
 
 }]);

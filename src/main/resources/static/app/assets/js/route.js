@@ -51,6 +51,30 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 				controller : 'ProductController'
 			}
 		}
+	}).state('stocks', {
+		parent : 'nav',
+		url : '/stocks',
+		data : {
+			role : 'ADMIN'
+		},
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/stocks.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('branches', {
+		parent : 'nav',
+		url : '/branches',
+		data : {
+			role : 'ADMIN'
+		},
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/branches.html',
+				controller : 'UsersController'
+			}
+		}
 	}).state('home', {
 		parent : 'nav',
 		url : '/home',

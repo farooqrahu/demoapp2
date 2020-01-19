@@ -1,40 +1,35 @@
 package com.jamil.shop.springboot.model;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 
 @Entity
-public class ProductStock extends BaseEntity {
+public class ProductStock extends BaseEntityAudit {
 
-    private String quantity;
+    private Long quantity;
+    private Long productId;
+    private Long branchId;
 
-    @JoinColumn(name = "product_id")
-    private Product productId;
-
-    @JoinColumn(name = "branch_id")
-    private Branch branchId;
-
-    public String getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 
-    public Product getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Product productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
-    public Branch getBranchId() {
+    public Long getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(Branch branchId) {
+    public void setBranchId(Long branchId) {
         this.branchId = branchId;
     }
 }

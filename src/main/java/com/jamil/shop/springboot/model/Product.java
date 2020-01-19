@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 
 
 @Entity
-public class Product extends BaseEntity {
+public class Product extends BaseEntityAudit {
     private String name;
     private String releaseDate;
     private String display;
@@ -22,6 +22,9 @@ public class Product extends BaseEntity {
     private String colors;
     private String osVersion;
     private String price;
+    private Boolean closed;
+    private Boolean isActive;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_CAT_ID", nullable = false)
@@ -163,5 +166,21 @@ public class Product extends BaseEntity {
 
     public void setOsVersion(String osVersion) {
         this.osVersion = osVersion;
+    }
+
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

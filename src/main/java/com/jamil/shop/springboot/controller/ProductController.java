@@ -1,18 +1,17 @@
 package com.jamil.shop.springboot.controller;
 
-import com.jamil.shop.springboot.DAO.ProductCategoryRepository;
-import com.jamil.shop.springboot.model.Content;
-import com.jamil.shop.springboot.model.Product;
-import com.jamil.shop.springboot.model.ProductCategory;
-import com.jamil.shop.springboot.service.ContentService;
+import com.jamil.shop.springboot.DAO.*;
+import com.jamil.shop.springboot.Dto.*;
+import com.jamil.shop.springboot.model.*;
 import com.jamil.shop.springboot.service.ProductService;
 import org.apache.log4j.Logger;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,55 +21,77 @@ public class ProductController {
 
     private final static Logger logger = Logger.getLogger(ProductController.class);
 
-    private byte[] bytes;
-
-    private Product downloadProduct;
-
-    @Autowired
-    private ContentService contentService;
-
     @Autowired
     private ProductService productService;
 
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
 
+    @Autowired
+    private ProductCompanyRepository productCompanyRepository;
+
+    @Autowired
+    ProductDao productRepository;
+
+    @Autowired
+    ProductStockRepository productStockRepository;
+
+    @Autowired
+    private BranchRepository branchRepository;
+
+    private ModelMapper modelMapper;
+
+    public ProductController(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     @RequestMapping("/products")
-    public List<Product> getAllProduct() {
-        return productService.listProducts();
+    public List<ProductDto> getAllProduct() {
+        List<Product> productList = productService.findAllByClosedNot();
+        java.lang.reflect.Type targetListType = new TypeToken<List<ProductDto>>() {
+        }.getType();
+        return modelMapper.map(productList, targetListType);
     }
 
     @RequestMapping(value = "/product/{id}")
-    public Product getProduct(@PathVariable int id) {
+    public Product getProduct(@PathVariable Long id) {
         return productService.getProducts(id);
     }
 
     @RequestMapping(value = "/product/add", method = RequestMethod.POST)
-    public void addProducts(@RequestBody Product product) {
-
-        Content content = new Content(bytes);
-        contentService.saveContent(content);
-
-
-        productService.addProducts(product);
-
+    public ResponseEntity<ProductDto> addProducts(@RequestBody ProductDto productDto) {
+        Product product = modelMapper.map(productDto, Product.class);
+        product.setProductCategory(productCategoryRepository.findByProductCategory(productDto.getProductCategory().getProductCategory()));
+        product.setProductCompany(productCompanyRepository.findByName(productDto.getProductCompany().getName()));
+        product.setClosed(Boolean.FALSE);
+        product = productRepository.save(product);
+        ProductDto productDto1 = modelMapper.map(product, ProductDto.class);
         logger.info("Product saved successfully");
+        return new ResponseEntity<ProductDto>(productDto1, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/product/update", method = RequestMethod.POST)
-    public void updateProduct(@RequestBody Product product) {
-
-        productService.addProducts(product);
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        ProductCategory productCategory = productCategoryRepository.findByProductCategory(product.getProductCategory().getProductCategory());
+        ProductCompany productCompany = productCompanyRepository.findByName(product.getProductCompany().getName());
+        product.setProductCompany(productCompany);
+        product.setProductCategory(productCategory);
+        Product productFound = productService.getProducts(product.getId());
+        modelMapper.map(product, productFound);
+        productFound.setClosed(Boolean.FALSE);
+        productService.addProducts(productFound);
+        return new ResponseEntity<>(productFound, HttpStatus.CREATED);
     }
 
+
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteProducts(@PathVariable int id) {
+    public ResponseEntity deleteProducts(@PathVariable Long id) {
         try {
             productService.deleteProducts(id);
 
             logger.info("Product id - " + id + ", deleted successfully");
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error delete product.  Message: " + e.getMessage());
 
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -78,11 +99,15 @@ public class ProductController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/download/product/{id}", method = RequestMethod.POST) //from angularJS
-    public void findProductForDownload(@PathVariable int id) throws IOException {
+    @RequestMapping(value = "/product/deleteProduct", method = RequestMethod.POST)
+    public ResponseEntity<Boolean> deleteProduct(@RequestBody ProductDto productDto) {
 
-        downloadProduct = productService.getProducts(id);
+        Product product = productService.getProducts(productDto.getId());
+        product.setClosed(Boolean.TRUE);
+        productService.addProducts(product);
+        return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
     }
+
 
     @RequestMapping(value = "/downloadProduct")  //from html
     public HttpEntity<byte[]> downloadProduct() throws IOException {
@@ -95,15 +120,15 @@ public class ProductController {
         header.setContentLength(fileByte.length);
 */
 //        return new HttpEntity<byte[]>(fileByte, header);
-return null;
+        return null;
     }
-
+/*
     @PostMapping("/upload")   //from html
     public void singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         bytes = file.getBytes();
         logger.info("Upload file and get bytes");
 
-    }
+    }*/
 
     @RequestMapping("/productList/{id}")
     public List<Product> loadProductlist(@PathVariable Long id) {
@@ -111,7 +136,7 @@ return null;
     }
 
     @RequestMapping(value = "/productList/add/{id}", method = RequestMethod.POST)
-    public ResponseEntity addProductsProductlist(@PathVariable int id) {
+    public ResponseEntity addProductsProductlist(@PathVariable Long id) {
         try {
             productService.addProductsPlaylist(id);
 
@@ -139,20 +164,49 @@ return null;
     }
 
     @RequestMapping("api/productcategories")
-    public List<ProductCategory> findAllProductCategory() {
+    public List<ProductCategory> findAllProductCategories() {
         return productCategoryRepository.findAll();
     }
 
+    @RequestMapping("api/productcompanies")
+    public List<ProductCompany> findAllProductCompanies() {
+        return productCompanyRepository.findAll();
+    }
 
-//    @RequestMapping("/play")
-//    public String playProduct() {
-//        Product product = productsService.getProduct(3);
-//        byte[] fileByte = product.getContent();
-//
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("data:audio/mp3;base64,");
-//        sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(fileByte, false)));
-//
-//        return sb.toString();
-//    }
+
+    @RequestMapping(value = "product/findstock", method = RequestMethod.POST)
+    public ResponseEntity<ProductStockDto> findStock(@RequestBody ProductStockDto productStockDto) {
+        Branch branch = branchRepository.findOne(productStockDto.getBranch());
+        Product product = productRepository.findOne(productStockDto.getProduct());
+        ProductStock productStock1 = productStockRepository.getStockBranchWise(branch.getId(), product.getId());
+        if (productStock1 != null) {
+            ProductStockDto stockDto = modelMapper.map(productStock1, ProductStockDto.class);
+            return new ResponseEntity<>(stockDto, HttpStatus.CREATED);
+        }
+        ProductStockDto stockDto = new ProductStockDto();
+        stockDto.setQuantity(0l);
+        stockDto.setBranch(branch.getId());
+        stockDto.setProduct(product.getId());
+        return new ResponseEntity<>(stockDto, HttpStatus.CREATED);
+
+    }
+
+    @RequestMapping(value = "product/addstock", method = RequestMethod.POST)
+    public ResponseEntity<ProductStockDto> addStock(@RequestBody ProductStockDto productStockDto) {
+        if(productStockDto.getId()!=null){
+            ProductStock productStock=productStockRepository.findOne(productStockDto.getId());
+            productStock.setBranchId(productStockDto.getBranch());
+            productStock.setProductId(productStockDto.getProduct());
+            productStock.setQuantity(productStockDto.getQuantity());
+            productStock=productStockRepository.save(productStock);
+            return new ResponseEntity<>(modelMapper.map(productStock,ProductStockDto.class), HttpStatus.CREATED);
+        }else{
+            ProductStock productStock=new ProductStock();
+            productStock.setBranchId(productStockDto.getBranch());
+            productStock.setProductId(productStockDto.getProduct());
+            productStock.setQuantity(productStockDto.getQuantity());
+            productStock=productStockRepository.save(productStock);
+            return new ResponseEntity<>(modelMapper.map(productStock,ProductStockDto.class), HttpStatus.CREATED);
+        }
+    }
 }

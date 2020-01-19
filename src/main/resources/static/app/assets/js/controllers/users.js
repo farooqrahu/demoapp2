@@ -4,7 +4,7 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
     var edit = false;
     this.userControllerVm = null;
     $scope.allUsers = null;
-    $scope.user = {roles: []};
+    $scope.user = {roles: [],branches:[]};
     $scope.error = "";
     $scope.editUserBol = false;
     $scope.roles = {
@@ -13,6 +13,14 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         "value": "Please Select",
         "values": ["Please Select"]
     };
+
+    $scope.branches = {
+        "type": "select",
+        "name": "role",
+        "value": "Please Select",
+        "values": ["Please Select"]
+    };
+
     $scope.findAllUsers = function () {
         UserService.findAllUsers().then(function (result) {
             if (result.status == "200") { // check if we get the data back
@@ -21,6 +29,13 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
                     if (result.status == "200") { // check if we get the data back
                         angular.forEach(result.data, function (value, key) {
                             $scope.roles.values.push(value.name);
+                        });
+                        UserService.findAllBranches().then(function (result) {
+                            if (result.status == "200") { // check if we get the data back
+                                angular.forEach(result.data, function (value, key) {
+                                    $scope.branches.values.push(value.branchName);
+                                });
+                            }
                         });
                     }
                 });
@@ -32,10 +47,11 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         $scope.user.isActive = status;
     };
     $scope.registerUser = function () {
-        if ($scope.roles.value == 'Please Select') {
-            $scope.error = "Please Select Role";
+        if ($scope.roles.value == 'Please Select' || $scope.branches.value == 'Please Select') {
+            $scope.error = "Please Select";
         } else {
             $scope.user.role = $scope.roles.value;
+            $scope.user.branch = $scope.branches.value;
             if ($scope.editUserBol) {
                 $scope.editUser($scope.user);
             } else {
@@ -110,7 +126,7 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         $scope.allUsersDataUIGrid = gridApi;
         //set gridApi on scope
         $scope.gridApi = gridApi;
-        gridApi.selection.on.rowSelectionChanged($scope, function (row) {
+       /* gridApi.selection.on.rowSelectionChanged($scope, function (row) {
             var msg = 'row selected ' + row.isSelected;
 
         });
@@ -118,13 +134,15 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
             var msg = 'rows changed ' + rows.length;
 
-        });
+        });*/
     };
 
     $scope.edit = function (entity) {
         console.log(entity);
         $scope.user = entity;
         $scope.roles.value = $scope.user.roles[0].name;
+        $scope.branches.value = $scope.user.branches[0].branchName;
+
         if ($scope.user.isActive) {
             $("#active").prop("checked", true);
         } else {

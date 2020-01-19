@@ -1,11 +1,13 @@
 <div   class="sidebar">
     <div class="user-profile">
         <div class="display-avatar animated-avatar">
-            <img class="profile-img img-lg rounded-circle" src="app/assets/images/profile/male/image_1.png" alt="profile image">
+            <img class="profile-img img-lg rounded-circle" src="app/assets/images/profile/female/image_1.png" alt="profile image">
         </div>
         <div class="info-wrapper">
-            <p class="user-name"><span ng-bind="loginUserData.principal.username"></span></p>
-            <h6 class="display-income"><span ng-bind="loginUserData.principal.authorities[0].authority"></span></h6>
+            <h4 class="user-name">Welcome <span style="color: blue;" ng-bind="loginUserData.username"></span>!</h4>
+            <h5 class="display-income">Role:<span style="color: blue;" ng-bind="loginUserData.roles[0].name"></span></h5>
+            <p style="font-size: 15px;" class="display-income">Branch:<span style="color: blue;" ng-bind="loginUserData.branches[0].branchName"></span> <span style="color: blue;" ng-bind="loginUserData.branches[0].address"></span></p>
+
         </div>
     </div>
     <ul class="navigation-menu">
@@ -25,6 +27,7 @@
                 <li>
                     <a  ui-sref="users" >Users</a>
                 </li>
+
             </ul>
         </li>
         <li>
@@ -37,7 +40,7 @@
                     <a  ui-sref="products" >Products</a>
                 </li>
                 <li>
-                    <a href="pages/sample-pages/error_2.html" target="_blank">Error</a>
+                    <a  ui-sref="stocks" >Product Stock</a>
                 </li>
             </ul>
         </li>
@@ -50,12 +53,10 @@
                 <li>
                     <a  ui-sref="customers" >Customers</a>
                 </li>
-                <li>
-                    <a href="pages/sample-pages/error_2.html" target="_blank">Error</a>
-                </li>
+
             </ul>
         </li>
-        <li>
+        <!--<li>
             <a class="show_hand" data-target="#sale" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">Branches</span>
                 <i class="mdi mdi-flask link-icon"></i>
@@ -100,7 +101,7 @@
                 <span class="link-title">Icons</span>
                 <i class="mdi mdi-flower-tulip-outline link-icon"></i>
             </a>
-        </li>
+        </li>-->
 <!--        <li class="nav-category-divider">DOCS</li>-->
 <!--
         <li>

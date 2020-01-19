@@ -1,9 +1,9 @@
 package com.jamil.shop.springboot.Dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jamil.shop.springboot.model.Branch;
 import com.jamil.shop.springboot.model.Role;
 
-import javax.persistence.Column;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class UserDto {
     private String employeeId;
     private String designation;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    private String passKey;
     private Set<Role> roles = new HashSet<>();
     private String role;
     private Boolean resetPassword;
@@ -29,6 +29,8 @@ public class UserDto {
     private Boolean isActive;
     private String changPwd;
     private Boolean closed;
+    private Set<Branch> branches;
+    private String branch;
 
     public Long getId() {
         return id;
@@ -86,12 +88,12 @@ public class UserDto {
         this.designation = designation;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPassKey() {
+        return passKey;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassKey(String passKey) {
+        this.passKey = passKey;
     }
 
     public Set<Role> getRoles() {
@@ -149,5 +151,21 @@ public class UserDto {
 
     public void setClosed(Boolean closed) {
         this.closed = closed;
+    }
+
+    public Set<Branch> getBranches() {
+        return branches;
+    }
+
+    public void setBranches(Set<Branch> branches) {
+        this.branches = branches;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 }

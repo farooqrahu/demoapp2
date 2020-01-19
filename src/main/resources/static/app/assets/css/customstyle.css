@@ -1,4 +1,4 @@
-a.show_hand{ cursor: pointer; }
+a.show_hand{ cursor: pointer !important; }
 
 .dashboard-stat .visual {
     width: 80px;
@@ -199,4 +199,11 @@ a.show_hand{ cursor: pointer; }
 
 .has-success label {
     color: #3c763d;
+}
+.preloader {
+    padding: 50px;
+    background: url('../images/preloader.gif') no-repeat 50% 50% transparent;
+}
+.disable-fields{
+    color: #aaa;
 }

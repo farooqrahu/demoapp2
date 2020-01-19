@@ -1,6 +1,9 @@
 package com.jamil.shop.springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,11 +23,12 @@ public class Branch extends BaseEntity {
     @Column(name = "PHONE")
     private String phone;
 
-    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
-    private Set<UserBranch> userBranch;
+    @ManyToMany(mappedBy = "branches",fetch = FetchType.EAGER)
+    private List<User> user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "CITY_ID")
+    @JsonIgnore
     private City city;
 
     public String getBranchCode() {
@@ -59,12 +63,12 @@ public class Branch extends BaseEntity {
         this.phone = phone;
     }
 
-    public Set<UserBranch> getUserBranch() {
-        return userBranch;
+    public List<User> getUser() {
+        return user;
     }
 
-    public void setUserBranch(Set<UserBranch> userBranch) {
-        this.userBranch = userBranch;
+    public void setUser(List<User> user) {
+        this.user = user;
     }
 
     public City getCity() {

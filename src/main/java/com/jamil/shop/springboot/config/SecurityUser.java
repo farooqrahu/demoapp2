@@ -33,6 +33,7 @@ public class SecurityUser extends User implements UserDetails
 			this.setUsername(user.getUsername());
 			this.setName(user.getName());
 			this.setId(user.getId());
+			this.setBranches(user.getBranches());
 			this.setPassword(user.getPassword());
 			this.setRoles(user.getRoles());
 		}

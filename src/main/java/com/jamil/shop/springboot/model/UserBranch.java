@@ -1,13 +1,18 @@
+/*
 package com.jamil.shop.springboot.model;
 
 import javax.persistence.*;
 
+*/
 /**
  * Created by Farooq Rahu on 4/25/2017.
- */
+ *//*
+
 @Entity
 @Table(name = "USER_BRANCH")
-/*@SQLDelete(sql = "UPDATE USER_BRANCH SET IS_DELETED = true  WHERE id= ? and -1 != ?")*/
+*/
+/*@SQLDelete(sql = "UPDATE USER_BRANCH SET IS_DELETED = true  WHERE id= ? and -1 != ?")*//*
+
 //@Where(clause = " IS_DELETED = 'false' ")
 public class UserBranch extends BaseEntity {
     private static final long serialVersionUID = 150412029859606392L;
@@ -38,3 +43,4 @@ public class UserBranch extends BaseEntity {
         this.users = users;
     }
 }
+*/
