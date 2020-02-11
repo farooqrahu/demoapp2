@@ -91,9 +91,6 @@
                                                 <div class="grid">
                                                     <div class="grid-body">
 
-
-
-
                                                         <div class="form-group input-rounded"
                                                              data-ng-class="{ 'has-error': updateProductStockForm.name.$invalid && updateProductStockForm.name.$dirty }">
                                                             <label for="name"> Name:</label>
@@ -103,42 +100,59 @@
 
                                                         </div>
 
-
                                                         <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': updateProductStockForm.display.$invalid && updateProductStockForm.display.$dirty }">
-                                                            <label for="display"> Display:</label>
+                                                             data-ng-class="{ 'has-error': updateProductStockForm.model.$invalid && updateProductStockForm.model.$dirty }">
+                                                            <label for="display"> Model:</label>
                                                             <input tabindex="1" type="text" ng-disabled="true" class="form-control"
-                                                                   data-ng-model="product.display" id="display"
+                                                                   data-ng-model="product.model" id="display"
                                                                    name="display">
 
                                                         </div>
 
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': updateProductStockForm.os.$invalid && updateProductStockForm.os.$dirty }">
-                                                            <label for="os"> OS:</label>
-                                                            <input tabindex="1" ng-disabled="true" type="text" class="form-control"
-                                                                   data-ng-model="product.os" id="os" name="os">
-
-                                                        </div>
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': updateProductStockForm.cameras.$invalid && updateProductStockForm.cameras.$dirty }">
-                                                            <label for="cameras"> Cameras:</label>
-                                                            <input tabindex="1" ng-disabled="true" type="text" class="form-control"
-                                                                   data-ng-model="product.cameras" id="cameras"
-                                                                   name="cameras">
-
-                                                        </div>
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': updateProductStockForm.colors.$invalid && updateProductStockForm.colors.$dirty }">
-                                                            <label for="colors"> Colors:</label>
-                                                            <input ng-disabled="true" tabindex="1" type="text" required
+                                                      <!--  <div class="form-group input-rounded"
+                                                             data-ng-class="{ 'has-error': addProductForm.totalPurchaseAmount.$invalid && addProductForm.totalPurchaseAmount.$dirty }">
+                                                            <label for="totalPurchaseAmount"> Available Total Purchase
+                                                                Amount:</label>
+                                                            <input tabindex="1" type="text" ng-disabled="true"
                                                                    class="form-control"
-                                                                   data-ng-model="product.colors" id="colors"
-                                                                   name="colors">
+                                                                   data-ng-model="productStock.totalPurchaseAmount"
+                                                                   id="totalPurchaseAmount"
+                                                                   name="totalPurchaseAmount">
+
+                                                        </div>-->
+
+                                                    <!--    <div class="form-group input-rounded"
+                                                             data-ng-class="{ 'has-error': addProductForm.totalSaleAmount.$invalid && addProductForm.totalSaleAmount.$dirty }">
+                                                            <label for="totalSaleAmount"> Available Total Sale Amount:</label>
+                                                            <input tabindex="1" type="text" ng-disabled="true" class="form-control"
+                                                                   data-ng-model="productStock.totalSaleAmount" id="totalSaleAmount"
+                                                                   name="totalSaleAmount">
+
+                                                        </div>-->
+
+                                                        <div class="form-group input-rounded"
+                                                             data-ng-class="{ 'has-error': addProductForm.totalPurchaseAmount.$invalid && addProductForm.newTotalPurchaseAmount.$dirty }">
+                                                            <label for="newTotalPurchaseAmount"> Total Purchase
+                                                                New Amount:</label>
+                                                            <input tabindex="1" type="text" ng-disabled="true"
+                                                                   class="form-control"
+                                                                   data-ng-model="productStock.newTotalPurchaseAmount"
+                                                                   id="newTotalPurchaseAmount"
+                                                                   name="newTotalPurchaseAmount">
 
                                                         </div>
 
+                                                        <div class="form-group input-rounded"
+                                                             data-ng-class="{ 'has-error': addProductForm.newTotalSaleAmount.$invalid && addProductForm.newTotalSaleAmount.$dirty }">
+                                                            <label for="newTotalSaleAmount"> Total Sale
+                                                                New Amount:</label>
+                                                            <input tabindex="1" type="text" ng-disabled="true"
+                                                                   class="form-control"
+                                                                   data-ng-model="productStock.newTotalSaleAmount"
+                                                                   id="newTotalSaleAmount"
+                                                                   name="newTotalSaleAmount">
+
+                                                        </div>
 
 
                                                     </div>
@@ -149,48 +163,62 @@
                                                 <div class="grid">
                                                     <div class="grid-body">
 
-
-
-
-
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': updateProductStockForm.memory.$invalid && updateProductStockForm.memory.$dirty }">
-                                                            <label for="memory"> Memory:</label>
-                                                            <input ng-disabled="true" tabindex="1" type="text" required
-                                                                   class="form-control"
-                                                                   data-ng-model="product.memory" id="memory"
-                                                                   name="memory">
-
-                                                        </div>
-                                                        <div class="form-group input-rounded disable-fields"
-                                                             data-ng-class="{ 'has-error': updateProductStockForm.battery.$invalid && updateProductStockForm.battery.$dirty }">
-                                                            <label for="battery"> Battery:</label>
-                                                            <input ng-disabled="true"  tabindex="1" type="text"
-                                                                   class="form-control"
-                                                                   data-ng-model="product.battery" id="battery"
-                                                                   name="battery">
-
-                                                        </div>
-
                                                         <div  class="form-group input-rounded">
-                                                            <label for="branchId" >Select branch for available stock:</label>
+                                                            <label for="branchId" >Branch</label>
                                                             <!--<select autofocus ng-change="showStockBranchWise(branches.value)" style="border-radius:25px" id="branch" name="branch" class="custom-select " ng-model="branches.value" ng-options="v for v in branches.values">
                                                             </select>-->
-                                                            <select ng-model="branchId" ng-change="showStockBranchWise(branchId)"
+
+                                                            <!--<select ng-model="branchId" ng-change="showStockBranchWise(branchId)"
                                                                     name="branchId" id="branchId"
                                                                     ng-options="branch.id as branch.branchName for branch in branches"
                                                                     class="form-control" required>
                                                                 <option value="">Select Branch</option>
-                                                            </select>
+                                                            </select>-->
+
+                                                            <input tabindex="1" type="text" ng-disabled="true"
+                                                                   class="form-control"
+                                                                   data-ng-value="'ADMIN'"
+                                                                   id="branchId" name="branchId">
+                                                        </div>
+
+
+                                                        <div class="form-group input-rounded"
+                                                             data-ng-class="{ 'has-error': addProductForm.purchasePrice.$invalid && addProductForm.purchasePrice.$dirty }">
+                                                            <label for="purchasePrice"> Purchase Price:</label>
+                                                            <input tabindex="1" type="text" required
+                                                                   class="form-control" ng-change="calculateTotalSalePurAmount()"
+                                                                   data-ng-model="productStock.purchasePrice"
+                                                                   id="purchasePrice" name="purchasePrice">
+
                                                         </div>
                                                         <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': updateProductStockForm.battery.$invalid && updateProductStockForm.battery.$dirty }">
-                                                            <label for="battery"> Product Stock available:</label>
-                                                            <input  tabindex="1" type="text" required
+                                                             data-ng-class="{ 'has-error': addProductForm.salePrice.$invalid && addProductForm.salePrice.$dirty }">
+                                                            <label for="salePrice"> Sale Price:</label>
+                                                            <input tabindex="2" type="text" required
+                                                                   class="form-control" ng-change="calculateTotalSalePurAmount()"
+                                                                   data-ng-model="productStock.salePrice" id="salePrice"
+                                                                   name="salePrice">
+
+                                                        </div>
+
+
+
+
+
+                                                        <div class="form-group input-rounded"
+                                                             data-ng-class="{ 'has-error': updateProductStockForm.quantity.$invalid && updateProductStockForm.quantity.$dirty }">
+                                                            <label for="quantity"> Available Quantity:</label>
+                                                            <input  tabindex="3" type="text" ng-disabled="true"
                                                                    class="form-control"
-                                                                   data-ng-model="productStock.quantity" id="quantity"
-                                                                   name="battery">
+                                                                   data-ng-model="productStock.quantity" id="quantity" name="quantity" >
+
+                                                        </div>
+                                                        <div class="form-group input-rounded"
+                                                             data-ng-class="{ 'has-error': updateProductStockForm.quantity.$invalid && updateProductStockForm.newQuantity.$dirty }">
+                                                            <label for="newQuantity"> Add New Quantity:</label>
+                                                            <input  tabindex="3" type="text" required
+                                                                    class="form-control" ng-change="calculateTotalSalePurAmount()"
+                                                                    data-ng-model="newQuantity" id="newQuantity" name="newQuantity" >
 
                                                         </div>
                                                     </div>

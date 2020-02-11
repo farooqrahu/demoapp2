@@ -11,8 +11,6 @@ import javax.persistence.*;
 @UniqueConstraint(columnNames = {"CODE", "BRANCH_ID"}))
 public class Customer extends BaseEntity {
 
-    @Column(name = "ACCOUNT_ID")
-    private Long accountId;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "BRANCH_ID", nullable = false)
@@ -46,13 +44,9 @@ public class Customer extends BaseEntity {
     @Column(name = "VISIBLE_TO_ALL_BRANCH")
     private Boolean visibleToAll;
 
-    public Long getAccountId() {
-        return accountId;
-    }
+    private Boolean closed;
 
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
+    private Boolean isActive;
 
     public Branch getBranch() {
         return branch;
@@ -132,5 +126,20 @@ public class Customer extends BaseEntity {
 
     public void setVisibleToAll(Boolean visibleToAll) {
         this.visibleToAll = visibleToAll;
+    }
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

@@ -34,9 +34,9 @@
 
                             <div class="item-wrapper">
                                 <div class="table-responsive">
-                                    <button type="button" class="btn btn-danger" ng-click="deleteSelected()">Delete
+                                 <!--   <button type="button" class="btn btn-danger" ng-click="deleteSelected()">Delete
                                         Selected
-                                    </button>
+                                    </button>-->
                                     <div class="col-lg-12">
 
                                         <div ui-grid="allProductsDataUIGrid" ui-grid-resize-columns
@@ -97,9 +97,13 @@
                                                 <div class="grid">
                                                     <div class="grid-body">
                                                         <div class="form-group input-rounded">
-                                                            <label for="productCategory">Select Product Category:</label>
-                                                            <select style="border-radius:25px" id="productCategory" name="productCategory"
-                                                                    class="custom-select " ng-change="selectProductCategory(productCategory.value)" ng-model="productCategory.value"
+                                                            <label for="productCategory">Select Product
+                                                                Category:</label>
+                                                            <select style="border-radius:25px" id="productCategory"
+                                                                    name="productCategory"
+                                                                    class="custom-select "
+                                                                    ng-change="selectProductCategory(productCategory.value)"
+                                                                    ng-model="productCategory.value"
                                                                     ng-options="v for v in productCategory.values">
                                                             </select>
                                                         </div>
@@ -108,56 +112,14 @@
                                                         <div class="form-group input-rounded"
                                                              data-ng-class="{ 'has-error': addProductForm.name.$invalid && addProductForm.name.$dirty }">
                                                             <label for="name"> Name:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
+                                                            <input tabindex="1" type="text" required
+                                                                   class="form-control"
                                                                    data-ng-model="product.name" id="name" name="name">
 
                                                         </div>
-
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.display.$invalid && addProductForm.display.$dirty }">
-                                                            <label for="display"> Display:</label>
-                                                            <input tabindex="1" type="text"  class="form-control"
-                                                                   data-ng-model="product.display" id="display" name="display">
-
-                                                        </div>
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.os.$invalid && addProductForm.os.$dirty }">
-                                                            <label for="os"> OS:</label>
-                                                            <input tabindex="1" type="text"  class="form-control"
-                                                                   data-ng-model="product.os" id="os" name="os">
-
-                                                        </div>
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.cameras.$invalid && addProductForm.cameras.$dirty }">
-                                                            <label for="cameras"> Cameras:</label>
-                                                            <input tabindex="1" type="text"  class="form-control"
-                                                                   data-ng-model="product.cameras" id="cameras" name="cameras">
-
-                                                        </div>
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.colors.$invalid && addProductForm.colors.$dirty }">
-                                                            <label for="colors"> Colors:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
-                                                                   data-ng-model="product.colors" id="colors" name="colors">
-
-                                                        </div>
-
-
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.price.$invalid && addProductForm.price.$dirty }">
-                                                            <label for="price"> Price:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
-                                                                   data-ng-model="product.price" id="price" name="price" >
-
-                                                        </div>
-
                                                     </div>
                                                 </div>
-                                             </div>
+                                            </div>
 
                                             <div class="col-lg-6">
                                                 <div class="grid">
@@ -165,108 +127,55 @@
 
                                                         <div class="form-group input-rounded">
                                                             <label for="productCompany">Select Product Company:</label>
-                                                            <select style="border-radius:25px" id="productCompany" name="productCompany" ng-change="selectProductCompany(productCompany.value)"
-                                                                    class="custom-select " ng-model="productCompany.value"
+                                                            <select style="border-radius:25px" id="productCompany"
+                                                                    name="productCompany"
+                                                                    ng-change="selectProductCompany(productCompany.value)"
+                                                                    class="custom-select "
+                                                                    ng-model="productCompany.value"
                                                                     ng-options="v for v in productCompany.values">
                                                             </select>
                                                         </div>
 
                                                         <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.releaseDate.$invalid && addProductForm.releaseDate.$dirty }">
-                                                            <label for="releaseDate"> Release Date:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
-                                                                   data-ng-model="product.releaseDate" id="releaseDate" name="releaseDate">
+                                                             data-ng-class="{ 'has-error': addProductForm.name.$invalid && addProductForm.name.$dirty }">
+                                                            <label for="model"> Model :</label>
+                                                            <input tabindex="1" type="text" required
+                                                                   class="form-control"
+                                                                   data-ng-model="product.model" id="model"
+                                                                   name="model">
 
                                                         </div>
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.dimension.$invalid && addProductForm.dimension.$dirty }">
-                                                            <label for="dimension"> Dimension:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
-                                                                   data-ng-model="product.dimension" id="dimension" name="dimension">
-
-                                                        </div>
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.weight.$invalid && addProductForm.weight.$dirty }">
-                                                            <label for="weight"> Weight:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
-                                                                   data-ng-model="product.weight" id="weight" name="weight">
-
-                                                        </div>
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.memory.$invalid && addProductForm.memory.$dirty }">
-                                                            <label for="memory"> Memory:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
-                                                                   data-ng-model="product.memory" id="memory" name="memory">
-
-                                                        </div>
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.battery.$invalid && addProductForm.battery.$dirty }">
-                                                            <label for="battery"> Battery:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
-                                                                   data-ng-model="product.battery" id="battery" name="battery">
-
-                                                        </div>
-
-                                                        <div class="form-group input-rounded"
-                                                             data-ng-class="{ 'has-error': addProductForm.osVersion.$invalid && addProductForm.osVersion.$dirty }">
-                                                            <label for="osVersion"> OS Version:</label>
-                                                            <input tabindex="1" type="text" required class="form-control"
-                                                                   data-ng-model="product.osVersion" id="osVersion" name="osVersion">
-
-                                                        </div>
-
                                                     </div>
+
+
                                                 </div>
+
+
+                                                <!-- <small data-ng-show="!editUserBol && (confirmPassword != product.password )"
+                                                        id="passwordHelp" class="text-danger">
+                                                     Password Not Matching
+                                                 </small>-->
+
+
                                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                               <!-- <small data-ng-show="!editUserBol && (confirmPassword != product.password )"
-                                                       id="passwordHelp" class="text-danger">
-                                                    Password Not Matching
-                                                </small>-->
-
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <!--                        <button type="submit" data-ng-disabled="product.$invalid || (confirmPassword != product.password)" class="btn btn-primary">Save changes</button>-->
-                        <button ng-show="!editUserBol" type="submit" class="col-4 center btn btn-primary"
-                                data-ng-disabled="addProductForm.$invalid || (confirmPassword != product.password)">Submit
-                        </button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <!--                        <button type="submit" data-ng-disabled="product.$invalid || (confirmPassword != product.password)" class="btn btn-primary">Save changes</button>-->
+                            <button ng-show="!editUserBol" type="submit" class="col-4 center btn btn-primary"
+                                    data-ng-disabled="addProductForm.$invalid || (confirmPassword != product.password)">
+                                Submit
+                            </button>
 
-                        <button ng-show="editUserBol" type="submit" class="col-4 center btn btn-primary"
-                        >Submit
-                        </button>
+                            <button ng-show="editUserBol" type="submit" class="col-4 center btn btn-primary"
+                            >Submit
+                            </button>
 
-                    </div>
+                        </div>
                 </form>
 
             </div>

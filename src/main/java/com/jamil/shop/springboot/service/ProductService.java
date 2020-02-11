@@ -1,6 +1,5 @@
 package com.jamil.shop.springboot.service;
 
-import com.jamil.shop.springboot.DAO.ContentDao;
 import com.jamil.shop.springboot.DAO.ProductDao;
 import com.jamil.shop.springboot.DAO.UserDao;
 import com.jamil.shop.springboot.model.User;
@@ -18,8 +17,6 @@ public class ProductService {
 
     private final static Logger logger = Logger.getLogger(ProductService.class);
 
-    @Autowired
-    private ContentDao contentDao;
 
     @Autowired
     private ProductDao productDao;

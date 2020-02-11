@@ -8,7 +8,7 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
 
     $scope.productCategoryDto = {productCategory: ""};
     $scope.productCompanyDto = {name: ""};
-    $scope.product = {productCategoryDto: [],productCompanyDto: []};
+    $scope.product = {productCategoryDto: [], productCompanyDto: []};
 
     $scope.error = "";
     $scope.editUserBol = false;
@@ -24,6 +24,7 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
         "value": "Please Select",
         "values": ["Please Select"]
     };
+
 
     $scope.selectProductCompany = function (name) {
         $scope.productCompanyDto.name = name;
@@ -65,10 +66,10 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
         if ($scope.productCategory.value == 'Please Select' || $scope.productCompany.value == 'Please Select') {
             $scope.error = "Please Select Role";
         } else {
-            if($scope.productCategoryDto.productCategory!=""){
+            if ($scope.productCategoryDto.productCategory != "") {
                 $scope.product.productCategory = $scope.productCategoryDto;
             }
-            if($scope.productCompanyDto.name!=""){
+            if ($scope.productCompanyDto.name != "") {
                 $scope.product.productCompany = $scope.productCompanyDto;
             }
             if ($scope.editUserBol) {
@@ -103,28 +104,21 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
     };
 
 
-$scope.listAllColumns= [{name: 'name', width: "100"},
-    {name: 'releaseDate', width: "150"},
-    {name: 'display', width: "150"},
-    {name: 'dimension', width: "150"},
-    {name: 'weight', width: "150"},
-    {name: 'os', width: "150"},
-    {name: 'osVersion', width: "150"},
-    {name: 'memory', width: "150"},
-    {name: 'cameras', width: "150"},
-    {name: 'battery', width: "150"},
-    {name: 'colors', width: "150"},
-    {name: 'price', width: "150"},
-    {
-        name: 'edit', width: "150",
-        displayName: 'Edit',
-        cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
-    },
-    {
-        name: 'delete', width: "150",
-        displayName: 'Delete',
-        cellTemplate: '<button id="deleteBtn" type="button" class="btn btn-sm btn-danger mdi mdi-pen-remove red " ng-click="grid.appScope.remove(row.entity)" ></button>'
-    }];
+    $scope.listAllColumns = [{name: 'name'},
+        {name: 'model'},
+        {name: 'productCategory.productCategory', displayName: 'Category'},
+        {name: 'productCompany.name', displayName: 'Company'},
+
+        {
+            name: 'edit',
+            displayName: 'Edit',
+            cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
+        },
+        {
+            name: 'delete',
+            displayName: 'Delete',
+            cellTemplate: '<button id="deleteBtn" type="button" class="btn btn-sm btn-danger mdi mdi-pen-remove red " ng-click="grid.appScope.remove(row.entity)" ></button>'
+        }];
 
     $scope.allProductsDataUIGrid = {
         rowHeight: 40,

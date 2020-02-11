@@ -1,8 +1,12 @@
 package com.jamil.shop.springboot.DAO;
 
 import com.jamil.shop.springboot.model.Customer;
+import com.jamil.shop.springboot.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -12,6 +16,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
+    @Query("select c from Customer c where c.closed=false ")
+    List<Customer> findAllByNotClosed();
 
    /* @Query("SELECT c FROM Customer c WHERE c.branch.id =?1")
     List<Customer> findCustomerByBranchId(Long id);

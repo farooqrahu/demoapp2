@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by bnv on 2/9/2017.
  */
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Repository;
 public interface BranchRepository extends JpaRepository<Branch, Long> {
     @Query("select b from Branch b where b.branchName=?1")
     Branch findByBranchName(String branch);
+
+    @Query("select b from Branch b where b.branchName<>'ADMIN'")
+    List<Branch> findAllCustomerBranches();
 
 /*    @Query("SELECT b from Branch b  " +
             " WHERE b.id NOT IN (SELECT ur.id from UserBranch ur WHERE ur.users.id =?1 AND b.isActive=true)  AND b.company.id=?2")

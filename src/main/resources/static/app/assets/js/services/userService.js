@@ -9,7 +9,8 @@ angular.module('myApp').factory('UserService', ['$http', '$q','$window', functio
         deleteUser:deleteUser,
         editUser:editUser,
         findAllRoles:findAllRoles,
-        findAllBranches:findAllBranches
+        findAllBranches:findAllBranches,
+        findAllCustomerBranches:findAllCustomerBranches
 
     };
     return factory;
@@ -35,6 +36,15 @@ angular.module('myApp').factory('UserService', ['$http', '$q','$window', functio
     }
     function findAllBranches(value) {
         return $http.get("api/findallbranches",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+    function findAllCustomerBranches(value) {
+        return $http.get("api/findallcustomerbranches",value)
             .then(function (data) {
                 return data;
             })

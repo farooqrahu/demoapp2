@@ -63,6 +63,18 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 				controller : 'ProductController'
 			}
 		}
+	}).state('saletobranch', {
+		parent : 'nav',
+		url : '/saletobranch',
+		data : {
+			role : 'ADMIN'
+		},
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/saletobranch.html',
+				controller : 'ProductController'
+			}
+		}
 	}).state('branches', {
 		parent : 'nav',
 		url : '/branches',
@@ -145,6 +157,33 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 			'content@' : {
 				templateUrl : 'app/views/pages/icons/material-icons.html',
 				controller : 'EditProductController'
+			}
+		}
+	}).state('glReport', {
+		parent : 'nav',
+		url : '/glReport',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/glReport.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('purchaseReport', {
+		parent : 'nav',
+		url : '/purchaseReport',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/purchaseReport.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('branchSaleReport', {
+		parent : 'nav',
+		url : '/branchSaleReport',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/branchSaleReport.html',
+				controller : 'ProductController'
 			}
 		}
 	});

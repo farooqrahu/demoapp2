@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * Created by sajjad on 3/30/2017.
+ * Created by farooq on 3/30/2017.
  */
 @Repository
 public interface ProductStockRepository extends JpaRepository<ProductStock, Long> {

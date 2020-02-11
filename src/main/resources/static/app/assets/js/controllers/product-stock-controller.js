@@ -1,18 +1,19 @@
 'use strict';
 
-angular.module('myApp').controller('ProductStockController', ['$window', '$timeout', '$scope', '$rootScope', 'ProductService', 'AuthService', 'uiGridConstants','UserService', function ($window, $timeout, $scope, $rootScope, ProductService, AuthService, uiGridConstants,UserService) {
+angular.module('myApp').controller('ProductStockController', ['$window', '$timeout', '$scope', '$rootScope', 'ProductService', 'AuthService', 'uiGridConstants', 'UserService', function ($window, $timeout, $scope, $rootScope, ProductService, AuthService, uiGridConstants, UserService) {
 
     var productControllerVm = null;
     var edit = false;
     $scope.allProducts = null;
-    $scope.quantity=0;
-    $scope.productStock={id:'0',quantity:'0',branch:'',product:''};
-
+    $scope.quantity = 0;
+    $scope.productStock = {id: '0', quantity: '0', branch: '', product: ''};
+    $scope.newQuantity = 0;
     $scope.productCategoryDto = {productCategory: ""};
     $scope.productCompanyDto = {name: ""};
-    $scope.product = {productCategoryDto: [],productCompanyDto: []};
-   $scope.branchId=null;
-
+    $scope.product = {productCategoryDto: [], productCompanyDto: []};
+    $scope.branchId = null;
+    $scope.totalAmount = 0;
+    $scope.quantityExceeded=null;
 
     $scope.branches = [];
 
@@ -55,9 +56,9 @@ angular.module('myApp').controller('ProductStockController', ['$window', '$timeo
                                 angular.forEach(result.data, function (value, key) {
                                     $scope.productCompany.values.push(value.name);
                                 });
-                                UserService.findAllBranches().then(function (result) {
+                                UserService.findAllCustomerBranches().then(function (result) {
                                     if (result.status == "200") { // check if we get the data back
-                                        $scope.branches=result.data;
+                                        $scope.branches = result.data;
                                     }
                                 });
                             }
@@ -76,10 +77,10 @@ angular.module('myApp').controller('ProductStockController', ['$window', '$timeo
         if ($scope.productCategory.value == 'Please Select' || $scope.productCompany.value == 'Please Select') {
             $scope.error = "Please Select Role";
         } else {
-            if($scope.productCategoryDto.productCategory!=""){
+            if ($scope.productCategoryDto.productCategory != "") {
                 $scope.product.productCategory = $scope.productCategoryDto;
             }
-            if($scope.productCompanyDto.name!=""){
+            if ($scope.productCompanyDto.name != "") {
                 $scope.product.productCompany = $scope.productCompanyDto;
             }
             if ($scope.editUserBol) {
@@ -101,7 +102,9 @@ angular.module('myApp').controller('ProductStockController', ['$window', '$timeo
         }
     };
 
-    $scope.addProductStock=function(){
+    $scope.addProductStock = function () {
+        $scope.productStock.newQuantity = parseInt($scope.newQuantity);
+        $scope.productStock.product = $scope.product.id;
         console.log($scope.productStock);
         ProductService.addProductStock($scope.productStock).then(function (result) {
             if (result.status == "201") { // check if we get the data back
@@ -121,26 +124,39 @@ angular.module('myApp').controller('ProductStockController', ['$window', '$timeo
 
     };
 
+    $scope.saleProductStockToBranch= function () {
+        $scope.productStock.newQuantity =parseInt($scope.saleQuantity) ;
+        $scope.productStock.product = $scope.product.id;
+        console.log($scope.productStock);
+        ProductService.saleProductStockToBranch($scope.productStock).then(function (result) {
+            if (result.status == "201") { // check if we get the data back
+                $scope.confirmPassword = null;
+                $('#productModal').modal('hide');
+                $rootScope.runSweetAlertMsg('Add Product Stock ', 'Add product stock successful !', 'success');
+            } else {
+                $rootScope.runSweetAlertMsg('Add New Product', result.data.message, 'error');
+            }
+        });
+    };
+
+
+
     $scope.deleteSelected = function () {
         console.log($scope.allProductsDataUIGrid);
         $rootScope.runSweetAlertMsg('Delete All', 'Coming Soon!', 'info');
     };
 
 
-$scope.listAllColumns= [{name: 'name', width: "100"},
-    {name: 'display', width: "150"},
-    {name: 'os', width: "100"},
-    {name: 'osVersion', width: "150"},
-    {name: 'memory', width: "100"},
-    {name: 'cameras', width: "100"},
-    {name: 'battery', width: "150"},
-    {name: 'colors', width: "150"},
-    {
-        name: 'edit', width: "150",
-        displayName: 'Edit Stock',
-        cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
-    }
-];
+    $scope.listAllColumns = [{name: 'name'},
+        {name: 'model'},
+        {name: 'productCategory.productCategory', displayName: 'Category'},
+        {name: 'productCompany.name', displayName: 'Company'},
+        {
+            name: 'edit',
+            displayName: 'Edit Stock',
+            cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
+        }
+    ];
 
     $scope.allProductsDataUIGrid = {
         rowHeight: 40,
@@ -172,20 +188,16 @@ $scope.listAllColumns= [{name: 'name', width: "100"},
 
     $scope.edit = function (entity) {
         console.log(entity);
-        $scope.quantity=0;
-        $scope.productStock={quantity:0};
-        $scope.branchId=null;
-
         $scope.product = entity;
         $scope.productCategory.value = $scope.product.productCategory.productCategory;
         $scope.productCompany.value = $scope.product.productCompany.name;
-
+        $scope.showStockBranchWise();
         /*if ($scope.product.isActive) {
             $("#active").prop("checked", true);
         } else {
             $("#inactive").prop("checked", true);
         }*/
-
+        $scope.newQuantity = 0;
         $scope.editUserBol = true;
         $('#productModal').modal('show');
     };
@@ -231,16 +243,48 @@ $scope.listAllColumns= [{name: 'name', width: "100"},
         });
 
     };
-    $scope.showStockBranchWise= function (branch) {
-        if(branch==null || $scope.product.id==null){
-            $scope.productStock={quantity:0};
-            return null;
-        }
-        var data = {'branch': branch, 'product': $scope.product.id};
+    $scope.showStockBranchWise = function (branch) {
+        var data = {'branch': 1, 'product': $scope.product.id};
         ProductService.getStockBranchWise(data).then(function (result) {
-            $scope.productStock=result.data;
-
+            if (result.status == "201") {
+                $scope.productStock = result.data;
+            }
         });
+    };
+    /*   $scope.showStockBranchWise = function (branch) {
+           if (branch == null || $scope.product.id == null) {
+               $scope.productStock = {quantity: 0};
+               return null;
+           }
+           var data = {'branch': branch, 'product': $scope.product.id};
+           ProductService.getStockBranchWise(data).then(function (result) {
+               if (result.status == "201") {
+                   $scope.productStock = result.data;
+               }
+           });
+       };
+    */
+    $scope.calculateTotalSalePurAmount = function () {
+        if ($scope.newQuantity) {
+             $scope.productStock.newTotalSaleAmount = $scope.productStock.salePrice *  $scope.newQuantity;
+            $scope.productStock.newTotalPurchaseAmount = $scope.productStock.purchasePrice *  $scope.newQuantity;
+        }
+    };
+
+    $scope.calculateTotalSaleAmount = function () {
+        if ($scope.saleQuantity) {
+            let availableQuantity = parseInt($scope.productStock.quantity);
+            let saleQuantity = parseInt($scope.saleQuantity);
+            if (saleQuantity > availableQuantity) {
+                $scope.saleQuantity = 0;
+                $scope.quantityExceeded="Quantity entered not available in stock";
+            }else{
+                $scope.quantityExceeded=null;
+
+            }
+            $scope.productStock.totalSaleAmount = $scope.productStock.salePrice * $scope.saleQuantity;
+        }
     }
+
 
 }]);

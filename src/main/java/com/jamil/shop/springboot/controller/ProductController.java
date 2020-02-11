@@ -3,8 +3,12 @@ package com.jamil.shop.springboot.controller;
 import com.jamil.shop.springboot.DAO.*;
 import com.jamil.shop.springboot.Dto.*;
 import com.jamil.shop.springboot.model.*;
+import com.jamil.shop.springboot.model.gl.Account;
+import com.jamil.shop.springboot.model.gl.GLEntry;
+import com.jamil.shop.springboot.model.gl.GLEntryItem;
 import com.jamil.shop.springboot.service.ProductService;
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDate;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -37,8 +44,15 @@ public class ProductController {
     ProductStockRepository productStockRepository;
 
     @Autowired
+    ProductSaleRepository productSaleRepository;
+
+    @Autowired
     private BranchRepository branchRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private GLEntryRepository glEntryRepository;
     private ModelMapper modelMapper;
 
     public ProductController(ModelMapper modelMapper) {
@@ -67,7 +81,7 @@ public class ProductController {
         product = productRepository.save(product);
         ProductDto productDto1 = modelMapper.map(product, ProductDto.class);
         logger.info("Product saved successfully");
-        return new ResponseEntity<ProductDto>(productDto1, HttpStatus.CREATED);
+        return new ResponseEntity<>(productDto1, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/product/update", method = RequestMethod.POST)
@@ -174,9 +188,26 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "product/findstock", method = RequestMethod.POST)
+   /* @RequestMapping(value = "product/findstock", method = RequestMethod.POST)
     public ResponseEntity<ProductStockDto> findStock(@RequestBody ProductStockDto productStockDto) {
         Branch branch = branchRepository.findOne(productStockDto.getBranch());
+        Product product = productRepository.findOne(productStockDto.getProduct());
+        ProductStock productStock1 = productStockRepository.getStockBranchWise(branch.getId(), product.getId());
+        if (productStock1 != null) {
+            ProductStockDto stockDto = modelMapper.map(productStock1, ProductStockDto.class);
+            return new ResponseEntity<>(stockDto, HttpStatus.CREATED);
+        }
+        ProductStockDto stockDto = new ProductStockDto();
+        stockDto.setQuantity(0l);
+        stockDto.setBranch(branch.getId());
+        stockDto.setProduct(product.getId());
+        return new ResponseEntity<>(stockDto, HttpStatus.CREATED);
+
+    }*/
+
+    @RequestMapping(value = "product/findstock", method = RequestMethod.POST)
+    public ResponseEntity<ProductStockDto> findStock(@RequestBody ProductStockDto productStockDto) {
+        Branch branch = branchRepository.findByBranchName("ADMIN");
         Product product = productRepository.findOne(productStockDto.getProduct());
         ProductStock productStock1 = productStockRepository.getStockBranchWise(branch.getId(), product.getId());
         if (productStock1 != null) {
@@ -193,20 +224,147 @@ public class ProductController {
 
     @RequestMapping(value = "product/addstock", method = RequestMethod.POST)
     public ResponseEntity<ProductStockDto> addStock(@RequestBody ProductStockDto productStockDto) {
-        if(productStockDto.getId()!=null){
-            ProductStock productStock=productStockRepository.findOne(productStockDto.getId());
-            productStock.setBranchId(productStockDto.getBranch());
+        ProductStock productStock;
+        if (productStockDto.getId() != null) {
+            productStock = productStockRepository.findOne(productStockDto.getId());
+            productStock.setBranchId(branchRepository.findByBranchName("ADMIN").getId());
             productStock.setProductId(productStockDto.getProduct());
-            productStock.setQuantity(productStockDto.getQuantity());
-            productStock=productStockRepository.save(productStock);
-            return new ResponseEntity<>(modelMapper.map(productStock,ProductStockDto.class), HttpStatus.CREATED);
-        }else{
-            ProductStock productStock=new ProductStock();
-            productStock.setBranchId(productStockDto.getBranch());
+            productStock.setQuantity(productStockDto.getQuantity()+productStockDto.getNewQuantity());
+           productStock.setSalePrice(productStockDto.getSalePrice());
+            productStock.setPurchasePrice(productStockDto.getPurchasePrice());
+            productStock.setTotalPurchaseAmount(productStockDto.getTotalPurchaseAmount()+productStockDto.getNewTotalPurchaseAmount());
+           productStock.setTotalSaleAmount(productStockDto.getTotalSaleAmount()+productStockDto.getNewTotalSaleAmount());
+            productStock = productStockRepository.save(productStock);
+        } else {
+            productStock = new ProductStock();
+            productStock.setBranchId(branchRepository.findByBranchName("ADMIN").getId());
+            productStock.setSalePrice(productStockDto.getSalePrice());
+            productStock.setPurchasePrice(productStockDto.getPurchasePrice());
+            productStock.setTotalPurchaseAmount(productStockDto.getNewTotalPurchaseAmount());
+            productStock.setTotalSaleAmount(productStockDto.getNewTotalSaleAmount());
             productStock.setProductId(productStockDto.getProduct());
-            productStock.setQuantity(productStockDto.getQuantity());
-            productStock=productStockRepository.save(productStock);
-            return new ResponseEntity<>(modelMapper.map(productStock,ProductStockDto.class), HttpStatus.CREATED);
+            productStock.setQuantity(productStockDto.getNewQuantity());
+            productStock = productStockRepository.save(productStock);
         }
+        Account accountPurchase = accountRepository.findOne(1l);
+        Account accountVendor = accountRepository.findOne(2l);
+
+        GLEntry glEntry = new GLEntry();
+        glEntry.setBranchId(branchRepository.findByBranchName("ADMIN").getId());
+        glEntry.setProductId(productStockDto.getProduct());
+        glEntry.setTransactionDate(new Date());
+        glEntry.setTotalAmount(BigDecimal.valueOf(productStockDto.getNewTotalPurchaseAmount()));
+        glEntry.setQuantity(productStockDto.getNewQuantity());
+        //Debit Entry for Purchase
+        GLEntryItem glEntryDebit = new GLEntryItem();
+
+        glEntryDebit.setId(0l);
+        glEntryDebit.setGlEntry(glEntry);
+        glEntryDebit.setDescription("Debit Entry for Purchase");
+        glEntryDebit.setFlag("D");
+        glEntryDebit.setAccount(accountPurchase);
+        glEntryDebit.setDebitAmount(BigDecimal.valueOf(productStockDto.getNewTotalPurchaseAmount()));
+        //Credit Entry for Purchase
+        GLEntryItem glEntryCredit = new GLEntryItem();
+
+        glEntryCredit.setId(1l);
+        glEntryCredit.setGlEntry(glEntry);
+        glEntryCredit.setDescription("Credit Entry for Purchase");
+        glEntryCredit.setFlag("C");
+        glEntryCredit.setAccount(accountVendor);
+        glEntryCredit.setCreditAmount(BigDecimal.valueOf(productStockDto.getNewTotalPurchaseAmount()));
+
+        HashSet glEntryItemSet = new HashSet<>();
+        glEntryItemSet.add(glEntryCredit);
+        glEntryItemSet.add(glEntryDebit);
+        glEntry.setGlEntryItem(glEntryItemSet);
+
+        glEntryRepository.save(glEntry);
+
+        return new ResponseEntity<>(modelMapper.map(productStock, ProductStockDto.class), HttpStatus.CREATED);
+
+    }
+
+    @RequestMapping(value = "product/salestocktobranch", method = RequestMethod.POST)
+    public ResponseEntity<ProductSaleDto> saleStockToBranch(@RequestBody ProductSaleDto productSaleDto) {
+        ProductStock productStock;
+        ProductSale productSale=new ProductSale();
+        long income=0l;
+        if (productSaleDto.getId() != null) {
+            productSale.setBranchId(productSaleDto.getBranch());
+            productSale.setProductId(productSaleDto.getProduct());
+            productSale.setQuantity(productSaleDto.getNewQuantity());
+            productSale.setSalePrice(productSaleDto.getSalePrice());
+            productSale.setTotalSaleAmount(productSaleDto.getNewTotalSaleAmount());
+            productStock = productStockRepository.findOne(productSaleDto.getId());
+            if(productStock.getQuantity()>=productSaleDto.getNewQuantity()){
+                productStock.setQuantity(productStock.getQuantity()-productSaleDto.getNewQuantity());
+                long totalPurchaseAmount=productSaleDto.getNewQuantity()*Long.parseLong(productStock.getPurchasePrice());
+                income=productSaleDto.getNewTotalSaleAmount()-totalPurchaseAmount;
+                productStockRepository.save(productStock);
+                productSale = productSaleRepository.save(productSale);
+            }else{
+                return new ResponseEntity<>(productSaleDto, HttpStatus.NOT_FOUND);
+            }
+
+        }
+
+
+        Account accountBranchSale = accountRepository.findOne(5l);
+        Account accountBranch = accountRepository.findByBranchId(productSale.getBranchId());
+        Account accountIncome = accountRepository.findOne(4l);
+
+        GLEntry glEntry = new GLEntry();
+        glEntry.setBranchId(productSaleDto.getBranch());
+        glEntry.setProductId(productSaleDto.getProduct());
+        glEntry.setTransactionDate(new Date());
+        glEntry.setTotalAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));
+        glEntry.setQuantity(productSaleDto.getNewQuantity());
+        //Debit Entry for Purchase
+        GLEntryItem glEntryDebit = new GLEntryItem();
+
+        glEntryDebit.setId(0l);
+        glEntryDebit.setGlEntry(glEntry);
+        glEntryDebit.setDescription("Debit Entry for Sale");
+        glEntryDebit.setFlag("D");
+        glEntryDebit.setAccount(accountBranch);
+        glEntryDebit.setDebitAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));
+        //Credit Entry for Sale
+        GLEntryItem glEntryCredit = new GLEntryItem();
+
+        glEntryCredit.setId(1l);
+        glEntryCredit.setGlEntry(glEntry);
+        glEntryCredit.setDescription("Credit Entry for Sale");
+        glEntryCredit.setFlag("C");
+        glEntryCredit.setAccount(accountBranchSale);
+        glEntryCredit.setCreditAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));
+
+
+       /* GLEntry glEntryIncom = new GLEntry();
+        glEntryIncom.setBranchId(productSaleDto.getBranch());
+        glEntryIncom.setProductId(productSaleDto.getProduct());
+        glEntryIncom.setTransactionDate(new Date());
+        glEntryIncom.setTotalAmount(BigDecimal.valueOf(income));
+        glEntryIncom.setQuantity(productSaleDto.getNewQuantity());*/
+        //Credit Entry for Incom
+        GLEntryItem incomCredit = new GLEntryItem();
+
+        incomCredit.setId(2l);
+        incomCredit.setGlEntry(glEntry);
+        incomCredit.setDescription("Credit Entry for Income");
+        incomCredit.setFlag("C");
+        incomCredit.setAccount(accountIncome);
+        incomCredit.setCreditAmount(BigDecimal.valueOf(income));
+
+        HashSet glEntryItemSet = new HashSet<>();
+        glEntryItemSet.add(glEntryCredit);
+        glEntryItemSet.add(glEntryDebit);
+        glEntryItemSet.add(incomCredit);
+        glEntry.setGlEntryItem(glEntryItemSet);
+
+        glEntryRepository.save(glEntry);
+
+        return new ResponseEntity<>(modelMapper.map(productSale, ProductSaleDto.class), HttpStatus.CREATED);
+
     }
 }

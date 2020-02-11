@@ -4,8 +4,8 @@
             <img class="profile-img img-lg rounded-circle" src="app/assets/images/profile/female/image_1.png" alt="profile image">
         </div>
         <div class="info-wrapper">
-            <h4 class="user-name">Welcome <span style="color: blue;" ng-bind="loginUserData.username"></span>!</h4>
-            <h5 class="display-income">Role:<span style="color: blue;" ng-bind="loginUserData.roles[0].name"></span></h5>
+            <h5 class="user-name">Welcome <span style="color: blue;" ng-bind="loginUserData.username"></span>!</h5>
+            <h6 class="display-income">Role:<span style="color: blue;" ng-bind="loginUserData.roles[0].name"></span></h6>
             <p style="font-size: 15px;" class="display-income">Branch:<span style="color: blue;" ng-bind="loginUserData.branches[0].branchName"></span> <span style="color: blue;" ng-bind="loginUserData.branches[0].address"></span></p>
 
         </div>
@@ -21,7 +21,7 @@
         <li>
             <a class="show_hand" data-target="#users" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">Users</span>
-                <i class="mdi mdi-flask link-icon"></i>
+                <i class="mdi mdi-face link-icon"></i>
             </a>
             <ul class="collapse navigation-submenu" id="users">
                 <li>
@@ -33,21 +33,43 @@
         <li>
             <a class="show_hand" data-target="#products" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">Products</span>
-                <i class="mdi mdi-flask link-icon"></i>
+                <i class="mdi mdi-sale link-icon"></i>
             </a>
             <ul class="collapse navigation-submenu" id="products">
                 <li>
                     <a  ui-sref="products" >Products</a>
                 </li>
                 <li>
-                    <a  ui-sref="stocks" >Product Stock</a>
+                    <a  ui-sref="stocks" >Add Product Stock</a>
+                </li>
+                <li>
+                    <a  ui-sref="saletobranch" >Sale Product to Branch</a>
                 </li>
             </ul>
         </li>
         <li>
+            <a class="show_hand" data-target="#reports" data-toggle="collapse" aria-expanded="false">
+                <span class="link-title">Reports</span>
+                <i class="mdi mdi-file-account link-icon"></i>
+            </a>
+            <ul class="collapse navigation-submenu" id="reports">
+                <li>
+                    <a  ui-sref="glReport" >General Ledger Report</a>
+                </li>
+
+                <li>
+                    <a  ui-sref="purchaseReport" >Purchase Report</a>
+                </li>
+                <li>
+                    <a  ui-sref="branchSaleReport" >Branch Sale Report</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
             <a class="show_hand" data-target="#customers" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">Customers</span>
-                <i class="mdi mdi-flask link-icon"></i>
+                <i class="mdi mdi-face-profile link-icon"></i>
             </a>
             <ul class="collapse navigation-submenu" id="customers">
                 <li>

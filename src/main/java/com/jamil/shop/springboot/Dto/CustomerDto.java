@@ -12,13 +12,10 @@ public class CustomerDto {
 
     private Long id;
     private Long totalElements;
-    private Long accountId;
 
     private String accountCode;
-    @NotNull
     private String code;
     private String shortName;
-    @NotNull
     private String title;
     private String description;
     private String addressDto;
@@ -31,7 +28,7 @@ public class CustomerDto {
     private Long userId;
     private Long vendorId;
 
-    Boolean isActive;
+    private Boolean isActive;
     private Boolean isDuplicate;
 
     public Long getId() {
@@ -50,15 +47,7 @@ public class CustomerDto {
         this.totalElements = totalElements;
     }
 
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getAccountCode() {
+      public String getAccountCode() {
         return accountCode;
     }
 
@@ -169,4 +158,5 @@ public class CustomerDto {
     public void setDuplicate(Boolean duplicate) {
         isDuplicate = duplicate;
     }
+
 }

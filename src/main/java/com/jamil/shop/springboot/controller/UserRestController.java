@@ -60,6 +60,11 @@ public class UserRestController {
         return branchRepository.findAll();
     }
 
+    @RequestMapping(value = "/findallcustomerbranches", method = RequestMethod.GET)
+    public List<Branch> findAllCustomerBranches() {
+        return branchRepository.findAllCustomerBranches();
+    }
+
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

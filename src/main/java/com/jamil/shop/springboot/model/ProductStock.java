@@ -8,6 +8,14 @@ public class ProductStock extends BaseEntityAudit {
     private Long quantity;
     private Long productId;
     private Long branchId;
+    private Long totalPurchaseAmount;
+    private String purchasePrice;
+    private Long totalSaleAmount;
+    private String salePrice;
+
+
+    public ProductStock() {
+    }
 
     public Long getQuantity() {
         return quantity;
@@ -31,5 +39,37 @@ public class ProductStock extends BaseEntityAudit {
 
     public void setBranchId(Long branchId) {
         this.branchId = branchId;
+    }
+
+    public Long getTotalPurchaseAmount() {
+        return totalPurchaseAmount;
+    }
+
+    public void setTotalPurchaseAmount(Long totalPurchaseAmount) {
+        this.totalPurchaseAmount = totalPurchaseAmount;
+    }
+
+    public String getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(String purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+
+    public Long getTotalSaleAmount() {
+        return totalSaleAmount;
+    }
+
+    public void setTotalSaleAmount(Long totalSaleAmount) {
+        this.totalSaleAmount = totalSaleAmount;
+    }
+
+    public String getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(String salePrice) {
+        this.salePrice = salePrice;
     }
 }

@@ -11,7 +11,8 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
         findAllProductCategories:findAllProductCategories,
         findAllProductCompanies:findAllProductCompanies,
         getStockBranchWise:getStockBranchWise,
-        addProductStock:addProductStock
+        addProductStock:addProductStock,
+        saleProductStockToBranch:saleProductStockToBranch
     };
     return factory;
 
@@ -34,6 +35,17 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
                 return e;
             });
     }
+
+    function saleProductStockToBranch(value) {
+        return $http.post("product/salestocktobranch",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+
 
     function findAllProductCategories(value) {
         return $http.get("api/productcategories",value)

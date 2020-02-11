@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CustomerTypeRepository extends JpaRepository<CustomerType, Long> {
+    CustomerType findByCustomerType(Long customerTypeId);
 
 /*
     @Query("SELECT c from CustomerType c where c.groupOfCompany.id=?1")
