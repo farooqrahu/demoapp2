@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').factory('ProductService', ['$http', '$q','$window', function ($http, $q,$window) {
+angular.module('myApp').factory('ProductSaleCusService', ['$http', '$q','$window', function ($http, $q,$window) {
     var myContext = $window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
     var factory = {

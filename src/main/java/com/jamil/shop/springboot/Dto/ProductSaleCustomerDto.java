@@ -1,6 +1,6 @@
 package com.jamil.shop.springboot.Dto;
 
-public class ProductSaleDto {
+public class ProductSaleCustomerDto {
     private Long id;
     private Long quantity;
     private Long newQuantity;

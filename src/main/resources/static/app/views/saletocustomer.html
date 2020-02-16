@@ -1,7 +1,7 @@
 <!-- partial:../../partials/_header.html -->
 
 <!-- partial -->
-<div ng-controller="ProductSaleController as productControllerVm" ng-init="findAllProducts();" class="page-body">
+<div ng-controller="ProductSaleCusController as productControllerVm" ng-init="findAllProducts();" class="page-body">
     <!-- partial:../../partials/_sidebar.html -->
     <div ng-include="'app/views/sidebar.html'"></div>
     <!-- partial -->
@@ -14,9 +14,9 @@
                             <a href="#">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="#">Sale to Branch</a>
+                            <a href="#">Sale to Customer</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Sale to Branch</li>
+                        <li class="breadcrumb-item active" aria-current="page">Sale to Customer</li>
                     </ol>
                 </nav>
             </div>
@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="grid">
-                            <p class="grid-header">Sale to Branch</p>
+                            <p class="grid-header">Sale to Customer</p>
 
 
                             <div class="item-wrapper">
@@ -60,7 +60,7 @@
                     <small class="text-muted d-block">Copyright © 2019 <a href="#" target="_blank">Jamil.K</a>.
                         All rights reserved
                     </small>
-                    <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i></small>
+                    <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i>Developer: FarooqRahu</small>
                 </div>
             </div>
         </footer>
@@ -74,7 +74,7 @@
             <div class="modal-content">
                 <form data-ng-submit="saleProductSaleToBranch()" name="productSaleForm" novalidate>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Product Sale</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Sale Product</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -82,7 +82,7 @@
                     <div class="modal-body">
                         <div class="col-lg-12">
                             <div class="grid">
-                                <p class="grid-header">Sale product stock for any branch</p>
+                                <p class="grid-header">Sale product to customer</p>
                                 <div class="grid-body">
                                     <div class="item-wrapper">
                                         <div class="row ">
@@ -108,7 +108,15 @@
                                                                    name="display">
 
                                                         </div>
+                                                        <div class="form-group input-rounded"
+                                                             data-ng-class="{ 'has-error': addProductForm.salePrice.$invalid && addProductForm.salePrice.$dirty }">
+                                                            <label for="salePrice"> Sale Price:</label>
+                                                            <input tabindex="2" type="text" required
+                                                                   class="form-control" ng-change="calculateTotalSalePurAmount()"
+                                                                   data-ng-model="productSale.salePrice" id="salePrice"
+                                                                   name="salePrice">
 
+                                                        </div>
                                                         <div class="form-group input-rounded">
                                                             <label for="totalSaleAmount"> Total Price:</label>
                                                             <input tabindex="1" type="text" ng-disabled="true"
@@ -128,14 +136,12 @@
                                                 <div class="grid">
                                                     <div class="grid-body">
 
-                                                        <div data-ng-class="{ 'has-error': productSaleForm.branchId.$invalid && productSaleForm.branchId.$dirty }" class="form-group input-rounded">
+                                                        <div class="form-group input-rounded">
                                                             <label for="branchId">Branch</label>
-                                                            <select ng-model="productSale.branch"
+                                                            <input ng-disabled="true" ng-value="'ADMIN'"
                                                                     name="branchId" id="branchId"
-                                                                    ng-options="branch.id as branch.branchName for branch in branches"
                                                                     class="form-control" required>
-                                                                <option value="">Select Branch</option>
-                                                            </select>
+                                                            </input>
                                                         </div>
 
                                                         <div class="form-group input-rounded">
@@ -146,6 +152,15 @@
                                                                    name="quantity">
 
                                                         </div>
+                                                        <div class="form-group input-rounded">
+                                                            <label for="customerName"> Customer Name:</label>
+                                                            <input tabindex="3" type="text" ng-disabled="true"
+                                                                   class="form-control"
+                                                                   data-ng-model="productSale.customerName" id="customerName"
+                                                                   name="quantity">
+
+                                                        </div>
+
                                                         <small ng-if="quantityExceeded!=null" class="alert alert-danger">{{quantityExceeded}}</small>
                                                         <div class="form-group input-rounded"
                                                              data-ng-class="{ 'has-error': productSaleForm.quantity.$invalid && productSaleForm.newQuantity.$dirty }">

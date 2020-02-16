@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('myApp').controller('ProductController', ['$window', '$timeout', '$scope', '$rootScope', 'ProductService','ProductCatService','ProductComService', 'AuthService', 'uiGridConstants', function ($window, $timeout, $scope, $rootScope, ProductService,ProductCatService,ProductComService, AuthService, uiGridConstants) {
+angular.module('myApp').controller('ProductComController', ['$window', '$timeout', '$scope', '$rootScope', 'ProductComService', 'AuthService', 'uiGridConstants', function ($window, $timeout, $scope, $rootScope, ProductComService, AuthService, uiGridConstants) {
 
-    var productControllerVm = null;
+    var productComControllerVm = null;
     var edit = false;
     $scope.allProducts = null;
 
@@ -36,58 +36,32 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
     };
 
 
-    $scope.findAllProducts = function () {
-        ProductService.findAllProducts().then(function (result) {
+    $scope.findAllProductCompanies = function () {
+        ProductComService.findAllProductCompanies().then(function (result) {
             if (result.status == "200") { // check if we get the data back
-                $scope.allProductsDataUIGrid.data = result.data;
-                ProductCatService.findAllProductCategories().then(function (result) {
-                    if (result.status == "200") { // check if we get the data back
-                        angular.forEach(result.data, function (value, key) {
-                            $scope.productCategory.values.push(value.productCategory);
-                        });
-                        ProductComService.findAllProductCompanies().then(function (result) {
-                            if (result.status == "200") { // check if we get the data back
-                                angular.forEach(result.data, function (value, key) {
-                                    $scope.productCompany.values.push(value.name);
-                                });
-                            }
-                        });
-                    }
-                });
-
+                $scope.allProductCompanyDataUIGrid.data = result.data;
             }
-        });
+        })
     };
 
     $scope.setStatus = function (status) {
         $scope.product.isActive = status;
     };
-    $scope.addProduct = function () {
-        if ($scope.productCategory.value == 'Please Select' || $scope.productCompany.value == 'Please Select') {
-            $scope.error = "Please Select Role";
+    $scope.addProductCom = function () {
+        if ($scope.editUserBol) {
+            $scope.editProduct($scope.product);
         } else {
-            if ($scope.productCategoryDto.productCategory != "") {
-                $scope.product.productCategory = $scope.productCategoryDto;
-            }
-            if ($scope.productCompanyDto.name != "") {
-                $scope.product.productCompany = $scope.productCompanyDto;
-            }
-            if ($scope.editUserBol) {
-                $scope.editProduct($scope.product);
-            } else {
-                ProductService.addProduct($scope.product).then(function (result) {
-                    if (result.status == "201") { // check if we get the data back
-                        $scope.confirmPassword = null;
-                        $scope.addProductForm.$setPristine();
-                        $('#productModal').modal('hide');
-                        $scope.allProductsDataUIGrid.data.push(result.data);
-                        $rootScope.runSweetAlertMsg('Add New Product', 'Add new product successful !', 'success');
-                    } else {
-                        $rootScope.runSweetAlertMsg('Add New Product', result.data.message, 'error');
-                    }
-                });
-            }
-
+            ProductComService.addProductCat($scope.product).then(function (result) {
+                if (result.status == "201") { // check if we get the data back
+                    $scope.confirmPassword = null;
+                    $scope.addProductForm.$setPristine();
+                    $('#productModal').modal('hide');
+                    $scope.allProductCompanyDataUIGrid.data.push(result.data);
+                    $rootScope.runSweetAlertMsg('Add New Product Category', 'Add new successful !', 'success');
+                } else {
+                    $rootScope.runSweetAlertMsg('Add New Product Category', result.data.message, 'error');
+                }
+            });
         }
     };
 
@@ -99,16 +73,13 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
     };
 
     $scope.deleteSelected = function () {
-        console.log($scope.allProductsDataUIGrid);
+        console.log($scope.allProductCompanyDataUIGrid);
         $rootScope.runSweetAlertMsg('Delete All', 'Coming Soon!', 'info');
     };
 
 
     $scope.listAllColumns = [{name: 'name'},
-        {name: 'model'},
-        {name: 'productCategory.productCategory', displayName: 'Category'},
-        {name: 'productCompany.name', displayName: 'Company'},
-
+        {name: 'companyDesc'},
         {
             name: 'edit',
             displayName: 'Edit',
@@ -120,7 +91,7 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
             cellTemplate: '<button id="deleteBtn" type="button" class="btn btn-sm btn-danger mdi mdi-pen-remove red " ng-click="grid.appScope.remove(row.entity)" ></button>'
         }];
 
-    $scope.allProductsDataUIGrid = {
+    $scope.allProductCompanyDataUIGrid = {
         rowHeight: 40,
         enableFiltering: true,
         enableGridMenu: true,
@@ -141,8 +112,8 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
     };
 
 
-    $scope.allProductsDataUIGrid.onRegisterApi = function (gridApi) {
-        $scope.allProductsDataUIGrid = gridApi;
+    $scope.allProductCompanyDataUIGrid.onRegisterApi = function (gridApi) {
+        $scope.allProductCompanyDataUIGrid = gridApi;
         //set gridApi on scope
         $scope.gridApi = gridApi;
         gridApi.selection.on.rowSelectionChanged($scope, function (row) {
@@ -159,8 +130,6 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
     $scope.edit = function (entity) {
         console.log(entity);
         $scope.product = entity;
-        $scope.productCategory.value = $scope.product.productCategory.productCategory;
-        $scope.productCompany.value = $scope.product.productCompany.name;
 
         /*if ($scope.product.isActive) {
             $("#active").prop("checked", true);
@@ -189,7 +158,7 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
     };
 
     $scope.editProduct = function (entity) {
-        ProductService.editProduct(entity).then(function (result) {
+        ProductComService.editProduct(entity).then(function (result) {
             if (result.status == "201") { // check if we get the data back
                 $('#productModal').modal('hide');
                 $scope.editUserBol = false;
@@ -201,11 +170,11 @@ angular.module('myApp').controller('ProductController', ['$window', '$timeout', 
     };
 
     $scope.deleteProduct = function (entity) {
-        ProductService.deleteProduct(entity).then(function (result) {
+        ProductComService.deleteProduct(entity).then(function (result) {
             if (result.status == "201") { // check if we get the data back
 
-                var index = $scope.allProductsDataUIGrid.data.indexOf(entity);
-                $scope.allProductsDataUIGrid.data.splice(index, 1);
+                var index = $scope.allProductCompanyDataUIGrid.data.indexOf(entity);
+                $scope.allProductCompanyDataUIGrid.data.splice(index, 1);
                 $rootScope.runSweetAlertMsg('Delete Product', 'Product Deleted Successfully!', 'success');
             } else {
                 $rootScope.runSweetAlertMsg('Delete Product', 'Delete Product failed!', 'error');

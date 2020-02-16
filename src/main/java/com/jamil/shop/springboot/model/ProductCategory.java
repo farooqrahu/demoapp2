@@ -14,6 +14,8 @@ public class ProductCategory extends BaseEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    private Boolean closed;
+    private Boolean isActive;
 
     public String getProductCategory() {
         return productCategory;
@@ -30,4 +32,21 @@ public class ProductCategory extends BaseEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
 }

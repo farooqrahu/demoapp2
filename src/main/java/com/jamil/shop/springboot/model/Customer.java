@@ -31,9 +31,9 @@ public class Customer extends BaseEntity {
     @Column(name = "DESCRIPTION", length = 500)
     private String description;
 
-    @OneToOne(fetch = FetchType.EAGER)
+   /* @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CUSTOMER_TYPE_ID", nullable = false)
-    private CustomerType customerType;
+    private CustomerType customerType;*/
 
     @Column(name = "NTN_NUMBER")
     private String ntnNumber;
@@ -96,14 +96,14 @@ public class Customer extends BaseEntity {
         this.description = description;
     }
 
-    public CustomerType getCustomerType() {
+  /*  public CustomerType getCustomerType() {
         return customerType;
     }
 
     public void setCustomerType(CustomerType customerType) {
         this.customerType = customerType;
     }
-
+*/
     public String getNtnNumber() {
         return ntnNumber;
     }

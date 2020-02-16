@@ -1,13 +1,14 @@
 'use strict';
 
-angular.module('myApp').factory('ProductService', ['$http', '$q','$window', function ($http, $q,$window) {
+angular.module('myApp').factory('ProductCatService', ['$http', '$q','$window', function ($http, $q,$window) {
     var myContext = $window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
     var factory = {
         findAllProducts:findAllProducts,
-        addProduct:addProduct,
+        addProductCat:addProductCat,
         deleteProduct:deleteProduct,
         editProduct:editProduct,
+        findAllProductCategories:findAllProductCategories,
         findAllProductCompanies:findAllProductCompanies,
         getStockBranchWise:getStockBranchWise,
         addProductStock:addProductStock,
@@ -47,7 +48,7 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
 
 
     function findAllProductCategories(value) {
-        return $http.get("api/productcategories",value)
+        return $http.get("api/cat/productcategories",value)
             .then(function (data) {
                 return data;
             })
@@ -65,8 +66,8 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
             });
     }
 
-    function addProduct(value) {
-        return $http.post("/product/add",value)
+    function addProductCat(value) {
+        return $http.post("/product/cat/add",value)
             .then(function (data) {
                 return data;
             })
@@ -77,7 +78,7 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
 
 
     function deleteProduct(value) {
-        return $http.post("/product/deleteProduct",value)
+        return $http.post("/product/cat/deleteProduct",value)
             .then(function (data) {
                 return data;
             })
@@ -86,7 +87,7 @@ angular.module('myApp').factory('ProductService', ['$http', '$q','$window', func
             });
     }
     function editProduct(value) {
-        return $http.post("product/update",value)
+        return $http.post("product/cat/update",value)
             .then(function (data) {
                 return data;
             })

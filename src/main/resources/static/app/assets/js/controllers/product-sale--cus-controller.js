@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').controller('ProductSaleController', ['$window', '$timeout', '$scope', '$rootScope', 'ProductService', 'AuthService', 'uiGridConstants', 'UserService', function ($window, $timeout, $scope, $rootScope, ProductService, AuthService, uiGridConstants, UserService) {
+angular.module('myApp').controller('ProductSaleCusController', ['$window', '$timeout', '$scope', '$rootScope', 'AuthService', 'uiGridConstants', 'UserService','ProductSaleCusService', function ($window, $timeout, $scope, $rootScope, AuthService, uiGridConstants, UserService,ProductSaleCusService) {
 
     var productControllerVm = null;
     var edit = false;
@@ -43,7 +43,7 @@ angular.module('myApp').controller('ProductSaleController', ['$window', '$timeou
 
 
     $scope.findAllProducts = function () {
-        ProductService.findAllProducts().then(function (result) {
+        ProductSaleCusService.findAllProducts().then(function (result) {
             if (result.status == "200") { // check if we get the data back
                 $scope.allProductsDataUIGrid.data = result.data;
                 UserService.findAllCustomerBranches().then(function (result) {
@@ -71,7 +71,7 @@ angular.module('myApp').controller('ProductSaleController', ['$window', '$timeou
             if ($scope.editUserBol) {
                 $scope.editProduct($scope.product);
             } else {
-                ProductService.addProduct($scope.product).then(function (result) {
+                ProductSaleCusService.addProduct($scope.product).then(function (result) {
                     if (result.status == "201") { // check if we get the data back
                         $scope.confirmPassword = null;
                         $scope.addProductForm.$setPristine();
@@ -91,7 +91,7 @@ angular.module('myApp').controller('ProductSaleController', ['$window', '$timeou
         $scope.productSale.newQuantity = parseInt($scope.productSale.newQuantity);
         $scope.productSale.product = $scope.product.id;
         console.log($scope.productSale);
-        ProductService.addProductStock($scope.productSale).then(function (result) {
+        ProductSaleCusService.addProductStock($scope.productSale).then(function (result) {
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
@@ -115,7 +115,7 @@ angular.module('myApp').controller('ProductSaleController', ['$window', '$timeou
             $rootScope.runSweetAlertMsg('Sale Product', 'Please Select Branch', 'error');
         return null;
         }
-        ProductService.saleProductStockToBranch($scope.productSale).then(function (result) {
+        ProductSaleCusService.saleProductStockToBranch($scope.productSale).then(function (result) {
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
@@ -206,7 +206,7 @@ angular.module('myApp').controller('ProductSaleController', ['$window', '$timeou
     };
 
     $scope.editProduct = function (entity) {
-        ProductService.editProduct(entity).then(function (result) {
+        ProductSaleCusService.editProduct(entity).then(function (result) {
             if (result.status == "201") { // check if we get the data back
                 $('#productModal').modal('hide');
                 $scope.editUserBol = false;
@@ -218,7 +218,7 @@ angular.module('myApp').controller('ProductSaleController', ['$window', '$timeou
     };
 
     $scope.deleteProduct = function (entity) {
-        ProductService.deleteProduct(entity).then(function (result) {
+        ProductSaleCusService.deleteProduct(entity).then(function (result) {
             if (result.status == "201") { // check if we get the data back
 
                 var index = $scope.allProductsDataUIGrid.data.indexOf(entity);
@@ -232,7 +232,7 @@ angular.module('myApp').controller('ProductSaleController', ['$window', '$timeou
     };
     $scope.showSaleBranchWise = function (branch) {
         var data = {'branch': 1, 'product': $scope.product.id};
-        ProductService.getStockBranchWise(data).then(function (result) {
+        ProductSaleCusService.getStockBranchWise(data).then(function (result) {
             if (result.status == "201") {
                 $scope.productSale = result.data;
                 $scope.productSale.branch=null;
@@ -245,7 +245,7 @@ angular.module('myApp').controller('ProductSaleController', ['$window', '$timeou
                return null;
            }
            var data = {'branch': branch, 'product': $scope.product.id};
-           ProductService.getSaleBranchWise(data).then(function (result) {
+           ProductSaleCusService.getSaleBranchWise(data).then(function (result) {
                if (result.status == "201") {
                    $scope.productSale = result.data;
                }

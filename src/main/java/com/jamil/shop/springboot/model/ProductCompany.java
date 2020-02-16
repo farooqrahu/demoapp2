@@ -22,7 +22,8 @@ public class ProductCompany extends BaseEntity {
 
     @Column(name = "COMPANY_ADDRESS",length=50)
     private String companyAddress;
-
+    private Boolean closed;
+    private Boolean isActive;
     public String getName() {
         return name;
     }
@@ -46,5 +47,19 @@ public class ProductCompany extends BaseEntity {
     public void setCompanyAddress(String companyAddress) {
         this.companyAddress = companyAddress;
     }
+    public Boolean getClosed() {
+        return closed;
+    }
 
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 }

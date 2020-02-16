@@ -75,6 +75,18 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 				controller : 'ProductController'
 			}
 		}
+	}).state('saletocustomer', {
+		parent : 'nav',
+		url : '/saletocustomer',
+		data : {
+			role : 'ADMIN'
+		},
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/saletocustomer.html',
+				controller : 'ProductController'
+			}
+		}
 	}).state('branches', {
 		parent : 'nav',
 		url : '/branches',
@@ -183,6 +195,24 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 		views : {
 			'content@' : {
 				templateUrl : 'app/views/branchSaleReport.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('productCategory', {
+		parent : 'nav',
+		url : '/productCategory',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/productcategory.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('productCompany', {
+		parent : 'nav',
+		url : '/productCompany',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/productcompany.html',
 				controller : 'ProductController'
 			}
 		}

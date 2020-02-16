@@ -9,7 +9,23 @@ public class ProductCompanyDto {
     private String name;
     private String companyDesc;
     private String companyAddress;
+    private Boolean closed;
+    private Boolean isActive;
+    public Boolean getClosed() {
+        return closed;
+    }
 
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
     public String getName() {
         return name;
     }

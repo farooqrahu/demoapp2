@@ -177,15 +177,7 @@ public class ProductController {
         return productService.findProductByName(name);
     }
 
-    @RequestMapping("api/productcategories")
-    public List<ProductCategory> findAllProductCategories() {
-        return productCategoryRepository.findAll();
-    }
 
-    @RequestMapping("api/productcompanies")
-    public List<ProductCompany> findAllProductCompanies() {
-        return productCompanyRepository.findAll();
-    }
 
 
    /* @RequestMapping(value = "product/findstock", method = RequestMethod.POST)

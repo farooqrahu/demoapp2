@@ -4,7 +4,24 @@ public class ProductCategoryDto {
     private Long id;
     private String productCategory;
     private String description;
+    private Boolean closed;
+    private Boolean isActive;
 
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 
     public String getProductCategory() {
         return productCategory;

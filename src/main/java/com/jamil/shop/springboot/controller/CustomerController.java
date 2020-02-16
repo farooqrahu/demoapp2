@@ -57,7 +57,7 @@ public class CustomerController {
     @RequestMapping(value = "/customer/add", method = RequestMethod.POST)
     public ResponseEntity<CustomerDto> addCustomers(@RequestBody CustomerDto customerDto) {
         Customer customer = modelMapper.map(customerDto, Customer.class);
-        customer.setCustomerType(customerTypeRepository.findByCustomerType(customerDto.getCustomerTypeId()));
+        //customer.setCustomerType(customerTypeRepository.findByCustomerType(customerDto.getCustomerTypeId()));
         customer.setBranch(branchRepository.findByBranchName(customerDto.getBranch().getBranchName()));
         customer.setClosed(Boolean.FALSE);
         customer = customerRepository.save(customer);
@@ -68,10 +68,10 @@ public class CustomerController {
 
     @RequestMapping(value = "/customer/update", method = RequestMethod.POST)
     public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer) {
-        CustomerType customerType = customerTypeRepository.findByCustomerType(customer.getCustomerType().getId());
+//        CustomerType customerType = customerTypeRepository.findByCustomerType(customer.getCustomerType().getId());
         Branch branchName = branchRepository.findByBranchName(customer.getBranch().getBranchName());
         customer.setBranch(branchName);
-        customer.setCustomerType(customerType);
+  //      customer.setCustomerType(customerType);
         Customer customerFound = customerService.getCustomers(customer.getId());
         modelMapper.map(customer, customerFound);
         customerFound.setClosed(Boolean.FALSE);
