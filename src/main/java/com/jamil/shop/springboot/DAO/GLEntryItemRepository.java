@@ -13,6 +13,6 @@ import java.util.List;
  */
 @Repository
 public interface GLEntryItemRepository extends JpaRepository<GLEntryItem, Long> {
-    @Query("select gli from GLEntryItem  gli where gli.account.id=?1")
+    @Query("select gli from GLEntryItem  gli where gli.account.id=?1 and gli.isActive=true")
     List<GLEntryItem> findByAccountId(Long id);
 }

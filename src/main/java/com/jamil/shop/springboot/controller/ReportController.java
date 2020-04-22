@@ -1,37 +1,30 @@
 package com.jamil.shop.springboot.controller;
 
 import com.jamil.shop.springboot.DAO.*;
-import com.jamil.shop.springboot.Dto.BranchSaleReportDto;
-import com.jamil.shop.springboot.Dto.ProductDto;
-import com.jamil.shop.springboot.Dto.PurchaseReportDto;
-import com.jamil.shop.springboot.Dto.gl.AccountDto;
-import com.jamil.shop.springboot.Dto.gl.GLEntryDto;
-import com.jamil.shop.springboot.Dto.gl.GLEntryItemDto;
+import com.jamil.shop.springboot.Dto.*;
 import com.jamil.shop.springboot.Dto.gl.GLReportDto;
 import com.jamil.shop.springboot.model.Product;
 import com.jamil.shop.springboot.model.ProductSale;
+import com.jamil.shop.springboot.model.ProductSaleCustomer;
 import com.jamil.shop.springboot.model.ProductStock;
 import com.jamil.shop.springboot.model.gl.Account;
 import com.jamil.shop.springboot.model.gl.GLEntry;
 import com.jamil.shop.springboot.model.gl.GLEntryItem;
-import com.jamil.shop.springboot.service.ProductService;
+import com.jamil.shop.springboot.util.CustomConstants;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.stream.Collectors;
 
 @RestController
 public class ReportController {
@@ -54,10 +47,13 @@ public class ReportController {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private GLEntryRepository glEntryRepository;
+    private ProductSaleCusRepository productSaleCusRepository;
 
     @Autowired
     private GLEntryItemRepository glEntryItemRepository;
+
+    @Autowired
+    private GLEntryRepository glEntryRepository;
 
     private ModelMapper modelMapper;
 
@@ -104,10 +100,10 @@ public class ReportController {
             purchaseReportDto = new PurchaseReportDto();
             purchaseReportDto.setProduct(productRepository.findOne(productStock.getProductId()).getName());
             purchaseReportDto.setQuantity(new BigDecimal(productStock.getQuantity()));
-            purchaseReportDto.setTotalAmount(new BigDecimal(productStock.getTotalPurchaseAmount()));
+            purchaseReportDto.setTotalAmount(new BigDecimal(productStock.getQuantity() * Long.parseLong(productStock.getPurchasePrice())));
             purchaseReportDto.setBranch(branchRepository.findOne(productStock.getBranchId()).getBranchName());
             purchaseReportDto.setUnitPrice(productStock.getPurchasePrice());
-            purchaseReportDto.setPurchaseDate(productStock.getUpdatedAt()!=null?String.valueOf(productStock.getUpdatedAt()):String.valueOf(productStock.getCreatedAt()));
+            purchaseReportDto.setPurchaseDate(productStock.getUpdatedAt() != null ? String.valueOf(productStock.getUpdatedAt()) : String.valueOf(productStock.getCreatedAt()));
             purchaseReportDtos.add(purchaseReportDto);
         }
         return purchaseReportDtos;
@@ -124,11 +120,153 @@ public class ReportController {
             branchSaleReportDto = new BranchSaleReportDto();
             branchSaleReportDto.setProduct(productRepository.findOne(productStock.getProductId()).getName());
             branchSaleReportDto.setQuantity(new BigDecimal(productStock.getQuantity()));
+            branchSaleReportDto.setModel(productRepository.findOne(productStock.getProductId()).getModel());
             branchSaleReportDto.setTotalAmount(new BigDecimal(productStock.getTotalSaleAmount()));
             branchSaleReportDto.setBranch(branchRepository.findOne(productStock.getBranchId()).getBranchName());
             branchSaleReportDto.setUnitPrice(productStock.getSalePrice());
             branchSaleReportDto.setSaleDate(String.valueOf(productStock.getCreatedAt()));
             purchaseReportDtos.add(branchSaleReportDto);
+        }
+        return purchaseReportDtos;
+    }
+
+    @Transactional
+    @RequestMapping("/getcustomersaledata")
+    public List<ProductSaleCustomerDto> getCustomerSaleData() {
+        List<ProductSaleCustomerDto> purchaseReportDtos = new ArrayList<>();
+        ProductSaleCustomerDto branchSaleReportDto = new ProductSaleCustomerDto();
+        List<ProductSaleCustomer> stockList = productSaleCusRepository.findAll();
+        for (ProductSaleCustomer productSaleCustomer : stockList) {
+            branchSaleReportDto = new ProductSaleCustomerDto();
+            branchSaleReportDto.setProduct(productRepository.findOne(productSaleCustomer.getProductId()).getId());
+            branchSaleReportDto.setProductName(productRepository.findOne(productSaleCustomer.getProductId()).getName());
+            branchSaleReportDto.setModel(productRepository.findOne(productSaleCustomer.getProductId()).getModel());
+            branchSaleReportDto.setQuantity(productSaleCustomer.getQuantity());
+            branchSaleReportDto.setTotalSaleAmount(productSaleCustomer.getTotalSaleAmount());
+//            branchSaleReportDto.setBranchName(branchRepository.findOne(productSaleCustomer.getBranchId()).getBranchName());
+            branchSaleReportDto.setSalePrice(productSaleCustomer.getSalePrice());
+            branchSaleReportDto.setSaleDate(String.valueOf(productSaleCustomer.getCreatedAt()));
+            purchaseReportDtos.add(branchSaleReportDto);
+        }
+        return purchaseReportDtos;
+    }
+
+
+    @Transactional
+    @RequestMapping("/getpurchaseproduct")
+    public List<PurchaseReportDto> getPurchaseProduct() {
+        List<PurchaseReportDto> purchaseReportDtos = new ArrayList<>();
+        PurchaseReportDto purchaseReportDto;
+
+        List<GLEntry> entryRepositoryAll = glEntryRepository.findAllActive();
+        for (GLEntry glEntry : entryRepositoryAll) {
+
+            Product product = productRepository.findOne(glEntry.getProductId());
+
+            ProductStock productStock = productStockRepository.getStockProductWise(glEntry.getProductId());
+            if (glEntry.getTransactionType().equals(CustomConstants.PURCHASE_BRANCH)) {
+                purchaseReportDto = new PurchaseReportDto();
+                purchaseReportDto.setTransactionType(glEntry.getTransactionType());
+                purchaseReportDto.setProduct(product.getName());
+                purchaseReportDto.setPurchaseDate(glEntry.getTransactionDate().toString());
+                purchaseReportDto.setUnitPrice(productStock.getPurchasePrice());
+                purchaseReportDto.setQuantity(new BigDecimal(glEntry.getQuantity()));
+                purchaseReportDto.setTotalAmount(glEntry.getTotalAmount());
+                purchaseReportDto.setGlEntryId(glEntry.getId().toString());
+                purchaseReportDtos.add(purchaseReportDto);
+            } else if (glEntry.getTransactionType().equals(CustomConstants.SALE_BRANCH)) {
+                purchaseReportDto = new PurchaseReportDto();
+                purchaseReportDto.setTransactionType(glEntry.getTransactionType());
+                purchaseReportDto.setProduct(product.getName());
+                purchaseReportDto.setPurchaseDate(glEntry.getTransactionDate().toString());
+                purchaseReportDto.setUnitPrice(productStock.getSalePrice());
+                purchaseReportDto.setQuantity(new BigDecimal(glEntry.getQuantity()));
+                purchaseReportDto.setTotalAmount(glEntry.getTotalAmount());
+                purchaseReportDto.setGlEntryId(glEntry.getId().toString());
+                purchaseReportDtos.add(purchaseReportDto);
+            } else if (glEntry.getTransactionType().equals(CustomConstants.SALE_CUSTOMER)) {
+                purchaseReportDto = new PurchaseReportDto();
+                purchaseReportDto.setTransactionType(glEntry.getTransactionType());
+                purchaseReportDto.setProduct(product.getName());
+                purchaseReportDto.setPurchaseDate(glEntry.getTransactionDate().toString());
+                purchaseReportDto.setUnitPrice(productStock.getSalePrice());
+                purchaseReportDto.setQuantity(new BigDecimal(glEntry.getQuantity()));
+                purchaseReportDto.setTotalAmount(glEntry.getTotalAmount());
+                purchaseReportDto.setGlEntryId(glEntry.getId().toString());
+                purchaseReportDtos.add(purchaseReportDto);
+            }
+
+
+        }
+        return purchaseReportDtos;
+    }
+
+    @RequestMapping(value = "addproductreturn", method = RequestMethod.POST)
+    public ResponseEntity<PurchaseReportDto> addProductReturn(@RequestBody PurchaseReportDto returnProduct) {
+
+        GLEntry glEntry = glEntryRepository.findOne(Long.parseLong(returnProduct.getGlEntryId()));
+        if (returnProduct.getQuantity().longValue() == new BigDecimal(glEntry.getQuantity()).longValue()) {
+            glEntry.setActive(Boolean.FALSE);
+            glEntry.setTransactionReturn(Boolean.TRUE);
+            for (GLEntryItem glEntryItem : glEntry.getGlEntryItem()) {
+                glEntryItem.setActive(Boolean.FALSE);
+            }
+            glEntryRepository.save(glEntry);
+            ProductStock productStock = productStockRepository.getStockByTransactionRefId(glEntry.getTransactionRefId());
+            productStock.setQuantity(productStock.getQuantity() + returnProduct.getQuantity().longValue());
+            productStockRepository.save(productStock);
+        }else{
+
+        }
+        return new ResponseEntity<>(modelMapper.map(returnProduct, PurchaseReportDto.class), HttpStatus.CREATED);
+
+    }
+
+    @Transactional
+    @RequestMapping("/getreturnedproducts")
+    public List<PurchaseReportDto> getReturnedProducts() {
+        List<PurchaseReportDto> purchaseReportDtos = new ArrayList<>();
+        PurchaseReportDto purchaseReportDto;
+
+        List<GLEntry> entryRepositoryAll = glEntryRepository.findAllInActive();
+        for (GLEntry glEntry : entryRepositoryAll) {
+
+            Product product = productRepository.findOne(glEntry.getProductId());
+
+            ProductStock productStock = productStockRepository.getStockProductWise(glEntry.getProductId());
+            if (glEntry.getTransactionType().equals(CustomConstants.PURCHASE_BRANCH)) {
+                purchaseReportDto = new PurchaseReportDto();
+                purchaseReportDto.setTransactionType(glEntry.getTransactionType());
+                purchaseReportDto.setProduct(product.getName());
+                purchaseReportDto.setPurchaseDate(glEntry.getTransactionDate().toString());
+                purchaseReportDto.setUnitPrice(productStock.getPurchasePrice());
+                purchaseReportDto.setQuantity(new BigDecimal(glEntry.getQuantity()));
+                purchaseReportDto.setTotalAmount(glEntry.getTotalAmount());
+                purchaseReportDto.setGlEntryId(glEntry.getId().toString());
+                purchaseReportDtos.add(purchaseReportDto);
+            } else if (glEntry.getTransactionType().equals(CustomConstants.SALE_BRANCH)) {
+                purchaseReportDto = new PurchaseReportDto();
+                purchaseReportDto.setTransactionType(glEntry.getTransactionType());
+                purchaseReportDto.setProduct(product.getName());
+                purchaseReportDto.setPurchaseDate(glEntry.getTransactionDate().toString());
+                purchaseReportDto.setUnitPrice(productStock.getSalePrice());
+                purchaseReportDto.setQuantity(new BigDecimal(glEntry.getQuantity()));
+                purchaseReportDto.setTotalAmount(glEntry.getTotalAmount());
+                purchaseReportDto.setGlEntryId(glEntry.getId().toString());
+                purchaseReportDtos.add(purchaseReportDto);
+            } else if (glEntry.getTransactionType().equals(CustomConstants.SALE_CUSTOMER)) {
+                purchaseReportDto = new PurchaseReportDto();
+                purchaseReportDto.setTransactionType(glEntry.getTransactionType());
+                purchaseReportDto.setProduct(product.getName());
+                purchaseReportDto.setPurchaseDate(glEntry.getTransactionDate().toString());
+                purchaseReportDto.setUnitPrice(productStock.getSalePrice());
+                purchaseReportDto.setQuantity(new BigDecimal(glEntry.getQuantity()));
+                purchaseReportDto.setTotalAmount(glEntry.getTotalAmount());
+                purchaseReportDto.setGlEntryId(glEntry.getId().toString());
+                purchaseReportDtos.add(purchaseReportDto);
+            }
+
+
         }
         return purchaseReportDtos;
     }

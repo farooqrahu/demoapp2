@@ -7,14 +7,16 @@ import com.jamil.shop.springboot.model.gl.Account;
 import com.jamil.shop.springboot.model.gl.GLEntry;
 import com.jamil.shop.springboot.model.gl.GLEntryItem;
 import com.jamil.shop.springboot.service.ProductService;
+import com.jamil.shop.springboot.util.CustomConstants;
 import org.apache.log4j.Logger;
-import org.joda.time.LocalDate;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -45,6 +47,9 @@ public class ProductController {
 
     @Autowired
     ProductSaleRepository productSaleRepository;
+
+    @Autowired
+    ProductSaleCusRepository productSaleCusRepository;
 
     @Autowired
     private BranchRepository branchRepository;
@@ -247,6 +252,9 @@ public class ProductController {
         glEntry.setTransactionDate(new Date());
         glEntry.setTotalAmount(BigDecimal.valueOf(productStockDto.getNewTotalPurchaseAmount()));
         glEntry.setQuantity(productStockDto.getNewQuantity());
+        glEntry.setActive(Boolean.TRUE);
+        glEntry.setTransactionType(CustomConstants.PURCHASE_BRANCH);
+        glEntry.setTransactionRefId(productStock.getId());
         //Debit Entry for Purchase
         GLEntryItem glEntryDebit = new GLEntryItem();
 
@@ -256,6 +264,7 @@ public class ProductController {
         glEntryDebit.setFlag("D");
         glEntryDebit.setAccount(accountPurchase);
         glEntryDebit.setDebitAmount(BigDecimal.valueOf(productStockDto.getNewTotalPurchaseAmount()));
+        glEntryDebit.setActive(Boolean.TRUE);
         //Credit Entry for Purchase
         GLEntryItem glEntryCredit = new GLEntryItem();
 
@@ -265,7 +274,7 @@ public class ProductController {
         glEntryCredit.setFlag("C");
         glEntryCredit.setAccount(accountVendor);
         glEntryCredit.setCreditAmount(BigDecimal.valueOf(productStockDto.getNewTotalPurchaseAmount()));
-
+        glEntryCredit.setActive(Boolean.TRUE);
         HashSet glEntryItemSet = new HashSet<>();
         glEntryItemSet.add(glEntryCredit);
         glEntryItemSet.add(glEntryDebit);
@@ -312,6 +321,9 @@ public class ProductController {
         glEntry.setTransactionDate(new Date());
         glEntry.setTotalAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));
         glEntry.setQuantity(productSaleDto.getNewQuantity());
+        glEntry.setActive(Boolean.TRUE);
+        glEntry.setTransactionType(CustomConstants.SALE_BRANCH);
+        glEntry.setTransactionRefId(productSale.getId());
         //Debit Entry for Purchase
         GLEntryItem glEntryDebit = new GLEntryItem();
 
@@ -321,6 +333,7 @@ public class ProductController {
         glEntryDebit.setFlag("D");
         glEntryDebit.setAccount(accountBranch);
         glEntryDebit.setDebitAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));
+        glEntryDebit.setActive(Boolean.TRUE);
         //Credit Entry for Sale
         GLEntryItem glEntryCredit = new GLEntryItem();
 
@@ -330,7 +343,7 @@ public class ProductController {
         glEntryCredit.setFlag("C");
         glEntryCredit.setAccount(accountBranchSale);
         glEntryCredit.setCreditAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));
-
+        glEntryCredit.setActive(Boolean.TRUE);
 
        /* GLEntry glEntryIncom = new GLEntry();
         glEntryIncom.setBranchId(productSaleDto.getBranch());
@@ -347,6 +360,7 @@ public class ProductController {
         incomCredit.setFlag("C");
         incomCredit.setAccount(accountIncome);
         incomCredit.setCreditAmount(BigDecimal.valueOf(income));
+        incomCredit.setActive(Boolean.TRUE);
 
         HashSet glEntryItemSet = new HashSet<>();
         glEntryItemSet.add(glEntryCredit);
@@ -357,6 +371,95 @@ public class ProductController {
         glEntryRepository.save(glEntry);
 
         return new ResponseEntity<>(modelMapper.map(productSale, ProductSaleDto.class), HttpStatus.CREATED);
+
+    }
+
+
+
+    @RequestMapping(value = "product/salestocktocustomer", method = RequestMethod.POST)
+    public ResponseEntity<ProductSaleCustomerDto> saleStockToCus(@RequestBody ProductSaleCustomerDto productSaleDto) {
+        ProductStock productStock;
+        ProductSaleCustomer productSale=new ProductSaleCustomer();
+        long income=0l;
+        if (productSaleDto.getId() != null) {
+            productSale.setBranchId(productSaleDto.getBranch());
+            productSale.setProductId(productSaleDto.getProduct());
+            productSale.setQuantity(productSaleDto.getNewQuantity());
+            productSale.setSalePrice(productSaleDto.getSalePrice());
+            productSale.setTotalSaleAmount(productSaleDto.getNewTotalSaleAmount());
+            productStock = productStockRepository.findOne(productSaleDto.getId());
+            if(productStock.getQuantity()>=productSaleDto.getNewQuantity()){
+                productStock.setQuantity(productStock.getQuantity()-productSaleDto.getNewQuantity());
+                long totalPurchaseAmount=productSaleDto.getNewQuantity()*Long.parseLong(productStock.getPurchasePrice());
+                income=productSaleDto.getNewTotalSaleAmount()-totalPurchaseAmount;
+                productStockRepository.save(productStock);
+                productSale = productSaleCusRepository.save(productSale);
+            }else{
+                return new ResponseEntity<>(productSaleDto, HttpStatus.NOT_FOUND);
+            }
+
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account accountCusSale = accountRepository.findOne(3l);
+//        Account accountBranch = accountRepository.findByBranchId(productSale.getBranchId());
+        Account accountIncome = accountRepository.findOne(4l);
+
+        GLEntry glEntry = new GLEntry();
+        glEntry.setBranchId(productSaleDto.getBranch());
+        glEntry.setProductId(productSaleDto.getProduct());
+        glEntry.setTransactionDate(new Date());
+        glEntry.setTotalAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));
+        glEntry.setQuantity(productSaleDto.getNewQuantity());
+        glEntry.setActive(Boolean.TRUE);
+        glEntry.setBranchId(accountCusSale.getBranchId());
+        glEntry.setTransactionType(CustomConstants.SALE_CUSTOMER);
+        glEntry.setTransactionRefId(productSale.getId());
+        //Debit Entry for Purchase
+      /*  GLEntryItem glEntryDebit = new GLEntryItem();
+
+        glEntryDebit.setId(0l);
+        glEntryDebit.setGlEntry(glEntry);
+        glEntryDebit.setDescription("Debit Entry for Sale");
+        glEntryDebit.setFlag("D");
+        glEntryDebit.setAccount(accountBranch);
+        glEntryDebit.setDebitAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));*/
+        //Credit Entry for Sale
+        GLEntryItem glEntryCredit = new GLEntryItem();
+
+        glEntryCredit.setId(1l);
+        glEntryCredit.setGlEntry(glEntry);
+        glEntryCredit.setDescription("Credit Entry for Sale");
+        glEntryCredit.setFlag("C");
+        glEntryCredit.setAccount(accountCusSale);
+        glEntryCredit.setCreditAmount(BigDecimal.valueOf(productSaleDto.getNewTotalSaleAmount()));
+        glEntryCredit.setActive(Boolean.TRUE);
+
+       /* GLEntry glEntryIncom = new GLEntry();
+        glEntryIncom.setBranchId(productSaleDto.getBranch());
+        glEntryIncom.setProductId(productSaleDto.getProduct());
+        glEntryIncom.setTransactionDate(new Date());
+        glEntryIncom.setTotalAmount(BigDecimal.valueOf(income));
+        glEntryIncom.setQuantity(productSaleDto.getNewQuantity());*/
+        //Credit Entry for Incom
+        GLEntryItem incomCredit = new GLEntryItem();
+
+        incomCredit.setId(2l);
+        incomCredit.setGlEntry(glEntry);
+        incomCredit.setDescription("Credit Entry for Income");
+        incomCredit.setFlag("C");
+        incomCredit.setAccount(accountIncome);
+        incomCredit.setCreditAmount(BigDecimal.valueOf(income));
+        incomCredit.setActive(Boolean.TRUE);
+        HashSet glEntryItemSet = new HashSet<>();
+        glEntryItemSet.add(glEntryCredit);
+//        glEntryItemSet.add(glEntryDebit);
+        glEntryItemSet.add(incomCredit);
+        glEntry.setGlEntryItem(glEntryItemSet);
+
+        glEntryRepository.save(glEntry);
+
+        return new ResponseEntity<>(modelMapper.map(productSale, ProductSaleCustomerDto.class), HttpStatus.CREATED);
 
     }
 }

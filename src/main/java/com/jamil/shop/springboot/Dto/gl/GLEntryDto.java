@@ -20,6 +20,8 @@ public class GLEntryDto implements Serializable {
     private Long userId;
     private Long branchId;
 
+    private Boolean isActive;
+
     public Long getId() {
         return id;
     }
@@ -75,4 +77,12 @@ public class GLEntryDto implements Serializable {
     public void setBranchId(Long branchId) {
         this.branchId = branchId;
     }
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
 }

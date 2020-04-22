@@ -1,19 +1,9 @@
 package com.jamil.shop.springboot.model.gl;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.jamil.shop.springboot.Dto.gl.GLEntryItemDto;
 import com.jamil.shop.springboot.model.BaseEntityAudit;
-import com.jamil.shop.springboot.model.Branch;
-import com.jamil.shop.springboot.util.LocalDateDeserializer;
-import com.jamil.shop.springboot.util.LocalDateSerializer;
-import org.joda.time.LocalDate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,6 +24,13 @@ public class GLEntry extends BaseEntityAudit {
     private Long branchId;
     private Long productId;
     private Long quantity;
+    private Boolean isActive;
+    @Column(name = "transaction_type")
+    private String transactionType;
+    @Column(name = "transaction_ref_id")
+    private Long transactionRefId;
+    @Column(name = "transaction_return",nullable = false)
+    private Boolean transactionReturn=false;
 
     public String getDescription() {
         return description;
@@ -89,5 +86,37 @@ public class GLEntry extends BaseEntityAudit {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String purchaseType) {
+        this.transactionType = purchaseType;
+    }
+
+    public Long getTransactionRefId() {
+        return transactionRefId;
+    }
+
+    public void setTransactionRefId(Long transactionRefId) {
+        this.transactionRefId = transactionRefId;
+    }
+
+    public Boolean getTransactionReturn() {
+        return transactionReturn;
+    }
+
+    public void setTransactionReturn(Boolean transactionReturn) {
+        this.transactionReturn = transactionReturn;
     }
 }

@@ -15,6 +15,7 @@ public class BranchSaleReportDto implements Serializable {
     private String branch;
     private String unitPrice;
     private String saleDate;
+    private String model;
 
     public String getProduct() {
         return product;
@@ -62,5 +63,13 @@ public class BranchSaleReportDto implements Serializable {
 
     public void setSaleDate(String saleDate) {
         this.saleDate = saleDate;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 }

@@ -5,11 +5,15 @@ public class ProductSaleCustomerDto {
     private Long quantity;
     private Long newQuantity;
     private Long product;
+    private String productName;
+    private String model;
     private Long branch;
+    private String branchName;
     private Long totalSaleAmount;
     private Long newTotalSaleAmount;
     private String salePrice;
     private String customerName;
+    private String saleDate;
 
     public Long getId() {
         return id;
@@ -82,5 +86,37 @@ public class ProductSaleCustomerDto {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getSaleDate() {
+        return saleDate;
+    }
+
+    public void setSaleDate(String saleDate) {
+        this.saleDate = saleDate;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 }

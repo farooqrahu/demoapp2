@@ -11,7 +11,7 @@ angular.module('myApp').factory('ProductSaleCusService', ['$http', '$q','$window
         findAllProductCompanies:findAllProductCompanies,
         getStockBranchWise:getStockBranchWise,
         addProductStock:addProductStock,
-        saleProductStockToBranch:saleProductStockToBranch
+        saleProductSaleToCustomer:saleProductSaleToCustomer
     };
     return factory;
 
@@ -35,8 +35,8 @@ angular.module('myApp').factory('ProductSaleCusService', ['$http', '$q','$window
             });
     }
 
-    function saleProductStockToBranch(value) {
-        return $http.post("product/salestocktobranch",value)
+    function saleProductSaleToCustomer(value) {
+        return $http.post("product/salestocktocustomer",value)
             .then(function (data) {
                 return data;
             })

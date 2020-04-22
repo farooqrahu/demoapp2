@@ -18,6 +18,13 @@ public interface ProductStockRepository extends JpaRepository<ProductStock, Long
     @Query("select s from ProductStock  s where  s.branchId=?1 and s.productId=?2")
     ProductStock getStockBranchWise(Long branchId,Long productId);
 
+    @Query("select s from ProductStock  s where s.productId=?1")
+    ProductStock getStockProductWise(Long productId);
+
+    @Query("select s from ProductStock  s where s.id=?1")
+    ProductStock getStockByTransactionRefId(Long refId);
+
+
 /*
     @Query("SELECT c from CustomerType c where c.groupOfCompany.id=?1")
     List<CustomerType> findAllByGroupOfCompanyId(Long id);

@@ -216,5 +216,52 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 				controller : 'ProductController'
 			}
 		}
-	});
+	}).state('customerSaleReport', {
+		parent : 'nav',
+		url : '/customerSaleReport',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/customerSaleReport.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('customerSaleInvoice', {
+		parent : 'nav',
+		url : '/customerSaleInvoice',
+		params:{obj:null,subTotal:null},
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/saletocustomer_invoice.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('branchSaleInvoice', {
+		parent : 'nav',
+		url : '/branchSaleInvoice',
+		params:{obj:null,subTotal:null},
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/saletobranch_invoice.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('returnProduct', {
+		parent : 'nav',
+		url : '/returnProduct',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/returnpurchase.html',
+				controller : 'ProductController'
+			}
+		}
+	}).state('returnProductList', {
+		parent : 'nav',
+		url : '/returnProductList',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/returnProductreport.html',
+				controller : 'ProductController'
+			}
+		}
+	});;
 });

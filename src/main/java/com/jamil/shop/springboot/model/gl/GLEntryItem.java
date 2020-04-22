@@ -24,6 +24,7 @@ public class GLEntryItem  extends BaseEntityAudit {
     @JoinColumn(name = "GLENTRY_ID")
     @JsonIgnore
     private GLEntry glEntry;
+    private Boolean isActive;
 
     public String getDescription() {
         return description;
@@ -71,5 +72,12 @@ public class GLEntryItem  extends BaseEntityAudit {
 
     public void setFlag(String flag) {
         this.flag = flag;
+    }
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

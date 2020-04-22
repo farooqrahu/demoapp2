@@ -1,19 +1,19 @@
 'use strict';
 
-angular.module('myApp').controller('ProductSaleController', ['$stateParams','$window', '$timeout', '$scope', '$rootScope', 'ProductService', 'AuthService', 'uiGridConstants', 'UserService', function ($stateParams,$window, $timeout, $scope, $rootScope, ProductService, AuthService, uiGridConstants, UserService) {
+angular.module('myApp').controller('ProductSaleCusController', ['$window', '$timeout', '$scope', '$rootScope', 'AuthService', 'uiGridConstants', 'UserService', 'ProductSaleCusService', function ($window, $timeout, $scope, $rootScope, AuthService, uiGridConstants, UserService, ProductSaleCusService) {
 
     var productControllerVm = null;
     var edit = false;
     $scope.allProducts = null;
     $scope.quantity = 0;
-    $scope.productSale = {id: '0', quantity: '0', branch: '', product: ''};
+    $scope.productSale = {id: '0', quantity: '0', branch: '', product: '',showProductList:[]};
     $scope.productSale.newQuantity = 0;
     $scope.productCategoryDto = {productCategory: ""};
     $scope.productCompanyDto = {name: ""};
     $scope.product = {productCategoryDto: [], productCompanyDto: []};
     $scope.branchId = null;
     $scope.totalAmount = 0;
-    $scope.quantityExceeded=null;
+    $scope.quantityExceeded = null;
 
     $scope.branches = [];
 
@@ -31,8 +31,6 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
         "value": "Please Select",
         "values": ["Please Select"]
     };
-    $scope.invoiceData= $stateParams.obj;
-    $scope.subTotal= $stateParams.subTotal;
 
     $scope.selectProductCompany = function (name) {
         $scope.productCompanyDto.name = name;
@@ -45,7 +43,7 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
 
 
     $scope.findAllProducts = function () {
-        ProductService.findAllProducts().then(function (result) {
+        ProductSaleCusService.findAllProducts().then(function (result) {
             if (result.status == "200") { // check if we get the data back
                 $scope.allProductsDataUIGrid.data = result.data;
                 UserService.findAllCustomerBranches().then(function (result) {
@@ -73,7 +71,7 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
             if ($scope.editUserBol) {
                 $scope.editProduct($scope.product);
             } else {
-                ProductService.addProduct($scope.product).then(function (result) {
+                ProductSaleCusService.addProduct($scope.product).then(function (result) {
                     if (result.status == "201") { // check if we get the data back
                         $scope.confirmPassword = null;
                         $scope.addProductForm.$setPristine();
@@ -93,7 +91,7 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
         $scope.productSale.newQuantity = parseInt($scope.productSale.newQuantity);
         $scope.productSale.product = $scope.product.id;
         console.log($scope.productSale);
-        ProductService.addProductStock($scope.productSale).then(function (result) {
+        ProductSaleCusService.addProductStock($scope.productSale).then(function (result) {
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
@@ -111,13 +109,10 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
 
     };
 
-    $scope.saleProductSaleToBranch= function () {
+    $scope.saleProductSaleToCustomer = function () {
         $scope.productSale.product = $scope.product.id;
-        if(!$scope.productSale.branch){
-            $rootScope.runSweetAlertMsg('Sale Product', 'Please Select Branch', 'error');
-        return null;
-        }
-        ProductService.saleProductStockToBranch($scope.productSale).then(function (result) {
+
+        ProductSaleCusService.saleProductSaleToCustomer($scope.productSale).then(function (result) {
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
@@ -127,7 +122,6 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
             }
         });
     };
-
 
 
     $scope.deleteSelected = function () {
@@ -140,11 +134,14 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
         {name: 'model'},
         {name: 'productCategory.productCategory', displayName: 'Category'},
         {name: 'productCompany.name', displayName: 'Company'},
-        {
-            name: 'edit',
-            displayName: 'Edit Sale',
-            cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
-        }
+        {name: 'newQuantity', enableCellEdit: true, displayName: 'Add Quantity'},
+        /*
+                {
+                    name: 'edit',
+                    displayName: 'Edit Sale',
+                    cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
+                }
+        */
     ];
 
     $scope.allProductsDataUIGrid = {
@@ -172,7 +169,30 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
         $scope.allProductsDataUIGrid = gridApi;
         //set gridApi on scope
         $scope.gridApi = gridApi;
+        //set gridApi on scope
 
+        gridApi.selection.on.rowSelectionChanged($scope,function(row){
+            if ($scope.productSale.showProductList.length > 0) {
+                if(row.entity.newQuantity==undefined){
+                    $rootScope.runSweetAlertMsg('Sale Product', 'Add Product Quantity!', 'error');
+                    return;
+                }
+                var index = $scope.productSale.showProductList.indexOf(row.entity);
+                if (index === -1) { //this is where i have bug. match the condition with -1
+
+                    $scope.productSale.showProductList.push(row.entity);
+                } else {
+                    $scope.productSale.showProductList.splice(index, 1);
+                }
+            } else {
+                if(row.entity.newQuantity==undefined){
+                    $rootScope.runSweetAlertMsg('Sale Product', 'Add Product Quantity!', 'error');
+                    return;
+                }
+                $scope.productSale.showProductList.push(row.entity);
+            }
+
+        });
     };
 
     $scope.edit = function (entity) {
@@ -186,7 +206,7 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
         } else {
             $("#inactive").prop("checked", true);
         }*/
-        $scope.productSale.newQuantity= 0;
+        $scope.productSale.newQuantity = 0;
         $scope.editUserBol = true;
         $('#productModal').modal('show');
     };
@@ -208,7 +228,7 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
     };
 
     $scope.editProduct = function (entity) {
-        ProductService.editProduct(entity).then(function (result) {
+        ProductSaleCusService.editProduct(entity).then(function (result) {
             if (result.status == "201") { // check if we get the data back
                 $('#productModal').modal('hide');
                 $scope.editUserBol = false;
@@ -220,7 +240,7 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
     };
 
     $scope.deleteProduct = function (entity) {
-        ProductService.deleteProduct(entity).then(function (result) {
+        ProductSaleCusService.deleteProduct(entity).then(function (result) {
             if (result.status == "201") { // check if we get the data back
 
                 var index = $scope.allProductsDataUIGrid.data.indexOf(entity);
@@ -234,10 +254,10 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
     };
     $scope.showSaleBranchWise = function (branch) {
         var data = {'branch': 1, 'product': $scope.product.id};
-        ProductService.getStockBranchWise(data).then(function (result) {
+        ProductSaleCusService.getStockBranchWise(data).then(function (result) {
             if (result.status == "201") {
                 $scope.productSale = result.data;
-                $scope.productSale.branch=null;
+                $scope.productSale.branch = null;
             }
         });
     };
@@ -247,7 +267,7 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
                return null;
            }
            var data = {'branch': branch, 'product': $scope.product.id};
-           ProductService.getSaleBranchWise(data).then(function (result) {
+           ProductSaleCusService.getSaleBranchWise(data).then(function (result) {
                if (result.status == "201") {
                    $scope.productSale = result.data;
                }
@@ -256,8 +276,8 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
     */
     $scope.calculateTotalSalePurAmount = function () {
         if ($scope.productSale.newQuantity) {
-             $scope.productSale.newTotalSaleAmount = $scope.productSale.salePrice *  $scope.productSale.newQuantity;
-            $scope.productSale.newTotalPurchaseAmount = $scope.productSale.purchasePrice *  $scope.productSale.newQuantity;
+            $scope.productSale.newTotalSaleAmount = $scope.productSale.salePrice * $scope.productSale.newQuantity;
+            $scope.productSale.newTotalPurchaseAmount = $scope.productSale.purchasePrice * $scope.productSale.newQuantity;
         }
     };
 
@@ -267,14 +287,16 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
             let newQuantity = parseInt($scope.productSale.newQuantity);
             if (newQuantity > availableQuantity) {
                 $scope.productSale.newQuantity = 0;
-                $scope.quantityExceeded="Quantity entered not available in stock";
-            }else{
-                $scope.quantityExceeded=null;
+                $scope.quantityExceeded = "Quantity entered not available in stock";
+            } else {
+                $scope.quantityExceeded = null;
 
             }
-            $scope.productSale.newTotalSaleAmount =  parseInt($scope.productSale.salePrice) * newQuantity;
+            $scope.productSale.newTotalSaleAmount = parseInt($scope.productSale.salePrice) * newQuantity;
         }
+    };
+
+    $scope.showProductModal = function () {
+        $('#showProductModal').modal('show');
     }
-
-
 }]);

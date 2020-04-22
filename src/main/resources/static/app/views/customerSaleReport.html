@@ -1,7 +1,7 @@
 <!-- partial:../../partials/_header.html -->
 
 <!-- partial -->
-<div ng-controller="ReportsController as reportsController" ng-init="getBranchSaleData()" class="page-body">
+<div ng-controller="ReportsController as reportsController" ng-init="getCustomerSaleData()" class="page-body">
     <!-- partial:../../partials/_sidebar.html -->
     <div ng-include="'app/views/sidebar.html'"></div>
     <!-- partial -->
@@ -16,20 +16,20 @@
                         <li class="breadcrumb-item">
                             <a href="#">Reports</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Branch Sale Report</li>
+                        <li class="breadcrumb-item active" aria-current="page">Customer Sale Report</li>
                     </ol>
                 </nav>
             </div>
             <div class="content-viewport">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary p-1 mdi mdi-receipt" data-toggle="modal" ng-click="generateBranchInvoice()"
+                <button type="button" class="btn btn-primary p-1 mdi mdi-receipt" data-toggle="modal" ng-click="generateCustomerInvoice()"
                         data-target="#productModal">
                     Generate Invoice
                 </button>
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <div ui-grid="branchSaleData" ui-grid-resize-columns
+                        <div ui-grid="customerSaleData" ui-grid-resize-columns
                              ui-grid-move-columns ui-grid-selection
                              ui-grid-auto-resize ui-grid-pagination
                              class="grid"></div>

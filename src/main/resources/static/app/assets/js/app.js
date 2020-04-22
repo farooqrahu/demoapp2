@@ -1,4 +1,4 @@
-angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination', 'ui.grid.autoResize', 'ui.grid.selection','ui.grid.resizeColumns', 'ui.grid.moveColumns'])
+angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination','ui.grid.edit','ui.grid.rowEdit', 'ui.grid.autoResize', 'ui.grid.selection','ui.grid.resizeColumns', 'ui.grid.moveColumns'])
 
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

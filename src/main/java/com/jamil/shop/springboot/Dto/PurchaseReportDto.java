@@ -15,6 +15,9 @@ public class PurchaseReportDto implements Serializable {
     private String branch;
     private String unitPrice;
     private String purchaseDate;
+    private String glEntryId;
+    private BigDecimal newQuantity;
+private String transactionType;
 
     public String getProduct() {
         return product;
@@ -62,5 +65,29 @@ public class PurchaseReportDto implements Serializable {
 
     public void setPurchaseDate(String purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    public String getGlEntryId() {
+        return glEntryId;
+    }
+
+    public void setGlEntryId(String glEntryId) {
+        this.glEntryId = glEntryId;
+    }
+
+    public BigDecimal getNewQuantity() {
+        return newQuantity;
+    }
+
+    public void setNewQuantity(BigDecimal newQuantity) {
+        this.newQuantity = newQuantity;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 }

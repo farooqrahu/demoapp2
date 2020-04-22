@@ -15,7 +15,11 @@ angular.module('myApp').factory('ReportService', ['$http', '$q','$window', funct
         saleProductStockToBranch:saleProductStockToBranch,
         findGLData:findGLData,
         getPurchaseData:getPurchaseData,
-        getBranchSaleData:getBranchSaleData
+        getBranchSaleData:getBranchSaleData,
+        getCustomerSaleData:getCustomerSaleData,
+        getPurchaseProduct:getPurchaseProduct,
+        addProductReturn:addProductReturn,
+        getReturnedProducts:getReturnedProducts
     };
     return factory;
 
@@ -51,6 +55,15 @@ angular.module('myApp').factory('ReportService', ['$http', '$q','$window', funct
 
     function getBranchSaleData(value) {
         return $http.get("getbranchsaledata",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+    function getCustomerSaleData(value) {
+        return $http.get("getcustomersaledata",value)
             .then(function (data) {
                 return data;
             })
@@ -137,5 +150,37 @@ angular.module('myApp').factory('ReportService', ['$http', '$q','$window', funct
                 return e;
             });
     }
+
+    function getPurchaseProduct(value) {
+        return $http.get("getpurchaseproduct",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+
+
+    function addProductReturn(value) {
+        return $http.post("addproductreturn",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+
+    function getReturnedProducts(value) {
+        return $http.post("getreturnedproducts",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+
 
 }]);

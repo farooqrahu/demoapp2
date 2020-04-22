@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('myApp').controller('ProductSaleCusController', ['$window', '$timeout', '$scope', '$rootScope', 'AuthService', 'uiGridConstants', 'UserService','ProductSaleCusService', function ($window, $timeout, $scope, $rootScope, AuthService, uiGridConstants, UserService,ProductSaleCusService) {
-
+angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','$window', '$timeout', '$scope', '$rootScope', 'AuthService', 'uiGridConstants', 'UserService','ProductSaleCusService', function ( $stateParams,$window, $timeout, $scope, $rootScope, AuthService, uiGridConstants, UserService,ProductSaleCusService) {
     var productControllerVm = null;
     var edit = false;
     $scope.allProducts = null;
@@ -14,7 +13,7 @@ angular.module('myApp').controller('ProductSaleCusController', ['$window', '$tim
     $scope.branchId = null;
     $scope.totalAmount = 0;
     $scope.quantityExceeded=null;
-
+    $scope.today_date=new Date();
     $scope.branches = [];
 
     $scope.error = "";
@@ -32,6 +31,10 @@ angular.module('myApp').controller('ProductSaleCusController', ['$window', '$tim
         "values": ["Please Select"]
     };
 
+    $scope.invoiceData= $stateParams.obj;
+    $scope.subTotal= $stateParams.subTotal;
+
+
     $scope.selectProductCompany = function (name) {
         $scope.productCompanyDto.name = name;
 
@@ -40,7 +43,6 @@ angular.module('myApp').controller('ProductSaleCusController', ['$window', '$tim
         $scope.productCategoryDto.productCategory = name;
 
     };
-
 
     $scope.findAllProducts = function () {
         ProductSaleCusService.findAllProducts().then(function (result) {
@@ -109,13 +111,10 @@ angular.module('myApp').controller('ProductSaleCusController', ['$window', '$tim
 
     };
 
-    $scope.saleProductSaleToBranch= function () {
+    $scope.saleProductSaleToCustomer= function () {
         $scope.productSale.product = $scope.product.id;
-        if(!$scope.productSale.branch){
-            $rootScope.runSweetAlertMsg('Sale Product', 'Please Select Branch', 'error');
-        return null;
-        }
-        ProductSaleCusService.saleProductStockToBranch($scope.productSale).then(function (result) {
+
+        ProductSaleCusService.saleProductSaleToCustomer($scope.productSale).then(function (result) {
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
@@ -134,15 +133,16 @@ angular.module('myApp').controller('ProductSaleCusController', ['$window', '$tim
     };
 
 
-    $scope.listAllColumns = [{name: 'name'},
+    $scope.listAllColumns = [{name: 'name',enableCellEdit: true },
         {name: 'model'},
         {name: 'productCategory.productCategory', displayName: 'Category'},
         {name: 'productCompany.name', displayName: 'Company'},
-        {
-            name: 'edit',
-            displayName: 'Edit Sale',
-            cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
-        }
+        // { name: 'newQuantity', enableCellEdit: true ,displayName: 'Add Quantity'},
+                {
+                    name: 'edit',
+                    displayName: 'Edit Sale',
+                    cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
+                }
     ];
 
     $scope.allProductsDataUIGrid = {
@@ -254,7 +254,7 @@ angular.module('myApp').controller('ProductSaleCusController', ['$window', '$tim
     */
     $scope.calculateTotalSalePurAmount = function () {
         if ($scope.productSale.newQuantity) {
-             $scope.productSale.newTotalSaleAmount = $scope.productSale.salePrice *  $scope.productSale.newQuantity;
+            $scope.productSale.newTotalSaleAmount = $scope.productSale.salePrice *  $scope.productSale.newQuantity;
             $scope.productSale.newTotalPurchaseAmount = $scope.productSale.purchasePrice *  $scope.productSale.newQuantity;
         }
     };
