@@ -1,0 +1,152 @@
+<!-- partial:../../partials/_header.html -->
+
+<!-- partial -->
+<div ng-controller="ProductSaleCusController as productControllerVm" ng-init="redirectInvoicePage();" class="page-body">
+    <!-- partial:../../partials/_sidebar.html -->
+    <div ng-include="'app/views/sidebar.html'"></div>
+    <!-- partial -->
+    <div class="page-content-wrapper">
+        <div class="page-content-wrapper-inner">
+            <div class="viewport-header">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb has-arrow">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Sale to Customer</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Sale to Customer</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="content-viewport">
+                <!-- Button trigger modal -->
+
+                <!--Author      : @arboshiki-->
+                <div id="invoice">
+
+                    <div class="toolbar hidden-print">
+                        <div class="text-right">
+                            <button id="printInvoice" ng-click="printDiv('invoicePrint')" class="btn btn-info"><i class="fa fa-print"></i> Print / Download</button>
+                        </div>
+                        <hr>
+                    </div>
+                    <div  id="invoicePrint" class="invoice invoicePrint overflow-auto">
+                        <div style="min-width: 600px">
+                            <header>
+                                <div class="row">
+                                    <div class="col">
+                                        <a target="_blank" >
+                                            <img class="invoiceLogo" src="app/assets/images/wording1.PNG" alt="logo" />
+                                        </a>
+                                    </div>
+                                    <div ng-controller="LoginController " class="col company-details">
+                                        <h2 class="name">
+                                            <a target="_blank" href="https://lobianijs.com">
+                                                <span ng-bind="loginUserData.username.toUpperCase()"></span>
+                                            </a>
+                                        </h2>
+                                        <div>Address: <span ng-bind="loginUserData.branches[0].address"></span></div>
+                                        <div>Mobile No#: <span ng-bind="loginUserData.phoneNo"></span>
+                                        </div>
+                                        <!--                                        <div>company@example.com</div>-->
+                                    </div>
+                                </div>
+                            </header>
+                            <main>
+                                <div class="row contacts">
+                                    <div class="col invoice-to">
+                                        <div class="text-gray-light">INVOICE TO:</div>
+                                        <div class="to">Customer Name: ________________________________</div>
+                                        <div class="address">Mobile No #: ____________________________________</div>
+                                        <div class="address">Address: _________________________________________</div>
+<!--                                        <div class="email"><a href="mailto:john@example.com">jameel@example.com</a></div>-->
+                                    </div>
+                                    <div class="col invoice-details">
+                                        <h1 class="invoice-id">INVOICE #: {{invoiceNumber}}</h1>
+                                        <div class="date">Date of Invoice: <b>{{today_date | date : "dd.MM.y"}}</b></div>
+                                        <div class="date">Due Date: <b>{{today_date | date : "dd.MM.y"}}</b></div>
+                                    </div>
+                                </div>
+                                <table border="0" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-left">DESCRIPTION</th>
+                                        <th class="text-right">UNIT PRICE</th>
+                                        <th class="text-right">QUANTITY</th>
+                                        <th class="text-right">TOTAL</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="(key, value) in invoiceData track by $index">
+                                        <td class="no">{{$index+1}}</td>
+                                        <td class="text-left"><h3>
+                                            {{value.productName}}
+                                        </h3>
+                                            {{value.model}}-{{value.productCategory}}
+                                        </td>
+                                        <td class="unit">PKR {{value.salePrice}}</td>
+                                        <td class="qty">{{value.quantity}}</td>
+                                        <td class="total">PKR {{value.totalSaleAmount}}‬</td>
+
+                                    </tr>
+
+                                    </tbody>
+                                    <tfoot>
+                                    <tr >
+                                        <td colspan="2"></td>
+                                        <td colspan="2">SUBTOTAL</td>
+                                        <td>PKR {{subTotal}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="2">GRAND TOTAL</td>
+                                        <td>PKR {{subTotal}}</td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="thanks">Thank you!</div>
+                                <div class="notices">
+<!--                                    <div>NOTICE:</div>-->
+<!--                                    <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>-->
+                                </div>
+                            </main>
+                            <footer>
+                                Invoice was created on a computer and is valid without the signature and seal.
+                            </footer>
+                        </div>
+                        <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+                        <div></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- content viewport ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <footer class="footer">
+            <div class="row">
+                <div class="col-sm-6 text-center text-sm-right order-sm-1">
+                    <ul class="text-gray">
+                        <li><a href="#">Terms of use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 text-center text-sm-left mt-3 mt-sm-0">
+                    <small class="text-muted d-block">Copyright © 2019 <a href="#" target="_blank">Jamil.K</a>.
+                        All rights reserved
+                    </small>
+                    <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i>  FarooqRahu</small>
+                </div>
+            </div>
+        </footer>
+        <!-- partial -->
+    </div>
+    <!-- page content ends -->
+    <!-- Modal -->
+
+</div>
+
+

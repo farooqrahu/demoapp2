@@ -1,23 +1,29 @@
 <nav class="t-header">
 	<div class="t-header-brand-wrapper">
 		<a data-ui-sref="home">
-			<img class="logo" src="app/assets/images/logo.svg" alt="">
-			<img class="logo-mini" src="app/assets/images/logo_mini.svg" alt="">
+<!--			<img class="logo" src="app/assets/images/logo.svg" alt="">-->
+<!--			<img class="logo-mini" src="app/assets/images/logo.svg" alt="">-->
+<!--			<span style="font-family:inherit;font-size: larger;font-weight: bold;color: blue">My Mobile Shop</span>-->
+			<a class="logo" style="width: 99%!important;">
+				<img src="app/assets/images/wording1.PNG"  />
+				<!--              My Mobile Shop-->
+			</a>
+
 		</a>
 	</div>
-	<div ng-controller="NavController" class="t-header-content-wrapper">
+	<div  class="t-header-content-wrapper">
 		<div class="t-header-content">
 			<button  ng-click="toogleThis()" class="t-header-toggler t-header-mobile-toggler d-block d-lg-none">
 				<i class="mdi mdi-menu"></i>
 			</button>
-			<form action="#" class="t-header-search-box">
+			<!--<form action="#" class="t-header-search-box">
 				<div class="input-group">
 					<input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Search" autocomplete="off">
 					<button class="btn btn-primary" type="submit"><i class="mdi mdi-arrow-right-thick"></i></button>
 				</div>
-			</form>
-			<ul ng-controller="NavController" class="nav ml-auto">
-				<li class="nav-item dropdown">
+			</form>-->
+			<ul  class="nav ml-auto">
+			<!--	<li class="nav-item dropdown">
 					<a class="nav-link show_hand" data-target="#" id="notificationDropdown" data-toggle="dropdown" aria-expanded="false">
 						<i class="mdi mdi-bell-outline mdi-1x"></i>
 					</a>
@@ -59,9 +65,9 @@
 							<a data-target="#">View All</a>
 						</div>
 					</div>
-				</li>
+				</li>-->
 
-				<li ng-show="false" class="nav-item dropdown">
+			<!--	<li ng-show="false" class="nav-item dropdown">
 					<a clas s="nav-link show_hand" data-target="#" id="messageDropdown" data-toggle="dropdown" aria-expanded="false">
 						<i class="mdi mdi-message-outline mdi-1x"></i>
 						<span class="notification-indicator notification-indicator-primary notification-indicator-ripple"></span>
@@ -107,8 +113,8 @@
 							<a data-target="#">View All</a>
 						</div>
 					</div>
-				</li>
-				<li class="nav-item dropdown">
+				</li>-->
+				<!--<li class="nav-item dropdown">
 					<a class="nav-link show_hand" data-target="#" id="appsDropdown" data-toggle="dropdown" aria-expanded="false">
 						<i class="mdi mdi-apps mdi-1x"></i>
 					</a>
@@ -139,7 +145,7 @@
 							<a data-target="#">View All</a>
 						</div>
 					</div>
-				</li>
+				</li>-->
 				<li class="nav-item " >
 					<a  data-toggle="tooltip" data-placement="left" title="Logout!" data-ng-click="logout()" class="nav-link show_hand" >
 						<i style="color: red;" class="mdi mdi-logout mdi-1x "></i>

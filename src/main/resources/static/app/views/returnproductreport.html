@@ -1,0 +1,180 @@
+<!-- partial:../../partials/_header.html -->
+
+<!-- partial -->
+<div ng-controller="ReportsController as reportsController" ng-init="getReturnedProducts();" class="page-body">
+    <!-- partial:../../partials/_sidebar.html -->
+    <div ng-include="'app/views/sidebar.html'"></div>
+    <!-- partial -->
+    <div class="page-content-wrapper">
+        <div class="page-content-wrapper-inner">
+            <div class="viewport-header">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb has-arrow">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Return</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Returned Product List</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="content-viewport">
+                <!-- Button trigger modal -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div ui-grid="productReturn" ui-grid-resize-columns
+                             ui-grid-move-columns
+                             ui-grid-auto-resize ui-grid-pagination
+                             class="grid"></div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <form data-ng-submit="addProductReturn()" name="updateProductStockForm" novalidate>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Return Product</h5>
+                            <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="grid">
+                                    <p class="grid-header">Product Detail</p>
+                                    <div class="grid-body">
+                                        <div class="item-wrapper">
+                                            <div class="row ">
+
+                                                <div class="col-lg-6">
+                                                    <div class="grid">
+                                                        <div class="grid-body">
+
+                                                            <div class="form-group input-rounded"
+                                                                 data-ng-class="{ 'has-error': updateProductStockForm.name.$invalid && updateProductStockForm.name.$dirty }">
+                                                                <label for="name"> Name:</label>
+                                                                <input tabindex="1" type="text" required
+                                                                       class="form-control"
+                                                                       data-ng-model="product.product" id="name" ng-disabled="true" name="name">
+
+                                                            </div>
+                                                            <!--
+                                                                                                                       <div class="form-group input-rounded"
+                                                                                                                            data-ng-class="{ 'has-error': updateProductStockForm.model.$invalid && updateProductStockForm.model.$dirty }">
+                                                                                                                           <label for="display"> Model:</label>
+                                                                                                                           <input tabindex="1" type="text" ng-disabled="true" class="form-control"
+                                                                                                                                  data-ng-model="product.model" id="display"
+                                                                                                                                  name="display">
+
+                                                                                                                       </div>
+
+                                                                                                                        <div class="form-group input-rounded"
+                                                                                                                              data-ng-class="{ 'has-error': addProductForm.totalPurchaseAmount.$invalid && addProductForm.totalPurchaseAmount.$dirty }">
+                                                                                                                             <label for="totalPurchaseAmount"> Available Total Purchase
+                                                                                                                                 Amount:</label>
+                                                                                                                             <input tabindex="1" type="text" ng-disabled="true"
+                                                                                                                                    class="form-control"
+                                                                                                                                    data-ng-model="product.totalPurchaseAmount"
+                                                                                                                                    id="totalPurchaseAmount"
+                                                                                                                                    name="totalPurchaseAmount">
+
+                                                                                                                         </div>-->
+
+                                                            <!--    <div class="form-group input-rounded"
+                                                                     data-ng-class="{ 'has-error': addProductForm.totalSaleAmount.$invalid && addProductForm.totalSaleAmount.$dirty }">
+                                                                    <label for="totalSaleAmount"> Available Total Sale Amount:</label>
+                                                                    <input tabindex="1" type="text" ng-disabled="true" class="form-control"
+                                                                           data-ng-model="product.totalSaleAmount" id="totalSaleAmount"
+                                                                           name="totalSaleAmount">
+
+                                                                </div>-->
+
+
+                                                            <div class="form-group input-rounded"
+                                                                 data-ng-class="{ 'has-error': addProductForm.unitPrice.$invalid && addProductForm.unitPrice.$dirty }">
+                                                                <label for="purchasePrice"> Unit Price:</label>
+                                                                <input tabindex="1" type="text" required  ng-disabled="true"
+                                                                       class="form-control" ng-change="calculateTotalSalePurAmount()"
+                                                                       data-ng-model="product.unitPrice"
+                                                                       id="purchasePrice" name="unitPrice">
+
+                                                            </div>
+
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="grid">
+                                                        <div class="grid-body">
+
+
+
+
+
+
+
+
+                                                            <small ng-if="quantityExceeded!=null" class="alert alert-danger">{{quantityExceeded}}</small>
+                                                            <div class="form-group input-rounded"
+                                                                 data-ng-class="{ 'has-error': updateProductStockForm.quantity.$invalid && updateProductStockForm.quantity.$dirty }">
+                                                                <label for="quantity"> Purchase Quantity:</label>
+                                                                <input  tabindex="3" type="text" ng-disabled="true"
+                                                                        class="form-control"
+                                                                        data-ng-model="product.quantity" id="quantity" name="quantity" >
+
+                                                            </div>
+                                                            <div class="form-group input-rounded"
+                                                                 data-ng-class="{ 'has-error': addProductForm.totalAmount.$invalid && addProductForm.totalAmount.$dirty }">
+                                                                <label for="newTotalSaleAmount"> Total  Amount:</label>
+                                                                <input tabindex="1" type="text" ng-disabled="true"
+                                                                       class="form-control"
+                                                                       data-ng-model="product.totalAmount"
+                                                                       id="newTotalSaleAmount"
+                                                                       name="totalAmount">
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <!--                        <button type="submit" data-ng-disabled="product.$invalid || (confirmPassword != product.password)" class="btn btn-primary">Save changes</button>-->
+                            <button ng-show="!editUserBol" type="submit" class="col-4 center btn btn-primary"
+                                    data-ng-disabled="updateProductStockForm.$invalid || (confirmPassword != product.password)">
+                                Submit
+                            </button>
+
+                            <button ng-show="editUserBol" type="submit" class="col-4 center btn btn-primary"
+                            >Submit
+                            </button>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+</div>
+
+

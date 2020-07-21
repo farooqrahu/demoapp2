@@ -1,0 +1,46 @@
+<!-- partial:../../partials/_header.html -->
+
+<!-- partial -->
+<div ng-controller="ReportsController as reportsController" ng-init="getCustomerSaleData()" class="page-body">
+    <!-- partial:../../partials/_sidebar.html -->
+    <div ng-include="'app/views/sidebar.html'"></div>
+    <!-- partial -->
+    <div class="page-content-wrapper">
+        <div class="page-content-wrapper-inner">
+            <div class="viewport-header">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb has-arrow">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Reports</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Customer Sale Report</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="content-viewport">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary p-1 mdi mdi-receipt" data-toggle="modal" ng-click="generateCustomerInvoice()"
+                        data-target="#productModal">
+                    Generate Invoice
+                </button>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div ui-grid="customerSaleData" ui-grid-resize-columns
+                             ui-grid-move-columns ui-grid-selection
+                             ui-grid-auto-resize ui-grid-pagination
+                             class="grid"></div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+

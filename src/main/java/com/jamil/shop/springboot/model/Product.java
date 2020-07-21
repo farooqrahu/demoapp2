@@ -1,52 +1,40 @@
 package com.jamil.shop.springboot.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 
 @Entity
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Product extends BaseEntityAudit {
     private String name;
-    private String duration;
-    private String date;
-    private String album;
+    private String model;
+    private Boolean closed;
+    private Boolean isActive;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_CAT_ID", nullable = false)
+    private ProductCategory productCategory;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_COMPANY_ID", nullable = false)
+    private ProductCompany productCompany;
 
-    @OneToOne
-    @JoinColumn(name = "content")
-    private Content content;
-
-    @ManyToOne
-    @JoinColumn(name = "author")
-    private Author author;
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "productList")
-    private List<User> userList;
+    public Product(String name, String model, Boolean closed, Boolean isActive, ProductCategory productCategory, ProductCompany productCompany) {
+        this.name = name;
+        this.model = model;
+        this.closed = closed;
+        this.isActive = isActive;
+        this.productCategory = productCategory;
+        this.productCompany = productCompany;
+    }
 
     public Product() {
     }
 
-    public Product(String name, Author author, String duration, String date, String album, Content content) {
-        this.name = name;
-        this.author = author;
-        this.duration = duration;
-        this.date = date;
-        this.album = album;
-        this.content = content;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -56,52 +44,47 @@ public class Product {
         this.name = name;
     }
 
-    public Author getAuthor() {
-        return author;
+    public String getModel() {
+        return model;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getDuration() {
-        return duration;
+    public Boolean getClosed() {
+        return closed;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
     }
 
-    public String getDate() {
-        return date;
+    public Boolean getActive() {
+        return isActive;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
-    public String getAlbum() {
-        return album;
+    public ProductCategory getProductCategory() {
+        return productCategory;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public ProductCompany getProductCompany() {
+        return productCompany;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setProductCompany(ProductCompany productCompany) {
+        this.productCompany = productCompany;
     }
 
-    public Content getContent() {
-        return content;
-    }
 
-    public void setContent(Content content) {
-        this.content = content;
-    }
+
 
 }

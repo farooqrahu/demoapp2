@@ -1,3 +1,4 @@
+/*
 package com.jamil.shop.springboot.controller;
 
 import com.google.common.collect.ImmutableList;
@@ -31,9 +32,7 @@ public class ProductControllerTest {
         Content content = new Content();
         Author author = new Author();
 
-        products.add(new Product("name", author, "duration", "date", "album", content));
-        products.add(new Product("name1", author, "duration1", "date1", "album1", content));
-        products.add(new Product("name2", author, "duration2", "date2", "album2", content));
+
     }
 
 
@@ -80,3 +79,4 @@ public class ProductControllerTest {
 
 
 }
+*/

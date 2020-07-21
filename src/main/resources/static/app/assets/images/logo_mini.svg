@@ -8,8 +8,8 @@
         <text id="." font-family="Montserrat-Black, Montserrat Black" font-size="23" font-weight="700" fill="#DB504A">
             <tspan x="14" y="23">.</tspan>
         </text>
-        <text id="L" font-family="ArialRoundedMTBold, Arial Rounded MT Bold" font-size="23" font-weight="normal" fill="#FFFFFF">
-            <tspan x="6" y="20">L</tspan>
+        <text id="J" font-family="ArialRoundedMTBold, Arial Rounded MT Bold" font-size="23" font-weight="normal" fill="#FFFFFF">
+            <tspan x="6" y="20">J</tspan>
         </text>
     </g>
 </svg>

@@ -1,4 +1,5 @@
-a.show_hand{ cursor: pointer; }
+a.show_hand{ cursor: pointer !important; }
+a{ cursor: pointer !important; }
 
 .dashboard-stat .visual {
     width: 80px;
@@ -106,4 +107,281 @@ a.show_hand{ cursor: pointer; }
 }
 .t-header .t-header-brand-wrapper{
     padding-left:0PX;
+}
+
+
+
+/***************************************/
+
+.has-error .form-control:focus, .has-error .form-control:hover, .has-warning .form-control:focus, .has-warning .form-control:hover, .has-success .form-control:focus, .has-success .form-control:hover {
+    box-shadow: none;
+}
+
+.has-error .control-label {
+    color: #8e8e93 !important;
+}
+
+.has-error .error {
+    color: #a94442;
+}
+
+.has-error .form-control {
+    color: #5b5b60;
+    border-color: #F8F8F8;
+    border-bottom-color: #a94442 !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: dotted;
+    border-color: #a94442 !important;
+    border-width: 1px !important;
+    /*border-style: dotted;*/
+    border-style: solid;
+}
+
+.has-error .form-control:focus, .has-error .form-control:hover {
+    border-color: #F8F8F8;
+    border-bottom-color: #a94442 !important;
+}
+
+.has-error label {
+    color: #a94442 !important;
+}
+
+.has-warning {
+    color: #eea236;
+}
+
+.has-warning .control-label {
+    color: #8e8e93 !important;
+}
+
+.has-warning .form-control {
+    color: #5b5b60;
+    border-color: #F8F8F8;
+    border-bottom-color: #8a6d3b !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: dotted;
+    border-color: #8a6d3b !important;
+    border-width: 1px !important;
+    border-style: dotted;
+}
+
+.has-warning .form-control:focus, .has-warning .form-control:hover {
+    border-color: #F8F8F8;
+    border-bottom-color: #8a6d3b !important;
+}
+
+.has-warning label {
+    color: #8a6d3b;
+}
+
+.has-success {
+    color: #5cb85c;
+}
+
+.has-success .control-label {
+    color: #8e8e93 !important;
+}
+
+.has-success .form-control {
+    color: #5b5b60;
+    border-color: #F8F8F8;
+    border-bottom-color: #3c763d !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: dotted;
+    border-color: #3c763d !important;
+    border-width: 1px !important;
+    border-style: dotted;
+}
+
+.has-success .form-control:focus, .has-success .form-control:hover {
+    border-color: #F8F8F8;
+    border-bottom-color: #3c763d !important;
+}
+
+.has-success label {
+    color: #3c763d;
+}
+.preloader {
+    padding: 50px;
+    background: url('../images/preloader.gif') no-repeat 50% 50% transparent;
+}
+.disable-fields{
+    color: #aaa;
+}
+
+
+#invoice{
+    padding: 30px;
+}
+
+.invoice {
+    position: relative;
+    background-color: #FFF;
+    min-height: 680px;
+    padding: 15px
+}
+
+.invoice header {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #3989c6
+}
+
+.invoice .company-details {
+    text-align: right
+}
+
+.invoice .company-details .name {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.invoice .contacts {
+    margin-bottom: 20px
+}
+
+.invoice .invoice-to {
+    text-align: left
+}
+
+.invoice .invoice-to .to {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.invoice .invoice-details {
+    text-align: right
+}
+
+.invoice .invoice-details .invoice-id {
+    margin-top: 0;
+    color: #3989c6
+}
+
+.invoice main {
+    padding-bottom: 50px
+}
+
+.invoice main .thanks {
+    margin-top: -100px;
+    font-size: 2em;
+    margin-bottom: 50px
+}
+
+.invoice main .notices {
+    padding-left: 6px;
+    border-left: 6px solid #3989c6
+}
+
+.invoice main .notices .notice {
+    font-size: 1.2em
+}
+
+.invoice table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 20px
+}
+
+.invoice table td,.invoice table th {
+    padding: 15px;
+    background: #eee;
+    border-bottom: 1px solid #fff
+}
+
+.invoice table th {
+    white-space: nowrap;
+    font-weight: 400;
+    font-size: 16px
+}
+
+.invoice table td h3 {
+    margin: 0;
+    font-weight: 400;
+    color: #3989c6;
+    font-size: 1.2em
+}
+
+.invoice table .qty,.invoice table .total,.invoice table .unit {
+    text-align: right;
+    font-size: 1.2em
+}
+
+.invoice table .no {
+    color: #fff;
+    font-size: 1.6em;
+    background: #3989c6
+}
+
+.invoice table .unit {
+    background: #ddd
+}
+
+.invoice table .total {
+    background: #3989c6;
+    color: #fff
+}
+
+.invoice table tbody tr:last-child td {
+    border: none
+}
+
+.invoice table tfoot td {
+    background: 0 0;
+    border-bottom: none;
+    white-space: nowrap;
+    text-align: right;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-top: 1px solid #aaa
+}
+
+.invoice table tfoot tr:first-child td {
+    border-top: none
+}
+
+.invoice table tfoot tr:last-child td {
+    color: #3989c6;
+    font-size: 1.4em;
+    border-top: 1px solid #3989c6
+}
+
+.invoice table tfoot tr td:first-child {
+    border: none
+}
+
+.invoice footer {
+    width: 100%;
+    text-align: center;
+    color: #777;
+    border-top: 1px solid #aaa;
+    padding: 8px 0
+}
+
+@media print {
+    .invoice {
+        font-size: 11px!important;
+        overflow: hidden!important
+    }
+
+    .invoice footer {
+        position: absolute;
+        bottom: 10px;
+        page-break-after: always
+    }
+
+    .invoice>div:last-child {
+        page-break-before: always
+    }
+}
+
+html{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";!important;
+}
+.btn {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";!important;
+}
+.logo img{
+width: 97% !important;
 }

@@ -1,0 +1,63 @@
+<!-- partial:../../partials/_header.html -->
+
+<!-- partial -->
+<div ng-controller="ReportsController as reportsController" ng-init="findGLData();" class="page-body">
+    <!-- partial:../../partials/_sidebar.html -->
+    <div ng-include="'app/views/sidebar.html'"></div>
+    <!-- partial -->
+    <div class="page-content-wrapper">
+        <div class="page-content-wrapper-inner">
+            <div class="viewport-header">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb has-arrow">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">General Ledger</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">General Ledger Report</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="content-viewport">
+                <!-- Button trigger modal -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="grid">
+                            <p class="grid-header">View General Ledger</p>
+                            <div class="item-wrapper">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped table-bordered table-primary"  >
+                                        <thead >
+                                        <tr>
+                                            <th>Account Name</th>
+                                            <th>Total Credit Amount</th>
+                                            <th>Total Debit Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat=" data in allGlData">
+                                            <td ng-bind="data.accountName"></td>
+                                            <td ng-bind="data.creditAmount"></td>
+                                            <td ng-bind="data.debitAmount"></td>
+
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+

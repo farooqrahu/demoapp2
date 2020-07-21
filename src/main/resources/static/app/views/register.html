@@ -8,10 +8,10 @@
 						</a>
 					</div>
 
-					<div class="row">
+					<div ng-controller="UsersController as userControllerVm" class="row">
 						<div class="col-lg-7 col-md-8 col-sm-9 col-12 mx-auto form-wrapper">
 							<div class="alert alert-info margin-top-5" data-ng-show="message">{{message}}</div>
-							<form data-ng-submit="submit()" name="register" novalidate>
+							<form data-ng-submit="registerUser()" name="register" novalidate>
 								<div class="form-group input-rounded"
 									 data-ng-class="{ 'has-error': register.name.$invalid && register.name.$dirty }">
 									<label for="name">Name:</label> <input type="text" required
@@ -22,6 +22,11 @@
 									 data-ng-class="{ 'has-error': register.username.$invalid && register.username.$dirty }">
 									<label for="name">User Name:</label> <input type="text" required
 																		   class="form-control" data-ng-model="user.username" id="username" name="username">
+								</div>
+								<div  class="form-group input-rounded has-error">
+									<p >Select User Role:</p>
+									<select name="role" class="custom-select" ng-model="roles.value" ng-options="v for v in roles.values">
+									</select>
 								</div>
 
 								<div class="form-group input-rounded"
@@ -44,7 +49,7 @@
 
 								</div>
 								<div class="signup-link">
-									<p>Already have account <a href="#" data-ui-sref="login">Sign In</a></p>
+									<p>Already have accountDto <a href="#" data-ui-sref="login">Sign In</a></p>
 
 								</div>
 							</form>

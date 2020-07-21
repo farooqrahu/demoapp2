@@ -1,11 +1,10 @@
 package com.jamil.shop.springboot.service;
 
-import com.jamil.shop.springboot.DAO.ContentDao;
 import com.jamil.shop.springboot.DAO.ProductDao;
-import com.jamil.shop.springboot.DAO.ProductlistDao;
+import com.jamil.shop.springboot.DAO.ProductSaleRepository;
+import com.jamil.shop.springboot.DAO.ProductStockRepository;
 import com.jamil.shop.springboot.DAO.UserDao;
-import com.jamil.shop.springboot.model.User;
-import com.jamil.shop.springboot.model.Product;
+import com.jamil.shop.springboot.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,23 +12,23 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
     private final static Logger logger = Logger.getLogger(ProductService.class);
 
-    @Autowired
-    private ContentDao contentDao;
 
     @Autowired
     private ProductDao productDao;
+    @Autowired
+    private ProductSaleRepository productSaleRepository;
 
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private ProductlistDao productlistDao;
 
     private List<Product> products;
     private User user;
@@ -40,31 +39,23 @@ public class ProductService {
         return productDao.findAll();
     }
 
-    public Product getProducts(int id) {
+    public Product getProducts(Long id) {
         return productDao.findOne(id);
     }
 
-    public void addProducts(Product Product) {
-        productDao.save(Product);
+    public Product addProducts(Product Product) {
+        return productDao.save(Product);
     }
 
-    public void deleteProducts(int id) {
-        if (productlistDao.findOne(id) != null) {
+    public void deleteProducts(Long id) {
 
-            productlistDao.delete(id);
-
-            logger.info("Delete Product from productlist service method");
-        }
         Product Product = productDao.findOne(id);
 
         productDao.delete(id);
 
         logger.info("Delete Product service method");
 
-        if (Product.getContent() != null) {
-            contentDao.delete(Product.getContent().getId());
-            logger.info("Delete Product content");
-        }
+
 
 
     }
@@ -73,15 +64,15 @@ public class ProductService {
 
         User user = userDao.findOne(userId);
 
-        return user.getProductList(products);
+        return null;//user.getProductList(products);
 
     }
 
-    public void addProductsPlaylist(int id) throws Exception {
+    public void addProductsPlaylist(Long id) throws Exception {
         authentication();
 
         for (Product Product: products) {
-            if (Product.getId() == id) {
+            if (Product.getId().longValue()==id) {
 
                 throw new RuntimeException("This Product already in a productlist");
             }
@@ -112,15 +103,26 @@ public class ProductService {
         String loggedUsername = auth.getName();
         user = userDao.findOneByUsername(loggedUsername);
         products = new ArrayList<>();
-        products.addAll(user.getProductList(products));
+//        products.addAll(user.getProductList(products));
 
         logger.info("Get current " + user.getName() +" productlist");
     }
 
     private void saveUser() {
-        user.getProductList(products);
+  //      user.getProductList(products);
         userDao.save(user);
         logger.info("Save new " + user.getName() +" productlist");
+    }
+
+    public List<Product> findAllByClosedNot() {
+    return productDao.findAllByNotClosed();
+    }
+    public List<ProductSale> saleToCustomer() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = auth.getName();
+        Set<Branch> branches = userDao.findOneByUsername(loggedUsername).getBranches();
+        Long branch=branches.stream().map(BaseEntity::getId).collect(Collectors.toList()).get(0);
+        return productSaleRepository.getAllProductsBranchWise(branch);
     }
 
 }

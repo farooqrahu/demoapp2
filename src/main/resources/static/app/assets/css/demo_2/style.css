@@ -1347,7 +1347,7 @@ pre {
     color: #6c757d;
     opacity: 1; }
   .form-control:disabled, .form-control[readonly] {
-    background-color: #f8f9fa;
+    background-color: #b4b5b6;
     opacity: 1; }
 
 select.form-control:focus::-ms-value {

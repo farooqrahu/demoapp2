@@ -1,46 +1,53 @@
 angular.module('myApp')
 
-.controller('LoginController', function($cookieStore,$http, $scope, $state, AuthService, $rootScope) {
-	$scope.firstName="";
+.controller('LoginController', function($http, $scope, $state, AuthService, $rootScope) {
 
-	$scope.login = function() {
-
-		var base64Credential = btoa($scope.username + ':' + $scope.password);
-
-		$http.get('user', {
-			headers : {
-
-				'Authorization' : 'Basic ' + base64Credential
-			}
-		}).success(function(res) {
-			$scope.password = null;
-			if (res.authenticated) {
-				$scope.message = '';
-
-				$http.defaults.headers.common['Authorization'] = 'Basic ' + base64Credential;
-				AuthService.user = res;
-				$cookieStore.put('displayname',res);
-				$cookieStore.put('isLogged',true);
-				$rootScope.$broadcast('LoginSuccessful');
-				$state.go('home');
+	var authenticate = function(callback) {
+		$http.get('api/user').success(function(data) {
+			if (data.name) {
+				$rootScope.authenticated = true;
+				$rootScope.loginUserData  = data;
 			} else {
-				$scope.message = 'Authetication Failed !';
+				$rootScope.authenticated = false;
 			}
-		}).error(function(error) {
-			$scope.message = 'Authetication Failed !';
+			callback && callback();
+		}).error(function() {
+			$rootScope.authenticated = false;
+			callback && callback();
 		});
 	};
 
-	$scope.logout = function() {
+	authenticate();
+    $scope.credentials={};
+	$scope.login = function() {
+		$http.post('login',$.param($scope.credentials), {
+			headers : {
+				"content-type" : "application/x-www-form-urlencoded"
+			}
+		}).success(function(data) {
+			authenticate(function() {
+				if ($rootScope.authenticated) {
+					$rootScope.loginUserData = data;
 
-		$http.defaults.headers.common['Authorization'] = null;
-		$scope.user = null;
-		$scope.message = 'Successfully logged out';
-		$scope.resource = null;
+					$state.go("home");
+					$scope.error = false;
+				} else {
+					$scope.error = true;
+					$scope.message = 'Authentication Failed !';
+					$state.go("login");
+				}
+			});
+		}).error(function(data) {
+			$state.go("login");
+			$scope.error = true;
+			$scope.message = 'Authentication Failed !';
+			$rootScope.authenticated = false;
+			$rootScope.loginUserData  = null;
+		})
 	};
 
-	$scope.getUserDetail= function() {
-		$scope.userDetail= $cookieStore.get('displayname');
-	}
+
+
+
 
 	});

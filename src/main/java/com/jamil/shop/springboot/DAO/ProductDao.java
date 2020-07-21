@@ -10,11 +10,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductDao extends JpaRepository<Product, Integer> {
+public interface ProductDao extends JpaRepository<Product, Long> {
 
-    @Query("SELECT s FROM Product s WHERE s.author.name LIKE CONCAT('%',:name,'%') OR s.name LIKE CONCAT('%',:name,'%')")
+    @Query("SELECT s FROM Product s WHERE   s.name LIKE CONCAT('%',:name,'%')")
     List<Product> findProductsByName(@Param("name") String name);
+    @Query("select p from Product p where p.closed=false ")
+    List<Product> findAllByNotClosed();
 
+    @Query("SELECT s FROM Product s WHERE   s.name =?1")
+    Product findProductByName(String name);
 
 
 }

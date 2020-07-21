@@ -1,112 +1,138 @@
 package com.jamil.shop.springboot.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-public class User implements UserDetails {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String name;
-	private String username;
-	@JsonProperty(access = Access.WRITE_ONLY)
-	private String password;
-	private String role;
+public class User extends BaseEntityAudit {
+    private static final long serialVersionUID = 1L;
 
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "productList", joinColumns =
-			@JoinColumn(name = "user_id"), inverseJoinColumns =
-			@JoinColumn(name = "products_id"))
-	private List<Product> productList;
+    private String name;
+    private String username;
+    private String email;
+    private String phoneNo;
+    @Column(name = "employeeId", nullable = false, unique = true)
+    private String employeeId;
+    private String designation;
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private String password;
+    private Boolean isActive;
+    private Boolean closed;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+    @JsonIgnore
+    private Set<Role> roles = new HashSet<>();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public String getName() {
-		return name;
-	}
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_branches", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "branches_id", referencedColumnName = "id"))
+    @JsonIgnore
+    private Set<Branch> branches;
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
-	public String getUsername() {
-		return username;
-	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public List<Product> getProductList(List<Product> products) {
-		return productList;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setProductList(List<Product> productList) {
-		this.productList = productList;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    public String getPhoneNo() {
+        return phoneNo;
+    }
 
-	@JsonIgnore
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(role));
-		return authorities;
-	}
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public Set<Branch> getBranches() {
+        return branches;
+    }
+
+    public void setBranches(Set<Branch> branches) {
+        this.branches = branches;
+    }
+
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
 }

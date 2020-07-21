@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>MobileApp</title>
+	<link rel="stylesheet" href="app/assets/css/demo_1/style.css">
 
 	<!--inject:css-->
 	<!--endinject-->
@@ -14,17 +15,49 @@
 	<script src="app/assets/bower-files/angular.js"></script>
 	<script src="app/assets/bower-files/angular-ui-router.js"></script>
 	<script src="app/assets/bower-files/angular-cookies.js"></script>
+	<script src="app/assets/js/dirPagination.js"></script>
+
+    <script src="app/assets/js/angular-touch.js"></script>
+    <script src="app/assets/js/angular-animate.js"></script>
+    <script src="app/assets/js/angular-aria.js"></script>
+    <script src="app/assets/js/csv.js"></script>
+    <script src="app/assets/js/pdfmake.js"></script>
+    <script src="app/assets/js/vfs_fonts.js"></script>
+    <script src="app/assets/js/lodash.min.js"></script>
+    <script src="app/assets/js/jszip.min.js"></script>
+    <script src="app/assets/js/excel-builder.dist.js"></script>
+    <script src="app/assets/js/ui-grid.js"></script>
+	<script src="app/assets/js/ui-grid.edit.min.js"></script>
+	<script src="app/assets/js/ui-grid.row-edit.min.js"></script>
+
+	<link rel="stylesheet" href="app/assets/css/ui-grid.css" type="text/css">
+
 	<script src="app/assets/js/app.js"></script>
 	<script src="app/assets/js/route.js"></script>
 	<script src="app/assets/js/controllers/login.js"></script>
+
 	<script src="app/assets/js/controllers/register.js"></script>
 	<script src="app/assets/js/controllers/add-product.js"></script>
 	<script src="app/assets/js/controllers/edit-product.js"></script>
 	<script src="app/assets/js/controllers/home.js"></script>
 	<script src="app/assets/js/controllers/nav.js"></script>
+	<script src="app/assets/js/services/productService.js"></script>
 	<script src="app/assets/js/controllers/product-controller.js"></script>
+	<script src="app/assets/js/controllers/product-stock-controller.js"></script>
+	<script src="app/assets/js/controllers/product-sale-controller.js"></script>
+	<script src="app/assets/js/controllers/reports_controller.js"></script>
+	<script src="app/assets/js/controllers/product-cat-controller.js"></script>
+	<script src="app/assets/js/controllers/product-com-controller.js"></script>
+	<script src="app/assets/js/controllers/product-sale-cus-controller.js"></script>
+
 	<script src="app/assets/js/controllers/productlist.js"></script>
+	<script src="app/assets/js/services/userService.js"></script>
 	<script src="app/assets/js/controllers/users.js"></script>
+	<script src="app/assets/js/services/reportService.js"></script>
+	<script src="app/assets/js/services/productCatService.js"></script>
+	<script src="app/assets/js/services/productComService.js"></script>
+	<script src="app/assets/js/services/productSaleCustomerService.js"></script>
+
 	<script src="app/assets/js/controllers/page-not-found.js"></script>
 	<script src="app/assets/js/services/auth-service.js"></script>
 	<link rel="stylesheet" href="app/assets/vendors/iconfonts/mdi/css/materialdesignicons.css" />
@@ -32,6 +65,7 @@
 	<!-- endinject -->
 	<!-- vendor css for this page -->
 	<!-- End vendor css for this page -->
+	<link rel="stylesheet" href="app/assets/css/style.bundle.css" />
 
 	<link rel="stylesheet" href="app/assets/css/sweetalert2.min.css" />
 
@@ -40,34 +74,41 @@
 	<link rel="stylesheet" href="app/assets/css/shared/style.css" />
 	<!-- endinject -->
 	<!-- Layout style -->
-	<link rel="stylesheet" href="app/assets/css/demo_1/style.css">
 	<!-- Layout style -->
 	<link rel="shortcut icon" href="app/assets/images/favicon.ico" />
 	<!--endinject-->
 </head>
 
 	<body class="header-fixed" data-ng-app="myApp">
+	<div id="page-loading" class="">
+
+	</div>
 	<div class="fixed-nav-bar" data-ui-view="nav" ></div>
 			<div data-ui-view="content"></div>
+	<script src="app/assets/js/jquery-2.1.0.js"></script>
+	<script src="app/assets/js/sweetalert2.all.js"></script>
+	<script src="app/assets/js/template.js"></script>
+
+	<!-- endinject -->
+	<!-- Vendor Js For This Page Ends-->
+	<script src="app/assets/vendors/apexcharts/apexcharts.min.js"></script>
+	<script src="app/assets/vendors/chartjs/Chart.min.js"></script>
+	<script src="app/assets/js/charts/chartjs.addon.js"></script>
+	<!-- Vendor Js For This Page Ends-->
+	<!-- build:js -->
+			<script src="app/assets/js/dashboard.js"></script>
 			<script src="app/assets/vendors/js/core.js"></script>
 			<script src="app/assets/vendors/js/vendor.addons.js"></script>
 			<!-- endinject -->
 			<!-- Vendor Js For This Page Ends-->
 			<!-- Vendor Js For This Page Ends-->
+
 			<!-- build:js -->
-			<script src="app/assets/js/sweetalert2.all.js"></script>
-			<script src="app/assets/js/template.js"></script>
 
 
 
-			<!-- endinject -->
-			<!-- Vendor Js For This Page Ends-->
-			<script src="app/assets/vendors/apexcharts/apexcharts.min.js"></script>
-			<script src="app/assets/vendors/chartjs/Chart.min.js"></script>
-			<script src="app/assets/js/charts/chartjs.addon.js"></script>
-			<!-- Vendor Js For This Page Ends-->
-			<!-- build:js -->
-			<script src="app/assets/js/dashboard.js"></script>
+
+
 
 
 	</body>

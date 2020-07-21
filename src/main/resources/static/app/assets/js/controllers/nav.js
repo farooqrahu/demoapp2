@@ -4,19 +4,16 @@ angular.module('myApp')
 
 })
 
-.controller('NavController', function($http, $scope, AuthService, $state, $rootScope,$cookieStore) {
+.controller('NavController', function($http, $scope, AuthService, $state, $rootScope) {
+
 	$scope.$on('LoginSuccessful', function() {
-		$scope.user = AuthService.user;
+        $rootScope.user = AuthService.user;
 	});
+
 	$scope.$on('LogoutSuccessful', function() {
-		$scope.user = null;
+        $rootScope.user = null;
 	});
-	$scope.logout = function() {
-		AuthService.user = null;
-        $cookieStore.put('isLogged',false);
-		$rootScope.$broadcast('LogoutSuccessful');
-		$state.go('login');
-	};
+
 
     $scope.loadData = function () {
         $http.get('http://localhost:8080/products').then(function (response) {
@@ -34,6 +31,15 @@ angular.module('myApp')
     };
     $scope.toogleThis= function () {
         $(".page-body").toggleClass("sidebar-collpased");
+    };
+    $scope.logout = function() {
+        $http.post('logout', {}).success(function(result) {
+        $("#logout").show("true");
+            $rootScope.authenticated = false;
+            $rootScope.user=null;
+            $state.go("login");
+        }).error(function(data) {
+            $rootScope.authenticated = false;
+        });
     }
-
 });
