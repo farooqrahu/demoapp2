@@ -15,6 +15,10 @@ angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination'
                     }
                 } else {
                     $rootScope.loginUserData = data;
+                    $rootScope.totalPurchase=data.totalPurchase;
+                    $rootScope.totalBranchSale=data.totalBranchSale;
+                    $rootScope.totalCustomerSale=data.totalCustomerSale;
+                    $rootScope.totalIncome=data.totalIncome;
                 }
 
             }).error(function () {
@@ -82,6 +86,18 @@ angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination'
         $rootScope.smtp = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/;
         $rootScope.email = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
 
+        $rootScope.printDiv = function (div) {
+            var docHead = document.head.outerHTML;
+            var printContents = document.getElementById(div).outerHTML;
+            var winAttr = "location=yes, statusbar=no, menubar=no, titlebar=no, toolbar=no,dependent=no, width=865, height=600, resizable=yes, screenX=200, screenY=200, personalbar=no, scrollbars=yes";
+
+            var newWin = window.open("", "_blank", winAttr);
+            var writeDoc = newWin.document;
+            writeDoc.open();
+            writeDoc.write('<!doctype html><html>' + docHead + '<body onLoad="window.print()">' + printContents + '</body></html>');
+            writeDoc.close();
+            newWin.focus();
+        };
 
     });
 
