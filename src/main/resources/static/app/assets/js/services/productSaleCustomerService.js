@@ -11,12 +11,22 @@ angular.module('myApp').factory('ProductSaleCusService', ['$http', '$q','$window
         findAllProductCompanies:findAllProductCompanies,
         getStockBranchWise:getStockBranchWise,
         addProductStock:addProductStock,
-        saleProductSaleToCustomer:saleProductSaleToCustomer
+        saleProductSaleToCustomer:saleProductSaleToCustomer,
+        saleToCustomer,
     };
     return factory;
 
 
     function findAllProducts(value) {
+        return $http.get("products",value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
+    function saleToCustomer(value) {
         return $http.get("products",value)
             .then(function (data) {
                 return data;
@@ -104,5 +114,6 @@ angular.module('myApp').factory('ProductSaleCusService', ['$http', '$q','$window
                 return e;
             });
     }
+
 
 }]);

@@ -1,448 +1,355 @@
+<!-- partial:partials/_header.html -->
 
-    <!-- partial:partials/_header.html -->
-
+<!-- partial -->
+<div class="page-body">
+    <!-- partial:partials/_sidebar.html -->
+    <div ng-include="'app/views/sidebar.html'"></div>
     <!-- partial -->
-    <div  class="page-body">
-      <!-- partial:partials/_sidebar.html -->
-      <div ng-include="'app/views/sidebar.html'"> </div>
-      <!-- partial -->
-      <div class="page-content-wrapper">
+    <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
-          <div class="content-viewport">
-            <div class="row">
-              <div class="col-12 py-5">
-                <h4>Dashboard</h4>
-                <p class="text-gray">Welcome aboard, Mr.<span style="color: blue" ng-bind="loginUserData.username"></span></p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xl-3 col-lg-6">
-                <div class="card card-stats mb-4 mb-xl-0">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                        <span class="h2 font-weight-bold mb-0">350,897</span>
-                      </div>
-                      <div class="col-auto">
-                        <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                          <i class="fas fa-chart-bar"></i>
-                        </div>
-                      </div>
+            <div class="content-viewport">
+                <div class="row">
+                    <div class="col-12 py-5">
+                        <h4>Dashboard</h4>
+                        <p class="text-gray">Welcome aboard, Mr.<span style="color: blue"
+                                                                      ng-bind="loginUserData.name"></span></p>
                     </div>
-                    <p class="mt-3 mb-0 text-muted text-sm">
-                      <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                      <span class="text-nowrap">Since last month</span>
-                    </p>
-                  </div>
                 </div>
-              </div>
-              <div class="col-xl-3 col-lg-6">
-                <div class="card card-stats mb-4 mb-xl-0">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">New users</h5>
-                        <span class="h2 font-weight-bold mb-0">2,356</span>
-                      </div>
-                      <div class="col-auto">
-                        <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                          <i class="fas fa-chart-pie"></i>
-                        </div>
-                      </div>
-                    </div>
-                    <p class="mt-3 mb-0 text-muted text-sm">
-                      <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
-                      <span class="text-nowrap">Since last week</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-lg-6">
-                <div class="card card-stats mb-4 mb-xl-0">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
-                        <span class="h2 font-weight-bold mb-0">924</span>
-                      </div>
-                      <div class="col-auto">
-                        <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                          <i class="fas fa-users"></i>
-                        </div>
-                      </div>
-                    </div>
-                    <p class="mt-3 mb-0 text-muted text-sm">
-                      <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-                      <span class="text-nowrap">Since yesterday</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-lg-6">
-                <div class="card card-stats mb-4 mb-xl-0">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                        <span class="h2 font-weight-bold mb-0">49,65%</span>
-                      </div>
-                      <div class="col-auto">
-                        <div class="icon icon-shape bg-info text-white rounded-circle shadow">
-                          <i class="fas fa-percent"></i>
-                        </div>
-                      </div>
-                    </div>
-                    <p class="mt-3 mb-0 text-muted text-sm">
-                      <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
-                      <span class="text-nowrap">Since last month</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row" style="
-    margin-top: 26px;
-">
+                <div ng-show="loginUserData.roles[0].id== 1"  class="m-portlet">
+                    <div class="m-portlet__body  m-portlet__body--no-padding">
+                        <div class="row m-row--no-padding m-row--col-separator-xl">
+                            <div class="col-xl-4">
+                                <!--begin:: Widgets/Stats2-1 -->
+                                <div class="m-widget1">
+                                    <div class="m-widget1__item">
+                                        <div class="row m-row--no-padding align-items-center">
+                                            <div class="col">
+                                                <h3 class="m-widget1__title">
+                                                    Total Purchase
+                                                </h3>
+                                                <span class="m-widget1__desc">
+															Purchase from vendors
+														</span>
+                                            </div>
+                                            <div class="col m--align-right">
+														<span class="m-widget1__number m--font-accent">
+															{{totalPurchase}}
+														</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-              <div class="col-lg-4 col-md-6 equel-grid">
-                <div class="grid">
-                  <div class="grid-body d-flex flex-column h-100">
-                    <div class="wrapper">
-                      <div class="d-flex justify-content-between">
-                        <div class="split-header">
-                          <img class="img-ss mt-1 mb-1 mr-2" src="app/assets/images/social-icons/instagram.svg" alt="instagram">
-                          <p class="card-title">Followers Growth</p>
-                        </div>
-                        <div class="wrapper">
-                          <button class="btn action-btn btn-xs component-flat pr-0" type="button"><i class="mdi mdi-access-point text-muted mdi-2x"></i></button>
-                          <button class="btn action-btn btn-xs component-flat pr-0" type="button"><i class="mdi mdi-cloud-download-outline text-muted mdi-2x"></i></button>
-                        </div>
-                      </div>
-                      <div class="d-flex align-items-end pt-2 mb-4">
-                        <h4>16.2K</h4>
-                        <p class="ml-2 text-muted">New Followers</p>
-                      </div>
-                    </div>
-                    <div class="mt-auto">
-                      <canvas class="curved-mode" id="followers-bar-chart" height="220"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-6 equel-grid">
-                <div class="grid">
-                  <div class="grid-body">
-                    <p class="card-title">Campaign</p>
-                    <div id="radial-chart"></div>
-                    <h4 class="text-center">$23,350.00</h4>
-                    <p class="text-center text-muted">Used balance this billing cycle</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-6 equel-grid">
-                <div class="grid table-responsive">
-                  <table class="table table-stretched">
-                    <thead>
-                      <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <p class="mb-n1 font-weight-medium">Galaxy Grand Prime 2019</p>
-                          <small class="text-gray">Samsung</small>
-                        </td>
-                        <td class="font-weight-medium">19K</td>
-                        <td class="text-danger font-weight-medium">
-                          <div class="badge badge-success">Available</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="mb-n1 font-weight-medium">Google Pixle</p>
-                          <small class="text-gray">Google,Inc.</small>
-                        </td>
-                        <td class="font-weight-medium">50K</td>
-                        <td class="text-danger font-weight-medium">
-                          <div class="badge badge-danger">Sold</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="mb-n1 font-weight-medium">NSEI</p>
-                          <small class="text-gray">Nifty 50</small>
-                        </td>
-                        <td class="font-weight-medium">11K</td>
-                        <td class="text-danger font-weight-medium">
-                          <div class="badge badge-success">Available</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="mb-n1 font-weight-medium">BA</p>
-                          <small class="text-gray">The Boeing Company</small>
-                        </td>
-                        <td class="font-weight-medium">35K</td>
-                        <td class="text-success font-weight-medium">
-                          <div class="badge badge-success">Available</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="mb-n1 font-weight-medium">SBUX</p>
-                          <small class="text-gray">Starbucks Corporation</small>
-                        </td>
-                        <td class="font-weight-medium">8K</td>
-                        <td class="text-success font-weight-medium">
-                          <div class="badge badge-success">Available</div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="col-lg-5 col-md-6 col-sm-12 equel-grid">
-                <div class="grid">
-                  <div class="grid-body">
-                    <div class="split-header">
-                      <p class="card-title">Available Balance</p>
-                      <span class="btn action-btn btn-xs component-flat" data-toggle="tooltip" data-placement="left" title="Available balance since the last week">
-                        <i class="mdi mdi-information-outline text-muted mdi-2x"></i>
-                      </span>
-                    </div>
-                    <div class="d-flex align-items-end mt-2">
-                      <h3>26.00453100</h3>
-                      <p class="ml-1 font-weight-bold">PKR</p>
-                    </div>
-                    <div class="d-flex mt-2">
-                      <div class="wrapper d-flex pr-4">
-                        <small class="text-success font-weight-medium mr-2">USD</small>
-                        <small class="text-gray">$103,342.50</small>
-                      </div>
-                      <div class="wrapper d-flex">
-                        <small class="text-primary font-weight-medium mr-2">EUR</small>
-                        <small class="text-gray">$91,105.00</small>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-row mt-4 mb-4">
-                      <button class="btn btn-outline-light text-gray component-flat w-50 mr-2" type="button">SEND</button>
-                      <button class="btn btn-primary w-50 ml-2" type="button">RECEIVE</button>
-                    </div>
-                    <div class="d-flex mt-5 mb-3">
-                      <small class="mb-0 text-primary">Recent Transaction (3)</small>
-                    </div>
-                    <div class="d-flex justify-content-between border-bottom py-2">
-                      <p class="text-black">Received Bitcoin</p>
-                      <p class="text-gray">+0.00005462 BTC</p>
-                    </div>
-                    <div class="d-flex justify-content-between border-bottom py-2">
-                      <p class="text-black">Sent Bitcoin</p>
-                      <p class="text-gray">-0.00001446 BTC</p>
-                    </div>
-                    <div class="d-flex justify-content-between pt-2">
-                      <p class="text-black">Sent Bitcoin</p>
-                      <p class="text-gray">-0.00003573 BTC</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-7 col-md-12 equel-grid">
-                <div class="grid widget-revenue-card">
-                  <div class="grid-body d-flex flex-column h-100">
-                    <div class="split-header">
-                      <p class="card-title">Server Load</p>
-                      <div class="content-wrapper v-centered">
-                        <small class="text-muted">2h ago</small>
-                        <span class="btn action-btn btn-refresh btn-xs component-flat">
-                          <i class="mdi mdi-autorenew text-muted mdi-2x"></i>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="mt-auto">
-                      <canvas id="cpu-performance" height="80"></canvas>
-                      <h3 class="font-weight-medium mt-4">69.05%</h3>
-                      <p class="text-gray">Storage is getting full</p>
-                      <div class="w-50">
-                        <div class="d-flex justify-content-between text-muted mt-3">
-                          <small>Usage</small> <small>35.62 GB / 2TB</small>
-                        </div>
-                        <div class="progress progress-slim mt-2">
-                          <div class="progress-bar bg-primary" role="progressbar" style="width: 68%" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-8 equel-grid">
-                <div class="grid">
-                  <div class="grid-body py-3">
-                    <p class="card-title ml-n1">Order History</p>
-                  </div>
-                  <div class="table-responsive">
-                    <table class="table table-hover table-sm">
-                      <thead>
-                        <tr class="solid-header">
-                          <th colspan="2" class="pl-4">Customer</th>
-                          <th>Order No</th>
-                          <th>Purchased On</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="pr-0 pl-4">
-                            <img class="profile-img img-sm" src="app/assets/images/profile/male/image_4.png" alt="profile image">
-                          </td>
-                          <td class="pl-md-0">
-                            <small class="text-black font-weight-medium d-block">Barbara Curtis</small>
-                            <span class="text-gray">
-                              <span class="status-indicator rounded-indicator small bg-primary"></span>Account Deactivated </span>
-                          </td>
-                          <td>
-                            <small>8523537435</small>
-                          </td>
-                          <td> Just Now </td>
-                        </tr>
-                        <tr>
-                          <td class="pr-0 pl-4">
-                            <img class="profile-img img-sm" src="app/assets/images/profile/male/image_3.png" alt="profile image">
-                          </td>
-                          <td class="pl-md-0">
-                            <small class="text-black font-weight-medium d-block">Charlie Hawkins</small>
-                            <span class="text-gray">
-                              <span class="status-indicator rounded-indicator small bg-success"></span>Email Verified </span>
-                          </td>
-                          <td>
-                            <small>9537537436</small>
-                          </td>
-                          <td> Mar 04, 2018 11:37am </td>
-                        </tr>
-                        <tr>
-                          <td class="pr-0 pl-4">
-                            <img class="profile-img img-sm" src="app/assets/images/profile/female/image_2.png" alt="profile image">
-                          </td>
-                          <td class="pl-md-0">
-                            <small class="text-black font-weight-medium d-block">Nina Bates</small>
-                            <span class="text-gray">
-                              <span class="status-indicator rounded-indicator small bg-warning"></span>Payment On Hold </span>
-                          </td>
-                          <td>
-                            <small>7533567437</small>
-                          </td>
-                          <td> Mar 13, 2018 9:41am </td>
-                        </tr>
-                        <tr>
-                          <td class="pr-0 pl-4">
-                            <img class="profile-img img-sm" src="app/assets/images/profile/male/image_10.png" alt="profile image">
-                          </td>
-                          <td class="pl-md-0">
-                            <small class="text-black font-weight-medium d-block">Hester Richards</small>
-                            <span class="text-gray">
-                              <span class="status-indicator rounded-indicator small bg-success"></span>Email Verified </span>
-                          </td>
-                          <td>
-                            <small>5673467743</small>
-                          </td>
-                          <td> Feb 21, 2018 8:34am </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <a class="border-top px-3 py-2 d-block text-gray" data-target="#">
-                    <small class="font-weight-medium"><i class="mdi mdi-chevron-down mr-2"></i>View All Order History</small>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-4 equel-grid">
-                <div class="grid">
-                  <div class="grid-body">
-                    <div class="split-header">
-                      <p class="card-title">Activity Log</p>
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-trasnparent action-btn btn-xs component-flat pr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="mdi mdi-dots-vertical"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                          <a class="dropdown-item" data-target="#">Expand View</a>
-                          <a class="dropdown-item" data-target="#">Edit</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="vertical-timeline-wrapper">
-                      <div class="timeline-vertical dashboard-timeline">
-                        <div class="activity-log">
-                          <p class="log-name">Agnes Holt</p>
-                          <div class="log-details">Analytics dashboard has been created<span class="text-primary ml-1">#Slack</span></div>
-                          <small class="log-time">8 mins Ago</small>
-                        </div>
-                        <div class="activity-log">
-                          <p class="log-name">Ronald Edwards</p>
-                          <div class="log-details">Report has been updated <div class="grouped-images mt-2">
-                              <img class="img-sm" src="app/assets/images/profile/male/image_4.png" alt="Profile Image" data-toggle="tooltip" title="Gerald Pierce">
-                              <img class="img-sm" src="app/assets/images/profile/male/image_5.png" alt="Profile Image" data-toggle="tooltip" title="Edward Wilson">
-                              <img class="img-sm" src="app/assets/images/profile/female/image_6.png" alt="Profile Image" data-toggle="tooltip" title="Billy Williams">
-                              <img class="img-sm" src="app/assets/images/profile/male/image_6.png" alt="Profile Image" data-toggle="tooltip" title="Lelia Hampton">
-                              <span class="plus-text img-sm">+3</span>
+                                    <div class="m-widget1__item">
+                                        <div class="row m-row--no-padding align-items-center">
+                                            <div class="col">
+                                                <h3 class="m-widget1__title">
+                                                    Branch Sale
+                                                </h3>
+                                                <span class="m-widget1__desc">
+															Total Amount
+														</span>
+                                            </div>
+                                            <div class="col m--align-right">
+														<span class="m-widget1__number m--font-brand">
+															{{totalBranchSale}}
+														</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-widget1__item">
+                                        <div class="row m-row--no-padding align-items-center">
+                                            <div class="col">
+                                                <h3 class="m-widget1__title">
+                                                    Customer Sale
+                                                </h3>
+                                                <span class="m-widget1__desc">
+															Total Amount
+														</span>
+                                            </div>
+                                            <div class="col m--align-right">
+														<span class="m-widget1__number m--font-danger">
+															{{totalCustomerSale}}
+														</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--end:: Widgets/Stats2-1 -->
                             </div>
-                          </div>
-                          <small class="log-time">3 Hours Ago</small>
-                        </div>
-                        <div class="activity-log">
-                          <p class="log-name">Charlie Newton</p>
-                          <div class="log-details"> Approved your request <div class="wrapper mt-2">
-                              <button type="button" class="btn btn-xs btn-primary">Approve</button>
-                              <button type="button" class="btn btn-xs btn-inverse-primary">Reject</button>
+                            <div class="col-xl-4">
+                                <!--begin:: Widgets/Daily Sales-->
+                                <div class="m-widget14">
+                                    <div class="m-widget14__header m--margin-bottom-30">
+                                        <h3 class="m-widget14__title">
+                                            Total Income
+                                        </h3>
+                                        <span class="m-widget14__desc">
+                                        Total income from customer and branch Sale
+												</span>
+                                    </div>
+                                    <div style="height:120px;">
+                                        <div class="chartjs-size-monitor"
+                                             style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                                            <div class="chartjs-size-monitor-expand"
+                                                 style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                                <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                                            </div>
+                                            <div class="chartjs-size-monitor-shrink"
+                                                 style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                                <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                                            </div>
+                                        </div>
+                                        <!--                                        <canvas id="m_chart_daily_sales" width="422" height="150" class="chartjs-render-monitor" style="display: block; height: 120px; width: 338px;"></canvas>-->
+
+                                        <div class="col m--align-center">
+														<span class="m--icon-font-size-lg5 m--font-success  ">
+                                                {{totalIncome}}
+														</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end:: Widgets/Daily Sales-->
                             </div>
-                          </div>
-                          <small class="log-time">2 Hours Ago</small>
+                            <div class="col-xl-4">
+                                <!--begin:: Widgets/Profit Share-->
+                                <div class="m-widget14">
+                                    <div class="m-widget14__header">
+                                        <h3 class="m-widget14__title">
+                                            Assets
+                                        </h3>
+                                        <span class="m-widget14__desc">
+													Assets value in our organization
+												</span>
+                                    </div>
+                                    <div class="row  align-items-center">
+                                        <div class="col">
+                                                                                        <div id="m_chart_profit_share" class="m-widget14__chart" style="height: 160px">
+                                                                                            <div class="m-widget14__stat">
+                                                                                                2015
+                                                                                            </div>
+                                                                                            <svg xmlns:ct="http://gionkunz.github.com/chartist-js/ct"
+                                                                                                 width="100%"
+                                                                                                 height="100%"
+                                                                                                 class="ct-chart-donut"
+                                                                                                 style="width: 100%; height: 100%;">
+                                                                                                <g class="ct-series custom">
+                                                                                                    <path d="M135.314,107.229A63.95,63.95,0,0,0,77.45,16.05"
+                                                                                                          class="ct-slice-donut"
+                                                                                                          ct:value="32"
+                                                                                                          ct:meta="{&amp;quot;data&amp;quot;:{&amp;quot;color&amp;quot;:&amp;quot;#716aca&amp;quot;}}"
+                                                                                                          style="stroke-width: 17px;"
+                                                                                                          stroke-dasharray="128.5814208984375px 128.5814208984375px"
+                                                                                                          stroke-dashoffset="-128.5814208984375px"
+                                                                                                          stroke="#716aca">
+                                                                                                        <animate
+                                                                                                                attributeName="stroke-dashoffset"
+                                                                                                                id="anim0"
+                                                                                                                dur="1000ms"
+                                                                                                                from="-128.5814208984375px"
+                                                                                                                to="0px"
+                                                                                                                fill="freeze"
+                                                                                                                stroke="#716aca"
+                                                                                                                calcMode="spline"
+                                                                                                                keySplines="0.23 1 0.32 1"
+                                                                                                                keyTimes="0;1"></animate>
+                                                                                                    </path>
+                                                                                                </g>
+                                                                                                <g class="ct-series custom">
+                                                                                                    <path d="M28.176,120.763A63.95,63.95,0,0,0,135.408,107.026"
+                                                                                                          class="ct-slice-donut"
+                                                                                                          ct:value="32"
+                                                                                                          ct:meta="{&amp;quot;data&amp;quot;:{&amp;quot;color&amp;quot;:&amp;quot;#00c5dc&amp;quot;}}"
+                                                                                                          style="stroke-width: 17px;"
+                                                                                                          stroke-dasharray="128.80242919921875px 128.80242919921875px"
+                                                                                                          stroke-dashoffset="-128.80242919921875px"
+                                                                                                          stroke="#00c5dc">
+                                                                                                        <animate
+                                                                                                                attributeName="stroke-dashoffset"
+                                                                                                                id="anim1"
+                                                                                                                dur="1000ms"
+                                                                                                                from="-128.80242919921875px"
+                                                                                                                to="0px"
+                                                                                                                fill="freeze"
+                                                                                                                stroke="#00c5dc"
+                                                                                                                begin="anim0.end"
+                                                                                                                calcMode="spline"
+                                                                                                                keySplines="0.23 1 0.32 1"
+                                                                                                                keyTimes="0;1"></animate>
+                                                                                                    </path>
+                                                                                                </g>
+                                                                                                <g class="ct-series custom">
+                                                                                                    <path d="M77.45,16.05A63.95,63.95,0,0,0,28.318,120.935"
+                                                                                                          class="ct-slice-donut"
+                                                                                                          ct:value="36"
+                                                                                                          ct:meta="{&amp;quot;data&amp;quot;:{&amp;quot;color&amp;quot;:&amp;quot;#ffb822&amp;quot;}}"
+                                                                                                          style="stroke-width: 17px;"
+                                                                                                          stroke-dasharray="144.8779296875px 144.8779296875px"
+                                                                                                          stroke-dashoffset="-144.8779296875px"
+                                                                                                          stroke="#ffb822">
+                                                                                                        <animate
+                                                                                                                attributeName="stroke-dashoffset"
+                                                                                                                id="anim2"
+                                                                                                                dur="1000ms"
+                                                                                                                from="-144.8779296875px"
+                                                                                                                to="0px"
+                                                                                                                fill="freeze"
+                                                                                                                stroke="#ffb822"
+                                                                                                                begin="anim1.end"
+                                                                                                                calcMode="spline"
+                                                                                                                keySplines="0.23 1 0.32 1"
+                                                                                                                keyTimes="0;1"></animate>
+                                                                                                    </path>
+                                                                                                </g>
+                                                                                            </svg>
+                                                                                        </div>
+                                        </div>
+                                            <div class="col">
+                                                <div class="m-widget14__legends">
+                                                    <div class="m-widget14__legend">
+                                                        <span class="m-widget14__legend-bullet m--bg-accent"></span>
+                                                        <span class="m-widget14__legend-text">
+																2000 Customers
+															</span>
+                                                    </div>
+                                                    <div class="m-widget14__legend">
+                                                        <span class="m-widget14__legend-bullet m--bg-warning"></span>
+                                                        <span class="m-widget14__legend-text">
+																5 Branches
+															</span>
+                                                    </div>
+                                                    <div class="m-widget14__legend">
+                                                        <span class="m-widget14__legend-bullet m--bg-brand"></span>
+                                                        <span class="m-widget14__legend-text">
+																10 Employees
+															</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end:: Widgets/Profit Share-->
+                                </div>
+                            </div>
                         </div>
-                        <div class="activity-log">
-                          <p class="log-name">Gussie Page</p>
-                          <div class="log-details">Added new task: Slack home page</div>
-                          <small class="log-time">4 Hours Ago</small>
-                        </div>
-                        <div class="activity-log">
-                          <p class="log-name">Ina Mendoza</p>
-                          <div class="log-details">Added new images</div>
-                          <small class="log-time">8 Hours Ago</small>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-                  <a class="border-top px-3 py-2 d-block text-gray" data-target="#">
-                    <small class="font-weight-medium"><i class="mdi mdi-chevron-down mr-2"></i> View All </small>
-                  </a>
+                    <!--                <div class="m-portlet">-->
+                    <!--                    <div class="m-portlet__body  m-portlet__body&#45;&#45;no-padding">-->
+                    <!--                        <div class="row m-row&#45;&#45;no-padding m-row&#45;&#45;col-separator-xl">-->
+                    <!--                            <div class="col-xl-4">-->
+
+                    <!--                    <div class=" col-xl-3 col-lg-6">-->
+                    <!--                        <div class="card card-stats mb-4 mb-xl-0">-->
+                    <!--                            <div class="card-body">-->
+                    <!--                                <div class="row">-->
+                    <!--                                    <div class="col">-->
+                    <!--                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Purchase</h5>-->
+                    <!--                                        <span class="h2 font-weight-bold mb-0">{{totalPurchase}}</span>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="col-auto">-->
+                    <!--                                        <div class="icon icon-shape bg-danger text-white rounded-circle shadow">-->
+                    <!--                                            <i class="fas fa-chart-bar"></i>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <p class="mt-3 mb-0 text-muted text-sm">-->
+                    <!--                                    &lt;!&ndash;                      <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>&ndash;&gt;-->
+                    <!--                                    &lt;!&ndash;                      <span class="text-nowrap">Since last month</span>&ndash;&gt;-->
+                    <!--                                </p>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    <div class=" col-xl-3 col-lg-6">-->
+                    <!--                        <div class="card card-stats mb-4 mb-xl-0">-->
+                    <!--                            <div class="card-body">-->
+                    <!--                                <div class="row">-->
+                    <!--                                    <div class="col">-->
+                    <!--                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Branch Sales</h5>-->
+                    <!--                                        <span class="h2 font-weight-bold mb-0">{{totalBranchSale}}</span>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="col-auto">-->
+                    <!--                                        <div class="icon icon-shape bg-warning text-white rounded-circle shadow">-->
+                    <!--                                            <i class="fas fa-chart-pie"></i>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <p class="mt-3 mb-0 text-muted text-sm">-->
+                    <!--                                    &lt;!&ndash;                      <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>&ndash;&gt;-->
+                    <!--                                    &lt;!&ndash;                      <span class="text-nowrap">Since last week</span>&ndash;&gt;-->
+                    <!--                                </p>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    <div class=" col-xl-3 col-lg-6">-->
+                    <!--                        <div class="card card-stats mb-4 mb-xl-0">-->
+                    <!--                            <div class="card-body">-->
+                    <!--                                <div class="row">-->
+                    <!--                                    <div class="col">-->
+                    <!--                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Customer Sales </h5>-->
+                    <!--                                        <span class="h2 font-weight-bold mb-0">{{totalCustomerSale}}</span>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="col-auto">-->
+                    <!--                                        <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">-->
+                    <!--                                            <i class="fa fa-users"></i>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <p class="mt-3 mb-0 text-muted text-sm">-->
+                    <!--                                    &lt;!&ndash;                      <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>&ndash;&gt;-->
+                    <!--                                    &lt;!&ndash;                      <span class="text-nowrap">Since yesterday</span>&ndash;&gt;-->
+                    <!--                                </p>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    <div class=" col-xl-3 col-lg-6">-->
+                    <!--                        <div class="card card-stats mb-4 mb-xl-0">-->
+                    <!--                            <div class="card-body">-->
+                    <!--                                <div class="row">-->
+                    <!--                                    <div class="col">-->
+                    <!--                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Income</h5>-->
+                    <!--                                        <span class="h2 font-weight-bold mb-0">{{totalIncome}}</span>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="col-auto">-->
+                    <!--                                        <div class="icon icon-shape bg-info text-white rounded-circle shadow">-->
+                    <!--                                            <i class="fa fa-percent"></i>-->
+                    <!--                                        </div>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <p class="mt-3 mb-0 text-muted text-sm">-->
+                    <!--                                    &lt;!&ndash;                      <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>&ndash;&gt;-->
+                    <!--                                    &lt;!&ndash;                      <span class="text-nowrap">Since last month</span>&ndash;&gt;-->
+                    <!--                                </p>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+
+                    <!--                </div>-->
+
+                    <!--                            </div></div></div>-->
+                    <!--                </div>-->
                 </div>
-              </div>
+
+
             </div>
-          </div>
+            <!-- content viewport ends -->
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-sm-6 text-center text-sm-right order-sm-1">
+                        <ul class="text-gray">
+                            <!--                        <li><a data-target="#">Terms of use</a></li>-->
+                            <!--                        <li><a data-target="#">Privacy Policy</a></li>-->
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 text-center text-sm-left mt-3 mt-sm-0">
+                        <small class="text-muted d-block">Copyright © 2019 <a href="#" target="_blank">Jamil.K</a>. All
+                            rights reserved</small>
+                        <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i>
+                            FarooqRahu</small>
+                    </div>
+                </div>
+            </footer>
+            <!-- partial -->
         </div>
-        <!-- content viewport ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="row">
-            <div class="col-sm-6 text-center text-sm-right order-sm-1">
-              <ul class="text-gray">
-                <li><a data-target="#">Terms of use</a></li>
-                <li><a data-target="#">Privacy Policy</a></li>
-              </ul>
-            </div>
-            <div class="col-sm-6 text-center text-sm-left mt-3 mt-sm-0">
-              <small class="text-muted d-block">Copyright © 2019 <a href="#" target="_blank">Jamil.K</a>. All rights reserved</small>
-              <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i> Developed By: FarooqRahu</small>
-            </div>
-          </div>
-        </footer>
-        <!-- partial -->
-      </div>
-      <!-- page content ends -->
+        <!-- page content ends -->
     </div>
-    <!--page body ends -->
-    <!-- SCRIPT LOADING START FORM HERE /////////////-->
-    <!-- plugins:js -->
-    <!-- endbuild -->
+</div>

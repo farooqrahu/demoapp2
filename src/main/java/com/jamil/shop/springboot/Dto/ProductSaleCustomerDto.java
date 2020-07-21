@@ -14,6 +14,7 @@ public class ProductSaleCustomerDto {
     private String salePrice;
     private String customerName;
     private String saleDate;
+    private String productCategory;
 
     public Long getId() {
         return id;
@@ -118,5 +119,13 @@ public class ProductSaleCustomerDto {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
     }
 }

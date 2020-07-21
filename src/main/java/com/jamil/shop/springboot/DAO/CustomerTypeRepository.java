@@ -2,6 +2,7 @@ package com.jamil.shop.springboot.DAO;
 
 import com.jamil.shop.springboot.model.CustomerType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CustomerTypeRepository extends JpaRepository<CustomerType, Long> {
+    @Query("SELECT c from CustomerType c where c.id=?1")
     CustomerType findByCustomerType(Long customerTypeId);
 
 /*

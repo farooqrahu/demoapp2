@@ -31,7 +31,10 @@ public class UserDto {
     private Boolean closed;
     private Set<Branch> branches;
     private String branch;
-
+    private String totalPurchase;
+    private String totalBranchSale;
+    private String totalCustomerSale;
+    private String totalIncome;
     public Long getId() {
         return id;
     }
@@ -167,5 +170,37 @@ public class UserDto {
 
     public void setBranch(String branch) {
         this.branch = branch;
+    }
+
+    public String getTotalPurchase() {
+        return totalPurchase;
+    }
+
+    public void setTotalPurchase(String totalPurchase) {
+        this.totalPurchase = totalPurchase;
+    }
+
+    public String getTotalBranchSale() {
+        return totalBranchSale;
+    }
+
+    public void setTotalBranchSale(String totalBranchSale) {
+        this.totalBranchSale = totalBranchSale;
+    }
+
+    public String getTotalCustomerSale() {
+        return totalCustomerSale;
+    }
+
+    public void setTotalCustomerSale(String totalCustomerSale) {
+        this.totalCustomerSale = totalCustomerSale;
+    }
+
+    public String getTotalIncome() {
+        return totalIncome;
+    }
+
+    public void setTotalIncome(String totalIncome) {
+        this.totalIncome = totalIncome;
     }
 }

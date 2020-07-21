@@ -28,6 +28,7 @@ angular.module('myApp')
 			authenticate(function() {
 				if ($rootScope.authenticated) {
 					$rootScope.loginUserData = data;
+
 					$state.go("home");
 					$scope.error = false;
 				} else {

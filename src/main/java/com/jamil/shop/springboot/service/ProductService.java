@@ -1,9 +1,10 @@
 package com.jamil.shop.springboot.service;
 
 import com.jamil.shop.springboot.DAO.ProductDao;
+import com.jamil.shop.springboot.DAO.ProductSaleRepository;
+import com.jamil.shop.springboot.DAO.ProductStockRepository;
 import com.jamil.shop.springboot.DAO.UserDao;
-import com.jamil.shop.springboot.model.User;
-import com.jamil.shop.springboot.model.Product;
+import com.jamil.shop.springboot.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -20,6 +23,8 @@ public class ProductService {
 
     @Autowired
     private ProductDao productDao;
+    @Autowired
+    private ProductSaleRepository productSaleRepository;
 
     @Autowired
     private UserDao userDao;
@@ -112,4 +117,12 @@ public class ProductService {
     public List<Product> findAllByClosedNot() {
     return productDao.findAllByNotClosed();
     }
+    public List<ProductSale> saleToCustomer() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = auth.getName();
+        Set<Branch> branches = userDao.findOneByUsername(loggedUsername).getBranches();
+        Long branch=branches.stream().map(BaseEntity::getId).collect(Collectors.toList()).get(0);
+        return productSaleRepository.getAllProductsBranchWise(branch);
+    }
+
 }

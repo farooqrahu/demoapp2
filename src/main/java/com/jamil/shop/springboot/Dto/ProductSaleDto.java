@@ -2,6 +2,8 @@ package com.jamil.shop.springboot.Dto;
 
 public class ProductSaleDto {
     private Long id;
+    private String name;
+    private String model;
     private Long quantity;
     private Long newQuantity;
     private Long product;
@@ -10,6 +12,8 @@ public class ProductSaleDto {
     private Long newTotalSaleAmount;
     private String salePrice;
     private String customerName;
+    private ProductCategoryDto productCategory;
+    private ProductCompanyDto productCompany;
 
     public Long getId() {
         return id;
@@ -82,5 +86,37 @@ public class ProductSaleDto {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public ProductCategoryDto getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(ProductCategoryDto productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public ProductCompanyDto getProductCompany() {
+        return productCompany;
+    }
+
+    public void setProductCompany(ProductCompanyDto productCompany) {
+        this.productCompany = productCompany;
     }
 }

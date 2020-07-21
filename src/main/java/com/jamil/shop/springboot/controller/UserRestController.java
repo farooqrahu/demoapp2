@@ -1,12 +1,13 @@
 package com.jamil.shop.springboot.controller;
 
-import com.jamil.shop.springboot.DAO.BranchRepository;
-import com.jamil.shop.springboot.DAO.RoleRepository;
-import com.jamil.shop.springboot.DAO.UserDao;
+import com.jamil.shop.springboot.DAO.*;
 import com.jamil.shop.springboot.Dto.UserDto;
+import com.jamil.shop.springboot.Dto.gl.GLReportDto;
 import com.jamil.shop.springboot.model.Branch;
 import com.jamil.shop.springboot.model.Role;
 import com.jamil.shop.springboot.model.User;
+import com.jamil.shop.springboot.model.gl.Account;
+import com.jamil.shop.springboot.model.gl.GLEntryItem;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -39,14 +42,21 @@ public class UserRestController {
     @Autowired
     private BranchRepository branchRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private GLEntryItemRepository glEntryItemRepository;
+
     public UserRestController(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public List<UserDto> users() {
-        java.lang.reflect.Type targetListType = new TypeToken<List<UserDto>>() {}.getType();
-        return modelMapper.map(userDao.findAllUsers(),targetListType);
+        java.lang.reflect.Type targetListType = new TypeToken<List<UserDto>>() {
+        }.getType();
+        return modelMapper.map(userDao.findAllUsers(), targetListType);
     }
 
 
@@ -66,7 +76,6 @@ public class UserRestController {
     }
 
 
-
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         if (userDao.findOneByUsername(userDto.getUsername()) != null) {
@@ -79,11 +88,11 @@ public class UserRestController {
         roleSet.add(role);
         userMapper.setRoles(roleSet);
 
-        Branch branch= branchRepository.findByBranchName(userDto.getBranch());
+        Branch branch = branchRepository.findByBranchName(userDto.getBranch());
         userMapper.setPassword(passwordEncoder.encode(userDto.getPassKey()));
         HashSet branchSet = new HashSet<>();
         branchSet.add(branch);
-        userMapper.setBranches(branchSet );
+        userMapper.setBranches(branchSet);
 
         userMapper.setClosed(Boolean.FALSE);
         userMapper.setIsActive(Boolean.TRUE);
@@ -101,13 +110,14 @@ public class UserRestController {
         user.setDesignation(userDto.getDesignation());
         user.setPhoneNo(userDto.getPhoneNo());
         user.setEmail(userDto.getEmail());
+        user.setIsActive(userDto.getIsActive());
 
         Role role = roleRepository.findByName(userDto.getRole());
         HashSet roleSet = new HashSet<>();
         roleSet.add(role);
         user.setRoles(roleSet);
 
-        Branch branch= branchRepository.findByBranchName(userDto.getBranch());
+        Branch branch = branchRepository.findByBranchName(userDto.getBranch());
         HashSet branchSet = new HashSet<>();
         branchSet.add(branch);
         user.setBranches(branchSet);
@@ -129,7 +139,31 @@ public class UserRestController {
 
     @RequestMapping("/user")
     public UserDto user(Principal principal) {
-        return modelMapper.map(userDao.findOneByUsername(principal.getName()),UserDto.class);
+        UserDto userDto = modelMapper.map(userDao.findOneByUsername(principal.getName()), UserDto.class);
+        Account purchaseAccount = accountRepository.findOne(1l);
+        Account branchAccount = accountRepository.findOne(5l);
+        Account customerAccount = accountRepository.findOne(3l);
+        Account incomeAccount = accountRepository.findOne(4l);
+
+
+        userDto.setTotalBranchSale("PKR "+getTotalAmount("C",branchAccount.getId())+".00");
+        userDto.setTotalCustomerSale("PKR "+getTotalAmount("C",customerAccount.getId())+".00");
+        userDto.setTotalPurchase("PKR " + getTotalAmount("D",purchaseAccount.getId()) + ".00");
+        userDto.setTotalIncome("PKR "+ getTotalAmount("C",incomeAccount.getId()) +".00");
+        return userDto;
+    }
+
+    private long getTotalAmount(String flagType,long accountId){
+        List<GLEntryItem> glEntryItem = glEntryItemRepository.findByAccountId(accountId);
+        long amount = 0l;
+        for (GLEntryItem glEntryItem1 : glEntryItem) {
+            if (flagType.equals("D")) {
+                amount += glEntryItem1.getDebitAmount() != null ? glEntryItem1.getDebitAmount().longValue() : 0l;
+            }else{
+                amount += glEntryItem1.getCreditAmount() != null ? glEntryItem1.getCreditAmount().longValue() : 0l;
+            }
+        }
+        return amount;
     }
 
 }

@@ -1,7 +1,7 @@
 <!-- partial:../../partials/_header.html -->
 
 <!-- partial -->
-<div ng-controller="ProductSaleCusController as productControllerVm" ng-init="findAllProducts();" class="page-body">
+<div ng-controller="ProductSaleCusController as productControllerVm" ng-init="saleToCustomer();" class="page-body">
     <!-- partial:../../partials/_sidebar.html -->
     <div ng-include="'app/views/sidebar.html'"></div>
     <!-- partial -->
@@ -60,7 +60,7 @@
                     <small class="text-muted d-block">Copyright © 2019 <a href="#" target="_blank">Jamil.K</a>.
                         All rights reserved
                     </small>
-                    <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i> Developed By: FarooqRahu</small>
+                    <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i>  FarooqRahu</small>
                 </div>
             </div>
         </footer>
@@ -75,7 +75,7 @@
                 <form data-ng-submit="saleProductSaleToCustomer()" name="productSaleForm" novalidate>
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Sale Product</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

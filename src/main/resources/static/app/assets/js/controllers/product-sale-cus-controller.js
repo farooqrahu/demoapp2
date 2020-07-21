@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','$window', '$timeout', '$scope', '$rootScope', 'AuthService', 'uiGridConstants', 'UserService','ProductSaleCusService', function ( $stateParams,$window, $timeout, $scope, $rootScope, AuthService, uiGridConstants, UserService,ProductSaleCusService) {
+angular.module('myApp').controller('ProductSaleCusController', ['$state','$stateParams','$window', '$timeout', '$scope', '$rootScope', 'AuthService', 'uiGridConstants', 'UserService','ProductSaleCusService', function ( $state,$stateParams,$window, $timeout, $scope, $rootScope, AuthService, uiGridConstants, UserService,ProductSaleCusService) {
     var productControllerVm = null;
     var edit = false;
     $scope.allProducts = null;
@@ -33,7 +33,13 @@ angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','
 
     $scope.invoiceData= $stateParams.obj;
     $scope.subTotal= $stateParams.subTotal;
+    $scope.invoiceNumber= $stateParams.invoiceNumber;
 
+    $scope.redirectInvoicePage=function(){
+        if($stateParams.obj==null){
+            $state.go("home");
+        }
+    };
 
     $scope.selectProductCompany = function (name) {
         $scope.productCompanyDto.name = name;
@@ -46,6 +52,19 @@ angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','
 
     $scope.findAllProducts = function () {
         ProductSaleCusService.findAllProducts().then(function (result) {
+            if (result.status == "200") { // check if we get the data back
+                $scope.allProductsDataUIGrid.data = result.data;
+                UserService.findAllCustomerBranches().then(function (result) {
+                    if (result.status == "200") { // check if we get the data back
+                        $scope.branches = result.data;
+                    }
+                });
+            }
+        });
+    };
+
+    $scope.saleToCustomer = function () {
+        ProductSaleCusService.saleToCustomer().then(function (result) {
             if (result.status == "200") { // check if we get the data back
                 $scope.allProductsDataUIGrid.data = result.data;
                 UserService.findAllCustomerBranches().then(function (result) {
@@ -79,9 +98,9 @@ angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','
                         $scope.addProductForm.$setPristine();
                         $('#productModal').modal('hide');
                         $scope.allProductsDataUIGrid.data.push(result.data);
-                        $rootScope.runSweetAlertMsg('Add New Product', 'Add new product successful !', 'success');
+                        $rootScope.runSweetAlertMsg('Product', 'Add new product successful !', 'success');
                     } else {
-                        $rootScope.runSweetAlertMsg('Add New Product', result.data.message, 'error');
+                        $rootScope.runSweetAlertMsg('Product', result.data.message, 'error');
                     }
                 });
             }
@@ -97,9 +116,9 @@ angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
-                $rootScope.runSweetAlertMsg('Add Product Sale ', 'Add product stock successful !', 'success');
+                $rootScope.runSweetAlertMsg('Product', 'Add product stock successful !', 'success');
             } else {
-                $rootScope.runSweetAlertMsg('Add New Product', result.data.message, 'error');
+                $rootScope.runSweetAlertMsg('Product', result.data.message, 'error');
             }
         });
     };
@@ -118,9 +137,9 @@ angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
-                $rootScope.runSweetAlertMsg('Add Product Sale ', 'Add product stock successful !', 'success');
+                $rootScope.runSweetAlertMsg('Product', 'Add product stock successful !', 'success');
             } else {
-                $rootScope.runSweetAlertMsg('Add New Product', result.data.message, 'error');
+                $rootScope.runSweetAlertMsg('Product', 'Error', 'error');
             }
         });
     };
@@ -140,7 +159,7 @@ angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','
         // { name: 'newQuantity', enableCellEdit: true ,displayName: 'Add Quantity'},
                 {
                     name: 'edit',
-                    displayName: 'Edit Sale',
+                    displayName: 'Click for Sale',
                     cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
                 }
     ];
@@ -272,7 +291,9 @@ angular.module('myApp').controller('ProductSaleCusController', ['$stateParams','
             }
             $scope.productSale.newTotalSaleAmount =  parseInt($scope.productSale.salePrice) * newQuantity;
         }
-    }
+    };
+
+
 
 
 }]);

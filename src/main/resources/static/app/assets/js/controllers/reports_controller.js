@@ -320,18 +320,28 @@ angular.module('myApp').controller('ReportsController', ['$state', '$window', '$
         $scope.gridApi = gridApi;
     };
     $scope.generateCustomerInvoice = function () {
-        if ($scope.customerSaleDataSel <= 0) {
-            $rootScope.runSweetAlertMsg('Customer Invoice', 'Please select at least 1 (one) item', 'error');
-        } else {
-            let subtotal = 0;
-            angular.forEach($scope.customerSaleDataSel, function (value, key) {
-                subtotal += value.totalSaleAmount;
+        ReportService.generateInvoice('Customer').then(function (result) {
+                if (result.status == "200") { // check if we get the data back
+                    $scope.invoiceNumber=result.data;
+                    if ($scope.customerSaleDataSel <= 0) {
+                        $rootScope.runSweetAlertMsg('Customer Invoice', 'Please select at least 1 (one) item', 'error');
+                    } else {
+                        let subtotal = 0;
+                        angular.forEach($scope.customerSaleDataSel, function (value, key) {
+                            subtotal += value.totalSaleAmount;
+                        });
+                        $state.go("customerSaleInvoice", {obj: $scope.customerSaleDataSel, subTotal:subtotal,invoiceNumber:$scope.invoiceNumber});
+                    }
+                }
             });
-            $state.go("customerSaleInvoice", {obj: $scope.customerSaleDataSel, subTotal: subtotal});
-        }
+
     };
 
     $scope.generateBranchInvoice = function () {
+        ReportService.generateInvoice('Branch').then(function (result) {
+            if (result.status == "200") { // check if we get the data back
+                $scope.invoiceNumber=result.data;
+
         if ($scope.branchSaleDataSel <= 0) {
             $rootScope.runSweetAlertMsg('Branch Invoice', 'Please select at least 1 (one) item', 'error');
         } else {
@@ -339,8 +349,10 @@ angular.module('myApp').controller('ReportsController', ['$state', '$window', '$
             angular.forEach($scope.branchSaleDataSel, function (value, key) {
                 subtotal += value.totalAmount;
             });
-            $state.go("branchSaleInvoice", {obj: $scope.branchSaleDataSel, subTotal: subtotal});
+            $state.go("branchSaleInvoice", {obj: $scope.branchSaleDataSel, subTotal: subtotal,invoiceNumber:$scope.invoiceNumber});
         }
+            }
+        });
     }
 
 }]);

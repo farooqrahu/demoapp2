@@ -1,10 +1,10 @@
 <div   class="sidebar">
     <div class="user-profile">
         <div class="display-avatar animated-avatar">
-            <img class="profile-img img-lg rounded-circle" src="app/assets/images/profile/female/image_1.png" alt="profile image">
+            <img class="profile-img img-lg rounded-circle" src="app/assets/images/profile/male/image_11.png" alt="profile image">
         </div>
         <div class="info-wrapper">
-            <h5 class="user-name">Welcome <span style="color: blue;" ng-bind="loginUserData.username"></span>!</h5>
+            <h5 class="user-name">Welcome <span style="color: blue;" ng-bind="loginUserData.name"></span>!</h5>
             <h6 class="display-income">Role:<span style="color: blue;" ng-bind="loginUserData.roles[0].name"></span></h6>
             <p style="font-size: 15px;" class="display-income">Branch:<span style="color: blue;" ng-bind="loginUserData.branches[0].branchName"></span> <span style="color: blue;" ng-bind="loginUserData.branches[0].address"></span></p>
 
@@ -18,7 +18,7 @@
                 <i class="mdi mdi-gauge link-icon"></i>
             </a>
         </li>
-        <li>
+        <li ng-if="loginUserData.roles[0].id== 1">
             <a class="show_hand" data-target="#users" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">Users</span>
                 <i class="mdi mdi-face link-icon"></i>
@@ -30,7 +30,7 @@
 
             </ul>
         </li>
-        <li>
+        <li ng-show="loginUserData.roles[0].id== 1 || loginUserData.roles[0].id== 4">
             <a class="show_hand" data-target="#products" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">Products</span>
                 <i class="mdi mdi-sale link-icon"></i>
@@ -45,10 +45,10 @@
                 <li>
                     <a  ui-sref="products" >Add Products</a>
                 </li>
-                <li>
+                <li >
                     <a  ui-sref="stocks" >Add Product Stock</a>
                 </li>
-                <li>
+                <li >
                     <a  ui-sref="saletobranch" >Sale Product to Branch</a>
                 </li>
                 <li>
@@ -72,13 +72,13 @@
             </ul>
         </li>
 
-        <li>
+        <li  >
             <a class="show_hand" data-target="#reports" data-toggle="collapse" aria-expanded="false">
                 <span class="link-title">Reports</span>
                 <i class="mdi mdi-file-account link-icon"></i>
             </a>
             <ul class="collapse navigation-submenu" id="reports">
-                <li>
+                <li ng-show="loginUserData.roles[0].id== 1">
                     <a  ui-sref="glReport" >General Ledger Report</a>
                 </li>
 
@@ -91,7 +91,7 @@
                 <li>
                     <a  ui-sref="branchSaleReport" >Branch Sale Report</a>
                 </li>
-                <li>
+                <li >
                     <a  ui-sref="customerSaleReport" >Customer Sale Report</a>
                 </li>
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').controller('ProductSaleController', ['$stateParams','$window', '$timeout', '$scope', '$rootScope', 'ProductService', 'AuthService', 'uiGridConstants', 'UserService', function ($stateParams,$window, $timeout, $scope, $rootScope, ProductService, AuthService, uiGridConstants, UserService) {
+angular.module('myApp').controller('ProductSaleController', ['$state','$stateParams','$window', '$timeout', '$scope', '$rootScope', 'ProductService', 'AuthService', 'uiGridConstants', 'UserService', function ($state,$stateParams,$window, $timeout, $scope, $rootScope, ProductService, AuthService, uiGridConstants, UserService) {
 
     var productControllerVm = null;
     var edit = false;
@@ -14,6 +14,7 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
     $scope.branchId = null;
     $scope.totalAmount = 0;
     $scope.quantityExceeded=null;
+    $scope.today_date=new Date();
 
     $scope.branches = [];
 
@@ -33,6 +34,13 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
     };
     $scope.invoiceData= $stateParams.obj;
     $scope.subTotal= $stateParams.subTotal;
+    $scope.invoiceNumber= $stateParams.invoiceNumber;
+
+    $scope.redirectInvoicePage=function(){
+        if($stateParams.obj==null){
+            $state.go("home");
+        }
+    };
 
     $scope.selectProductCompany = function (name) {
         $scope.productCompanyDto.name = name;
@@ -97,9 +105,9 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
-                $rootScope.runSweetAlertMsg('Add Product Sale ', 'Add product stock successful !', 'success');
+                $rootScope.runSweetAlertMsg('Product ', 'Add product stock successful !', 'success');
             } else {
-                $rootScope.runSweetAlertMsg('Add New Product', result.data.message, 'error');
+                $rootScope.runSweetAlertMsg('Product', result.data.message, 'error');
             }
         });
     };
@@ -121,9 +129,9 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
             if (result.status == "201") { // check if we get the data back
                 $scope.confirmPassword = null;
                 $('#productModal').modal('hide');
-                $rootScope.runSweetAlertMsg('Add Product Sale ', 'Add product stock successful !', 'success');
+                $rootScope.runSweetAlertMsg('Product', 'Add product stock successful !', 'success');
             } else {
-                $rootScope.runSweetAlertMsg('Add New Product', result.data.message, 'error');
+                $rootScope.runSweetAlertMsg('Product', result.data.message, 'error');
             }
         });
     };
@@ -274,7 +282,8 @@ angular.module('myApp').controller('ProductSaleController', ['$stateParams','$wi
             }
             $scope.productSale.newTotalSaleAmount =  parseInt($scope.productSale.salePrice) * newQuantity;
         }
-    }
+    };
+
 
 
 }]);

@@ -71,6 +71,13 @@ public class ProductController {
         }.getType();
         return modelMapper.map(productList, targetListType);
     }
+    @RequestMapping("/saletocustomer")
+    public List<ProductSaleDto> saleToCustomer() {
+        List<ProductSale> productList = productService.saleToCustomer();
+        java.lang.reflect.Type targetListType = new TypeToken<List<ProductSaleDto>>() {
+        }.getType();
+        return modelMapper.map(productList, targetListType);
+    }
 
     @RequestMapping(value = "/product/{id}")
     public Product getProduct(@PathVariable Long id) {

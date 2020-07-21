@@ -103,6 +103,7 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
         columnDefs: [
             {name: 'name'},
             {name: 'username'},
+            {name: 'branches[0].branchName', displayName: "Branch"},
             {name: 'roles[0].name', displayName: "Role"},
             {
                 name: 'isActive,', displayName: 'Status',
@@ -111,12 +112,12 @@ angular.module('myApp').controller('UsersController', ['$window', '$timeout', '$
             {
                 name: 'edit',
                 displayName: 'Edit',
-                cellTemplate: '<button id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
+                cellTemplate: '<button ng-if="row.entity.roles[0].id!= 1" id="editBtn" type="button" class="btn btn-sm btn-primary mdi mdi-pen-plus green " ng-click="grid.appScope.edit(row.entity)" >'
             },
             {
                 name: 'delete',
                 displayName: 'Delete',
-                cellTemplate: '<button id="deleteBtn" type="button" class="btn btn-sm btn-danger mdi mdi-pen-remove red " ng-click="grid.appScope.remove(row.entity)" ></button>'
+                cellTemplate: '<button ng-if="row.entity.roles[0].id!= 1" id="deleteBtn" type="button" class="btn btn-sm btn-danger mdi mdi-pen-remove red " ng-click="grid.appScope.remove(row.entity)" ></button>'
             }
         ]
     };

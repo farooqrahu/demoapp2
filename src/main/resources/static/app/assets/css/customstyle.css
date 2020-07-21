@@ -1,4 +1,5 @@
 a.show_hand{ cursor: pointer !important; }
+a{ cursor: pointer !important; }
 
 .dashboard-stat .visual {
     width: 80px;
@@ -373,4 +374,14 @@ a.show_hand{ cursor: pointer !important; }
     .invoice>div:last-child {
         page-break-before: always
     }
+}
+
+html{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";!important;
+}
+.btn {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";!important;
+}
+.logo img{
+width: 97% !important;
 }

@@ -3,18 +3,19 @@ package com.jamil.shop.springboot.model;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
 
-@Component
 @Entity
-@Table(name = "ROLES")
+@Table(name = "ROLE")
 public class Role extends BaseEntityAudit{
 
 	private String name;
 
-	@ManyToMany(mappedBy = "roles")
+
+	@ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
 	private List<User> user;
 
 	public List<User> getUser() {

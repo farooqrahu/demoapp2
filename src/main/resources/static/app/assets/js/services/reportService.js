@@ -19,7 +19,8 @@ angular.module('myApp').factory('ReportService', ['$http', '$q','$window', funct
         getCustomerSaleData:getCustomerSaleData,
         getPurchaseProduct:getPurchaseProduct,
         addProductReturn:addProductReturn,
-        getReturnedProducts:getReturnedProducts
+        getReturnedProducts:getReturnedProducts,
+        generateInvoice:generateInvoice
     };
     return factory;
 
@@ -182,5 +183,14 @@ angular.module('myApp').factory('ReportService', ['$http', '$q','$window', funct
             });
     }
 
+    function generateInvoice(value) {
+        return $http.get("generateInvoice?type="+value)
+            .then(function (data) {
+                return data;
+            })
+            .catch(function (e) {
+                return e;
+            });
+    }
 
 }]);

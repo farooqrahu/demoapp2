@@ -228,7 +228,7 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 	}).state('customerSaleInvoice', {
 		parent : 'nav',
 		url : '/customerSaleInvoice',
-		params:{obj:null,subTotal:null},
+		params:{obj:null,subTotal:null,invoiceNumber:null},
 		views : {
 			'content@' : {
 				templateUrl : 'app/views/saletocustomer_invoice.html',
@@ -238,7 +238,7 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 	}).state('branchSaleInvoice', {
 		parent : 'nav',
 		url : '/branchSaleInvoice',
-		params:{obj:null,subTotal:null},
+		params:{obj:null,subTotal:null,invoiceNumber:null},
 		views : {
 			'content@' : {
 				templateUrl : 'app/views/saletobranch_invoice.html',
@@ -259,7 +259,7 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 		url : '/returnProductList',
 		views : {
 			'content@' : {
-				templateUrl : 'app/views/returnProductreport.html',
+				templateUrl : 'app/views/returnproductreport.html',
 				controller : 'ProductController'
 			}
 		}

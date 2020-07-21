@@ -3,10 +3,8 @@ package com.jamil.shop.springboot.controller;
 import com.jamil.shop.springboot.DAO.*;
 import com.jamil.shop.springboot.Dto.*;
 import com.jamil.shop.springboot.Dto.gl.GLReportDto;
-import com.jamil.shop.springboot.model.Product;
-import com.jamil.shop.springboot.model.ProductSale;
-import com.jamil.shop.springboot.model.ProductSaleCustomer;
-import com.jamil.shop.springboot.model.ProductStock;
+import com.jamil.shop.springboot.config.SecurityUser;
+import com.jamil.shop.springboot.model.*;
 import com.jamil.shop.springboot.model.gl.Account;
 import com.jamil.shop.springboot.model.gl.GLEntry;
 import com.jamil.shop.springboot.model.gl.GLEntryItem;
@@ -16,10 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -36,6 +33,9 @@ public class ReportController {
     ProductDao productRepository;
 
     @Autowired
+    ProductCategoryRepository productCategoryRepository;
+
+    @Autowired
     ProductStockRepository productStockRepository;
 
     @Autowired
@@ -46,6 +46,7 @@ public class ReportController {
 
     @Autowired
     private AccountRepository accountRepository;
+
     @Autowired
     private ProductSaleCusRepository productSaleCusRepository;
 
@@ -54,6 +55,15 @@ public class ReportController {
 
     @Autowired
     private GLEntryRepository glEntryRepository;
+
+    @Autowired
+    private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private CustomerTypeRepository customerTypeRepository;
+
+    @Autowired
+    private UserDao userDao;
 
     private ModelMapper modelMapper;
 
@@ -122,7 +132,9 @@ public class ReportController {
             branchSaleReportDto.setQuantity(new BigDecimal(productStock.getQuantity()));
             branchSaleReportDto.setModel(productRepository.findOne(productStock.getProductId()).getModel());
             branchSaleReportDto.setTotalAmount(new BigDecimal(productStock.getTotalSaleAmount()));
-            branchSaleReportDto.setBranch(branchRepository.findOne(productStock.getBranchId()).getBranchName());
+            Branch branch = branchRepository.findOne(productStock.getBranchId());
+            branchSaleReportDto.setBranch(branch.getBranchName() + ", " + branch.getAddress());
+
             branchSaleReportDto.setUnitPrice(productStock.getSalePrice());
             branchSaleReportDto.setSaleDate(String.valueOf(productStock.getCreatedAt()));
             purchaseReportDtos.add(branchSaleReportDto);
@@ -143,10 +155,14 @@ public class ReportController {
             branchSaleReportDto.setModel(productRepository.findOne(productSaleCustomer.getProductId()).getModel());
             branchSaleReportDto.setQuantity(productSaleCustomer.getQuantity());
             branchSaleReportDto.setTotalSaleAmount(productSaleCustomer.getTotalSaleAmount());
-//            branchSaleReportDto.setBranchName(branchRepository.findOne(productSaleCustomer.getBranchId()).getBranchName());
+            if (productCategoryRepository.findActive(productSaleCustomer.getProductId()) != null)
+                branchSaleReportDto.setProductCategory(productCategoryRepository.findActive(productSaleCustomer.getProductId()).getProductCategory());
+
+            //            branchSaleReportDto.setBranchName(branchRepository.findOne(productSaleCustomer.getBranchId()).getBranchName());
             branchSaleReportDto.setSalePrice(productSaleCustomer.getSalePrice());
             branchSaleReportDto.setSaleDate(String.valueOf(productSaleCustomer.getCreatedAt()));
             purchaseReportDtos.add(branchSaleReportDto);
+
         }
         return purchaseReportDtos;
     }
@@ -212,10 +228,11 @@ public class ReportController {
                 glEntryItem.setActive(Boolean.FALSE);
             }
             glEntryRepository.save(glEntry);
-            ProductStock productStock = productStockRepository.getStockByTransactionRefId(glEntry.getTransactionRefId());
+//            ProductStock productStock = productStockRepository.getStockByTransactionRefId(glEntry.getTransactionRefId());
+            ProductStock productStock = productStockRepository.findOne(glEntry.getProductId());
             productStock.setQuantity(productStock.getQuantity() + returnProduct.getQuantity().longValue());
             productStockRepository.save(productStock);
-        }else{
+        } else {
 
         }
         return new ResponseEntity<>(modelMapper.map(returnProduct, PurchaseReportDto.class), HttpStatus.CREATED);
@@ -270,4 +287,55 @@ public class ReportController {
         }
         return purchaseReportDtos;
     }
+
+    @RequestMapping(value = "generateInvoice", method = RequestMethod.GET)
+    public ResponseEntity<Long> generateInvoice(@RequestParam("type") String type) {
+        Long invoiceNo = 0L;
+        CustomerType customerType;
+        User user = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((SecurityUser) principal).getUsername();
+            user = userDao.findOneByUsername(username);
+        }
+        if (type.equals("Customer")) {
+            customerType = customerTypeRepository.findByCustomerType(1l);
+            Long invoiceNumber = invoiceRepository.findMaxInvoiceNumberCustomer();
+            Invoice invoice = new Invoice();
+            if (invoiceNumber != null) {
+                invoice.setInvoiceNumberCustomer(invoiceNumber + 1);
+                invoice.setCustomerType(customerType);
+                invoice.setUser(user);
+                invoice = invoiceRepository.save(invoice);
+            } else {
+                invoice = new Invoice();
+                invoice.setId(0l);
+                invoice.setUser(user);
+                invoice.setCustomerType(customerType);
+                invoice.setInvoiceNumberCustomer(1l);
+                invoice = invoiceRepository.save(invoice);
+            }
+            invoiceNo = invoice.getInvoiceNumberCustomer();
+        } else if (type.equals("Branch")) {
+            Long invoiceNumber = invoiceRepository.findMaxInvoiceNumberBranch();
+            Invoice invoice = new Invoice();
+            customerType = customerTypeRepository.findByCustomerType(2l);
+            if (invoiceNumber != null) {
+                invoice.setUser(user);
+                invoice.setInvoiceNumberBranch(invoiceNumber + 1);
+                invoice.setCustomerType(customerType);
+                invoice = invoiceRepository.save(invoice);
+            } else {
+                invoice = new Invoice();
+                invoice.setId(0l);
+                invoice.setUser(user);
+                invoice.setCustomerType(customerType);
+                invoice.setInvoiceNumberBranch(1l);
+                invoice = invoiceRepository.save(invoice);
+            }
+            invoiceNo = invoice.getInvoiceNumberBranch();
+        }
+        return new ResponseEntity<>(invoiceNo, HttpStatus.OK);
+    }
+
 }

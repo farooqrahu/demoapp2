@@ -1,7 +1,7 @@
 <!-- partial:../../partials/_header.html -->
 
 <!-- partial -->
-<div ng-controller="ProductSaleCusController as productControllerVm" ng-init="findAllProducts();" class="page-body">
+<div ng-controller="ProductSaleCusController as productControllerVm" ng-init="redirectInvoicePage();" class="page-body">
     <!-- partial:../../partials/_sidebar.html -->
     <div ng-include="'app/views/sidebar.html'"></div>
     <!-- partial -->
@@ -28,29 +28,29 @@
 
                     <div class="toolbar hidden-print">
                         <div class="text-right">
-                            <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
-                            <button class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Export as PDF</button>
+                            <button id="printInvoice" ng-click="printDiv('invoicePrint')" class="btn btn-info"><i class="fa fa-print"></i> Print / Download</button>
                         </div>
                         <hr>
                     </div>
-                    <div class="invoice overflow-auto">
+                    <div  id="invoicePrint" class="invoice invoicePrint overflow-auto">
                         <div style="min-width: 600px">
                             <header>
                                 <div class="row">
                                     <div class="col">
-                                        <a target="_blank" href="https://lobianijs.com">
-                                            <img src="app/assets/images/logo.svg" alt="logo" />
+                                        <a target="_blank" >
+                                            <img class="invoiceLogo" src="app/assets/images/wording1.PNG" alt="logo" />
                                         </a>
                                     </div>
-                                    <div class="col company-details">
+                                    <div ng-controller="LoginController " class="col company-details">
                                         <h2 class="name">
                                             <a target="_blank" href="https://lobianijs.com">
-                                                Jamil Kamboh Mobile Shop
+                                                <span ng-bind="loginUserData.username.toUpperCase()"></span>
                                             </a>
                                         </h2>
-                                        <div>Khera Bazar,Moro</div>
-                                        <div>(123) 456-789</div>
-                                        <div>company@example.com</div>
+                                        <div>Address: <span ng-bind="loginUserData.branches[0].address"></span></div>
+                                        <div>Mobile No#: <span ng-bind="loginUserData.phoneNo"></span>
+                                        </div>
+                                        <!--                                        <div>company@example.com</div>-->
                                     </div>
                                 </div>
                             </header>
@@ -58,14 +58,15 @@
                                 <div class="row contacts">
                                     <div class="col invoice-to">
                                         <div class="text-gray-light">INVOICE TO:</div>
-                                        <h2 class="to">Counter Customer</h2>
-                                        <div class="address">Khera Bazar,Moro</div>
-                                        <div class="email"><a href="mailto:john@example.com">jameel@example.com</a></div>
+                                        <div class="to">Customer Name: ________________________________</div>
+                                        <div class="address">Mobile No #: ____________________________________</div>
+                                        <div class="address">Address: _________________________________________</div>
+<!--                                        <div class="email"><a href="mailto:john@example.com">jameel@example.com</a></div>-->
                                     </div>
                                     <div class="col invoice-details">
-                                        <h1 class="invoice-id">INVOICE #2342344</h1>
-                                        <div class="date">Date of Invoice: {{today_date}}</div>
-                                        <div class="date">Due Date: {{today_date}}</div>
+                                        <h1 class="invoice-id">INVOICE #: {{invoiceNumber}}</h1>
+                                        <div class="date">Date of Invoice: <b>{{today_date | date : "dd.MM.y"}}</b></div>
+                                        <div class="date">Due Date: <b>{{today_date | date : "dd.MM.y"}}</b></div>
                                     </div>
                                 </div>
                                 <table border="0" cellspacing="0" cellpadding="0">
@@ -84,8 +85,7 @@
                                         <td class="text-left"><h3>
                                             {{value.productName}}
                                         </h3>
-                                            {{value.model}}
-
+                                            {{value.model}}-{{value.productCategory}}
                                         </td>
                                         <td class="unit">PKR {{value.salePrice}}</td>
                                         <td class="qty">{{value.quantity}}</td>
@@ -109,8 +109,8 @@
                                 </table>
                                 <div class="thanks">Thank you!</div>
                                 <div class="notices">
-                                    <div>NOTICE:</div>
-                                    <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+<!--                                    <div>NOTICE:</div>-->
+<!--                                    <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>-->
                                 </div>
                             </main>
                             <footer>
@@ -138,7 +138,7 @@
                     <small class="text-muted d-block">Copyright © 2019 <a href="#" target="_blank">Jamil.K</a>.
                         All rights reserved
                     </small>
-                    <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i> Developed By: FarooqRahu</small>
+                    <small class="text-gray mt-2">Handcrafted With <i class="mdi mdi-heart text-danger"></i>  FarooqRahu</small>
                 </div>
             </div>
         </footer>
