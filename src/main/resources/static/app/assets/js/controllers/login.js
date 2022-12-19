@@ -3,7 +3,7 @@ angular.module('myApp')
 .controller('LoginController', function($http, $scope, $state, AuthService, $rootScope) {
 
 	var authenticate = function(callback) {
-		$http.get('api/user').success(function(data) {
+		$http.get('api/user/auth').success(function(data) {
 			if (data.name) {
 				$rootScope.authenticated = true;
 				$rootScope.loginUserData  = data;

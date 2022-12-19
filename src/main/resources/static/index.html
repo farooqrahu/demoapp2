@@ -1,116 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html class="no-js" lang="zxx">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Window Shoping</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="app/assets/img/fav.png" type="image/gif" sizes="16x16">
+  <link rel="stylesheet" href="app/assets/css/sweetalert2.min.css" />
 
-	<title>MobileApp</title>
-	<link rel="stylesheet" href="app/assets/css/demo_1/style.css">
+  <style>
+    .spinner-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #000;
+      z-index: 999999;
+      text-align: center;
+    }
+    .logocolor {
+      color: #d22727 !important;
+    }
+    .centercenter {
+      position: relative;
+      top: 50%;
+    }
+    .spinner-grow2 {
+      display: inline-block;
+      width: 100px !important;
+      height: 100px !important;
+      vertical-align: text-bottom;
+      background-color: currentColor;
+      border-radius: 50%;
+      opacity: 0;
+      -webkit-animation: spinner-grow .75s linear infinite;
+      animation: spinner-grow .75s linear infinite;
+    }
+  </style>
+  <script src="app/assets/js/sweetalert2.all.js"></script>
 
-	<!--inject:css-->
-	<!--endinject-->
+  <!--inject:js-->
+  <script src="app/assets/bower-files/angular.js"></script>
+  <script src="app/assets/bower-files/angular-ui-router.js"></script>
+  <script src="app/assets/bower-files/angular-cookies.js"></script>
+  <script src="app/assets/js/dirPagination.js"></script>
 
-	<!--inject:js-->
-	<script src="app/assets/bower-files/angular.js"></script>
-	<script src="app/assets/bower-files/angular-ui-router.js"></script>
-	<script src="app/assets/bower-files/angular-cookies.js"></script>
-	<script src="app/assets/js/dirPagination.js"></script>
+  <script src="app/assets/js/angular-touch.js"></script>
+  <script src="app/assets/js/angular-animate.js"></script>
+  <script src="app/assets/js/angular-aria.js"></script>
+  <script src="app/assets/js/csv.js"></script>
+  <script src="app/assets/js/pdfmake.js"></script>
+  <script src="app/assets/js/vfs_fonts.js"></script>
+  <script src="app/assets/js/lodash.min.js"></script>
+  <script src="app/assets/js/jszip.min.js"></script>
+  <script src="app/assets/js/excel-builder.dist.js"></script>
+  <script src="app/assets/js/ui-grid.js"></script>
+  <script src="app/assets/js/ui-grid.edit.min.js"></script>
+  <script src="app/assets/js/ui-grid.row-edit.min.js"></script>
+  <link rel="stylesheet" href="app/assets/css/ui-grid.css" type="text/css">
+  <link rel="stylesheet" href="app/assets/css/angular-bootstrap-toggle.min.css">
 
-    <script src="app/assets/js/angular-touch.js"></script>
-    <script src="app/assets/js/angular-animate.js"></script>
-    <script src="app/assets/js/angular-aria.js"></script>
-    <script src="app/assets/js/csv.js"></script>
-    <script src="app/assets/js/pdfmake.js"></script>
-    <script src="app/assets/js/vfs_fonts.js"></script>
-    <script src="app/assets/js/lodash.min.js"></script>
-    <script src="app/assets/js/jszip.min.js"></script>
-    <script src="app/assets/js/excel-builder.dist.js"></script>
-    <script src="app/assets/js/ui-grid.js"></script>
-	<script src="app/assets/js/ui-grid.edit.min.js"></script>
-	<script src="app/assets/js/ui-grid.row-edit.min.js"></script>
+  <script src="app/assets/js/app.js"></script>
+  <script src="app/assets/js/route.js"></script>
+  <script src="app/assets/js/controllers/home.js"></script>
+  <script src="app/assets/js/controllers/nav.js"></script>
+  <script src="app/assets/js/controllers/users.js"></script>
+  <script src="app/assets/js/controllers/login.js"></script>
+  <script src="app/assets/js/controllers/page-not-found.js"></script>
+  <script src="app/assets/js/services/userService.js"></script>
+  <script src="app/assets/js/services/auth-service.js"></script>
 
-	<link rel="stylesheet" href="app/assets/css/ui-grid.css" type="text/css">
 
-	<script src="app/assets/js/app.js"></script>
-	<script src="app/assets/js/route.js"></script>
-	<script src="app/assets/js/controllers/login.js"></script>
-
-	<script src="app/assets/js/controllers/register.js"></script>
-	<script src="app/assets/js/controllers/add-product.js"></script>
-	<script src="app/assets/js/controllers/edit-product.js"></script>
-	<script src="app/assets/js/controllers/home.js"></script>
-	<script src="app/assets/js/controllers/nav.js"></script>
-	<script src="app/assets/js/services/productService.js"></script>
-	<script src="app/assets/js/controllers/product-controller.js"></script>
-	<script src="app/assets/js/controllers/product-stock-controller.js"></script>
-	<script src="app/assets/js/controllers/product-sale-controller.js"></script>
-	<script src="app/assets/js/controllers/reports_controller.js"></script>
-	<script src="app/assets/js/controllers/product-cat-controller.js"></script>
-	<script src="app/assets/js/controllers/product-com-controller.js"></script>
-	<script src="app/assets/js/controllers/product-sale-cus-controller.js"></script>
-
-	<script src="app/assets/js/controllers/productlist.js"></script>
-	<script src="app/assets/js/services/userService.js"></script>
-	<script src="app/assets/js/controllers/users.js"></script>
-	<script src="app/assets/js/services/reportService.js"></script>
-	<script src="app/assets/js/services/productCatService.js"></script>
-	<script src="app/assets/js/services/productComService.js"></script>
-	<script src="app/assets/js/services/productSaleCustomerService.js"></script>
-
-	<script src="app/assets/js/controllers/page-not-found.js"></script>
-	<script src="app/assets/js/services/auth-service.js"></script>
-	<link rel="stylesheet" href="app/assets/vendors/iconfonts/mdi/css/materialdesignicons.css" />
-	<link rel="stylesheet" href="app/assets/vendors/css/vendor.addons.css" />
-	<!-- endinject -->
-	<!-- vendor css for this page -->
-	<!-- End vendor css for this page -->
-	<link rel="stylesheet" href="app/assets/css/style.bundle.css" />
-
-	<link rel="stylesheet" href="app/assets/css/sweetalert2.min.css" />
-
-	<link rel="stylesheet" href="app/assets/css/customstyle.css" />
-	<!-- inject:css -->
-	<link rel="stylesheet" href="app/assets/css/shared/style.css" />
-	<!-- endinject -->
-	<!-- Layout style -->
-	<!-- Layout style -->
-	<link rel="shortcut icon" href="app/assets/images/favicon.ico" />
-	<!--endinject-->
 </head>
+<body data-ng-app="myApp">
+<div class="spinner-wrapper">
+  <div class="centercenter">
+    <div class="spinner-grow2 logocolor" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</div>
+<!--[if IE]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade
+  your browser</a> to improve your experience and security.</p>
+<![endif]-->
+<div data-ui-view="nav" ></div>
+<div data-ui-view="content"></div>
 
-	<body class="header-fixed" data-ng-app="myApp">
-	<div id="page-loading" class="">
+<!--footer-->
 
-	</div>
-	<div class="fixed-nav-bar" data-ui-view="nav" ></div>
-			<div data-ui-view="content"></div>
-	<script src="app/assets/js/jquery-2.1.0.js"></script>
-	<script src="app/assets/js/sweetalert2.all.js"></script>
-	<script src="app/assets/js/template.js"></script>
+<script src="app/assets/js/vendor/jquery-3.4.1.min.js"></script>
+<script src="app/assets/js/vendor/bootstrap.min.js"></script>
+<script src="app/assets/js/main.js"></script>
+<script src="app/assets/js/angular-bootstrap-toggle.min.js"></script>
 
-	<!-- endinject -->
-	<!-- Vendor Js For This Page Ends-->
-	<script src="app/assets/vendors/apexcharts/apexcharts.min.js"></script>
-	<script src="app/assets/vendors/chartjs/Chart.min.js"></script>
-	<script src="app/assets/js/charts/chartjs.addon.js"></script>
-	<!-- Vendor Js For This Page Ends-->
-	<!-- build:js -->
-			<script src="app/assets/js/dashboard.js"></script>
-			<script src="app/assets/vendors/js/core.js"></script>
-			<script src="app/assets/vendors/js/vendor.addons.js"></script>
-			<!-- endinject -->
-			<!-- Vendor Js For This Page Ends-->
-			<!-- Vendor Js For This Page Ends-->
-
-			<!-- build:js -->
-
-
-
-
-
-
-
-	</body>
-
+</body>
 </html>
+<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button"><i class="fa fa-chevron-up" style="font-size:24px"></i></a>

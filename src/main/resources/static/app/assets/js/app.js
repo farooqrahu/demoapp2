@@ -1,31 +1,31 @@
-angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination','ui.grid.edit','ui.grid.rowEdit', 'ui.grid.autoResize', 'ui.grid.selection','ui.grid.resizeColumns', 'ui.grid.moveColumns'])
+angular.module('myApp', ['ui.router', 'ngTouch', 'ui.grid', 'ui.grid.pagination','ui.grid.edit','ui.grid.rowEdit', 'ui.grid.autoResize', 'ui.grid.selection','ui.grid.resizeColumns', 'ui.grid.moveColumns','ui.toggle'])
 
-    .config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    }])
+    // .config(['$httpProvider', function ($httpProvider) {
+    //     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    // }])
 
-    .run(function ($http, AuthService, $rootScope, $state) {
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            $http.get('api/user').success(function (data) {
-                if (data.name == undefined) {
-                    if (toState.name != 'login') {
-                        $rootScope.loginUserData=null;
-                        event.preventDefault();
-                        $state.go('login');
-                    }
-                } else {
-                    $rootScope.loginUserData = data;
-                    $rootScope.totalPurchase=data.totalPurchase;
-                    $rootScope.totalBranchSale=data.totalBranchSale;
-                    $rootScope.totalCustomerSale=data.totalCustomerSale;
-                    $rootScope.totalIncome=data.totalIncome;
-                }
-
-            }).error(function () {
-                $state.go('login');
-            });
-
-        });
+    .run(function ($http, AuthService, $rootScope) {
+        // $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        //     $http.get('api/user').success(function (data) {
+        //         if (data.name == undefined) {
+        //             if (toState.name != 'login') {
+        //                 $rootScope.loginUserData=null;
+        //                 event.preventDefault();
+        //                 $state.go('login');
+        //             }
+        //         } else {
+        //             $rootScope.loginUserData = data;
+        //             $rootScope.totalPurchase=data.totalPurchase;
+        //             $rootScope.totalBranchSale=data.totalBranchSale;
+        //             $rootScope.totalCustomerSale=data.totalCustomerSale;
+        //             $rootScope.totalIncome=data.totalIncome;
+        //         }
+        //
+        //     }).error(function () {
+        //         $state.go('login');
+        //     });
+        //
+        // });
 
         $rootScope.sweetAlertTest = function (msg) {
             Swal.fire(

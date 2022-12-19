@@ -9,96 +9,6 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 				controller : 'NavController'
 			}
 		}
-	}).state('sidebar', {
-		abstract : true,
-		url : '',
-		views : {
-			'sidebar@' : {
-				templateUrl : 'app/views/sidebar.html',
-				controller : 'NavController'
-			}
-		}
-	}).state('login', {
-
-		url : '/login',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/login.html',
-				controller : 'LoginController'
-			}
-		}
-	}).state('users', {
-		parent : 'nav',
-		url : '/users',
-		data : {
-			role : 'ADMIN'
-		},
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/users.html',
-				controller : 'UsersController'
-			}
-		}
-	}).state('products', {
-		parent : 'nav',
-		url : '/products',
-		data : {
-			role : 'ADMIN'
-		},
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/products.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('stocks', {
-		parent : 'nav',
-		url : '/stocks',
-		data : {
-			role : 'ADMIN'
-		},
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/stocks.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('saletobranch', {
-		parent : 'nav',
-		url : '/saletobranch',
-		data : {
-			role : 'ADMIN'
-		},
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/saletobranch.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('saletocustomer', {
-		parent : 'nav',
-		url : '/saletocustomer',
-		data : {
-			role : 'ADMIN'
-		},
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/saletocustomer.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('branches', {
-		parent : 'nav',
-		url : '/branches',
-		data : {
-			role : 'ADMIN'
-		},
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/branches.html',
-				controller : 'UsersController'
-			}
-		}
 	}).state('home', {
 		parent : 'nav',
 		url : '/home',
@@ -108,160 +18,67 @@ angular.module('myApp').config(function($stateProvider, $urlRouterProvider) {
 				controller : 'HomeController'
 			}
 		}
-	}).state('page-not-found', {
+	}).state('category', {
 		parent : 'nav',
+		url : '/advance-search',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/category.html',
+				controller : 'HomeController'
+			}
+		}
+	}).state('postad', {
+		parent : 'nav',
+		url : '/postad',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/postad.html',
+				controller : 'HomeController'
+			}
+		}
+	}).state('contactus', {
+		parent : 'nav',
+		url : '/contactus',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/contactus.html',
+				controller : 'HomeController'
+			}
+		}
+	}).state('product', {
+		parent : 'nav',
+		url : '/product',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/product.html',
+				controller : 'HomeController'
+			}
+		}
+	}).state('loginRegister', {
+		parent : 'nav',
+		url : '/loginRegister',
+		views : {
+			'content@' : {
+				templateUrl : 'app/views/loginRegister.html',
+				controller : 'HomeController'
+			}
+		}
+	}).state('footer', {
+		abstract : true,
+		url : '',
+		views : {
+			'footer@' : {
+				templateUrl : 'app/views/footer.html',
+				controller : 'NavController'
+			}
+		}
+	}).state('page-not-found', {
 		url : '/page-not-found',
 		views : {
 			'content@' : {
-				templateUrl : 'app/views/page-not-found.html',
+				templateUrl : 'app/views/404not.html',
 				controller : 'PageNotFoundController'
 			}
 		}
-	}).state('register', {
-		parent : 'nav',
-		url : '/register',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/register.html',
-				controller : 'RegisterController'
-			}
-		}
-	}).state('details', {
-        parent : 'nav',
-        url : '/details',
-        views : {
-            'content@' : {
-                templateUrl : 'app/views/product-details.html',
-                controller : 'ProductController'
-            }
-        }
-    }).state('new-product', {
-        parent : 'nav',
-        url : '/new_products',
-        views : {
-            'content@' : {
-                templateUrl : 'app/views/product-add.html',
-                controller : 'AddProductController'
-            }
-        }
-    }).state('edit', {
-        parent : 'nav',
-        url : '/edit',
-        views : {
-            'content@' : {
-                templateUrl : 'app/views/product-edit.html',
-                controller : 'EditProductController'
-            }
-        }
-    }).state('productList', {
-        parent : 'nav',
-        url : '/productList',
-        views : {
-            'content@' : {
-                templateUrl : 'app/views/user-productList.html',
-                controller : 'ProductlistController'
-            }
-        }
-    }).state('icon', {
-		parent : 'nav',
-		url : '/icon',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/pages/icons/material-icons.html',
-				controller : 'EditProductController'
-			}
-		}
-	}).state('glReport', {
-		parent : 'nav',
-		url : '/glReport',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/glReport.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('purchaseReport', {
-		parent : 'nav',
-		url : '/purchaseReport',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/purchaseReport.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('branchSaleReport', {
-		parent : 'nav',
-		url : '/branchSaleReport',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/branchSaleReport.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('productCategory', {
-		parent : 'nav',
-		url : '/productCategory',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/productcategory.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('productCompany', {
-		parent : 'nav',
-		url : '/productCompany',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/productcompany.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('customerSaleReport', {
-		parent : 'nav',
-		url : '/customerSaleReport',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/customerSaleReport.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('customerSaleInvoice', {
-		parent : 'nav',
-		url : '/customerSaleInvoice',
-		params:{obj:null,subTotal:null,invoiceNumber:null},
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/saletocustomer_invoice.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('branchSaleInvoice', {
-		parent : 'nav',
-		url : '/branchSaleInvoice',
-		params:{obj:null,subTotal:null,invoiceNumber:null},
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/saletobranch_invoice.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('returnProduct', {
-		parent : 'nav',
-		url : '/returnProduct',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/returnpurchase.html',
-				controller : 'ProductController'
-			}
-		}
-	}).state('returnProductList', {
-		parent : 'nav',
-		url : '/returnProductList',
-		views : {
-			'content@' : {
-				templateUrl : 'app/views/returnproductreport.html',
-				controller : 'ProductController'
-			}
-		}
-	});;
+	});
 });
